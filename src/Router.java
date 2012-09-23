@@ -1,3 +1,6 @@
+// COMP 429 Virtual router class project
+// Ursula, Mo, Kash
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -189,7 +192,7 @@ public class Router {
 		}
 		catch (IOException e) {
 				// this is only to please the Java compiler
-				// if we realy get an IO exception life has become meaningless and we quit anyways
+				// if we really get an IO exception life has become meaningless and we quit anyways
 				print("IO error: " + e.getMessage() + "\n");
 		}
 
@@ -198,13 +201,12 @@ public class Router {
 		try {console.close();} 
 		catch (IOException e)
 			{print("IO error: " + e.getMessage() + "\n");}		// nothing we can do here
-		System.exit(0);													// exit application
+		System.exit(0);											// exit application
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// use this method to test code (menu option 5)
 	private static void testSomething() {
 	
-;
 		try {
 		
 			
