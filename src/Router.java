@@ -1,19 +1,224 @@
-import java.nio.ByteBuffer;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Router {
 
-	/**
-	 * @param args
-	 */
+	// class level variables
+	static boolean longMenu = true;
+	static Settings VrSettings = new Settings();
+	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+
+	
+// 	//constructor
+// 	public Router() {
+// 	
+// 	}
+	/*----------------------------------------------------------------------------------------*/
+	// program entry point
 	public static void main(String[] args) {
-		System.out.println("-- Main Router() --");
+
+		// local variables
+		int mItem;
 		
-		MacAddress test1 = new MacAddress();
-		MacAddress test2 = new MacAddress();
-		ByteBuffer test3 = ByteBuffer.allocate( 1 );
+		// say hello
+		print("Virtual router 1.0 is live\n\n");
 		
-		EthernetFrame eth = new EthernetFrame(test1, test2, 1, test3);
-		//this is a test change	
+		// main loop
+		while(true) {
+			mItem = getMenuItem();
+			processMenuItem(mItem);
+		}
 	}
+
+	/*----------------------------------------------------------------------------------------*/
+	// output string to console
+	private static void print(String s) {
+		
+		System.out.print(s);
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// output integer to console
+	private static void print(int i) {
+		
+		System.out.print(i);
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// get user input
+	private static int getMenuItem(){
+		
+		int maxItems = 8;
+		int value = 0;
+		boolean keepGoing = true;
+		String inputString;
+		// BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+		
+		while(keepGoing) {
+			if(longMenu) {
+				print("\n1. Show configuration\n");
+				print("2. Save settings\n");
+				print("3. Load last saved\n");
+				print("4. Enter MAC address\n");
+				print("5. Enter IP address\n");
+				print("6. Run the test method\n");
+				print("7. Short menu\n");
+				print("8. Quit\n\n");
+				print(": ");
+			}
+			else {
+				print("\n1=Show 2=Save 3=Load 4=MAC 5=IP 6=Test 7=Long 8=Quit : ");
+			}
+			try {
+					inputString = console.readLine();
+					value = Integer.parseInt(inputString);
+					if(value >= 1 && value <= maxItems)
+						keepGoing = false;
+					else
+						print("enter a value (1-7): ");
+			}
+			catch (IOException e) {
+					print("IO error: " + e.getMessage() + "\n");
+				}
+			catch (NumberFormatException e) {
+					print("Can't parse input: " + e.getMessage() + "\n");
+				}							
+		}
+			
+		return value;
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// process user input
+	private static void processMenuItem(int com) {
+		
+		switch(com) {
+		
+			case 1 : printSettings();		break;
+			case 2 : saveSettings();		break;
+			case 3 : loadSettings();		break;
+			case 4 : getMAC();				break;
+			case 5 : getIP();				break;
+			case 6 : testSomething();		break;
+			case 7 : switchMenu();			break;
+			case 8 : appQuit();				break;
+			default:
+		}
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// print router settings 
+	private static void printSettings() {
+	
+		// system info
+		String nameOS = "os.name";  
+		String versionOS = "os.version";  
+		String architectureOS = "os.arch";
+
+		System.out.println("\nName of the OS: " + 
+		System.getProperty(nameOS));
+		System.out.println("Version of the OS: " + 
+		System.getProperty(versionOS));
+		System.out.println("Architecture of THe OS: " + 
+		System.getProperty(architectureOS));
+		
+		// router settings
+		print("\n");
+		VrSettings.printAll();	
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// save router settings 
+	private static void saveSettings() {
+	
+		VrSettings.saveSettings();
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// load router settings 
+	private static void loadSettings() {
+	
+		VrSettings.loadSettings();	
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// get MAC address from user
+	private static void getMAC() {
+	
+		print("get MAC\n");
+		VrSettings.settingsChanged = true;	
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// get IP address from user 
+	private static void getIP() {
+	
+		print("get IP\n");	
+		VrSettings.settingsChanged = true;
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// switch between long and short menu
+	private static void switchMenu() {
+	
+		if(longMenu)
+			longMenu = false;
+		else
+			longMenu = true;
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// exit properly
+	private static void appQuit() {
+	
+		String s = "";
+		char c = 'x' ;
+		boolean keepGoing = true;
+	
+		try {
+			// confirm quit, force a y/n or Y/N answer
+			if(VrSettings.settingsChanged) {
+				print("save settings before exit? (y/n): ");
+				do {
+					s = console.readLine();
+					c = s.charAt(0);
+					if(c == 'y' || c == 'Y') {
+						VrSettings.saveSettings();
+						keepGoing = false;
+					}
+					else {
+						if(c == 'n' || c == 'N')
+							keepGoing = false;
+						else
+							print("press y or n: ");
+					}
+					
+				} while(keepGoing);
+			}
+		}
+		catch (IOException e) {
+				// this is only to please the Java compiler
+				// if we realy get an IO exception life has become meaningless and we quit anyways
+				print("IO error: " + e.getMessage() + "\n");
+		}
+
+		print("\nreleasing resources\n");
+		print("good bye\n");
+		try {console.close();} 
+		catch (IOException e)
+			{print("IO error: " + e.getMessage() + "\n");}		// nothing we can do here
+		System.exit(0);													// exit application
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// use this method to test code (menu option 5)
+	private static void testSomething() {
+	
+;
+		try {
+		
+			
+			print("test\n");
+			
+
+
+
+		
+		}
+		catch(Throwable e) {
+			print("something went wrong: " + e.getMessage() + "\n"); 
+		}
+	}
+	/*----------------------------------------------------------------------------------------*/
 
 }
