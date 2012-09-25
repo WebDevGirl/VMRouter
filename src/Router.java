@@ -8,15 +8,21 @@ import java.io.InputStreamReader;
 public class Router {
 
 	// class level variables
+	
+	// show the long menu
 	static boolean longMenu = true;
-	static Settings VrSettings = new Settings();
+	
+	// reader for user input from console
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+	
+	// router configuration settings
+	static Settings vrmSettings = new Settings();
 
 	
-// 	//constructor
-// 	public Router() {
-// 	
-// 	}
+ 	// constructor
+ 	public Router() {
+ 		
+ 	}
 	/*----------------------------------------------------------------------------------------*/
 	// program entry point
 	public static void main(String[] args) {
@@ -115,6 +121,7 @@ public class Router {
 		String versionOS = "os.version";  
 		String architectureOS = "os.arch";
 
+		// print some OS info
 		System.out.println("\nName of the OS: " + 
 		System.getProperty(nameOS));
 		System.out.println("Version of the OS: " + 
@@ -124,33 +131,33 @@ public class Router {
 		
 		// router settings
 		print("\n");
-		VrSettings.printAll();	
+		vrmSettings.printAll();	
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// save router settings 
 	private static void saveSettings() {
 	
-		VrSettings.saveSettings();
+		vrmSettings.saveSettings();
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// load router settings 
 	private static void loadSettings() {
 	
-		VrSettings.loadSettings();	
+		vrmSettings.loadSettings();	
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// get MAC address from user
 	private static void getMAC() {
 	
 		print("get MAC\n");
-		VrSettings.settingsChanged = true;	
+		vrmSettings.settingsChanged = true;	
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// get IP address from user 
 	private static void getIP() {
 	
 		print("get IP\n");	
-		VrSettings.settingsChanged = true;
+		vrmSettings.settingsChanged = true;
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// switch between long and short menu
@@ -162,7 +169,7 @@ public class Router {
 			longMenu = true;
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// exit properly
+	// exit application properly
 	private static void appQuit() {
 	
 		String s = "";
@@ -171,13 +178,13 @@ public class Router {
 	
 		try {
 			// confirm quit, force a y/n or Y/N answer
-			if(VrSettings.settingsChanged) {
+			if(vrmSettings.settingsChanged) {
 				print("save settings before exit? (y/n): ");
 				do {
 					s = console.readLine();
 					c = s.charAt(0);
 					if(c == 'y' || c == 'Y') {
-						VrSettings.saveSettings();
+						vrmSettings.saveSettings();
 						keepGoing = false;
 					}
 					else {
@@ -192,7 +199,7 @@ public class Router {
 		}
 		catch (IOException e) {
 				// this is only to please the Java compiler
-				// if we really get an IO exception life has become meaningless and we quit anyways
+				// if we really get an IO exception life has become meaningless and we quit 
 				print("IO error: " + e.getMessage() + "\n");
 		}
 
@@ -204,21 +211,17 @@ public class Router {
 		System.exit(0);											// exit application
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// use this method to test code (menu option 5)
+	// use this method to test code 
 	private static void testSomething() {
 	
 		try {
 		
+			print("hello \n");
 			
-			print("test\n");
-			
-
-
-
 		
 		}
 		catch(Throwable e) {
-			print("something went wrong: " + e.getMessage() + "\n"); 
+			print("something went wrong with the test: " + e.getMessage() + "\n"); 
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/

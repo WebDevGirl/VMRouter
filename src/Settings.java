@@ -9,8 +9,8 @@ public class Settings {
 	
 	public boolean valuesAreValid = false;		// false until valid values are loaded
 	public boolean settingsChanged = false;		// true after change, false after save
-	public String a = "new";
-	public int b = 0;
+	private MacAddress wanMac = new MacAddress("af:df:10:ff:ad:af");
+	private MacAddress lanMac = new MacAddress("df:3d:45:1a:1f:ae");
 	
 	/*----------------------------------------------------------------------------------------*/
 	// constructor
@@ -47,7 +47,8 @@ public class Settings {
 	
 		System.out.println("Router configuration");
 		System.out.println("--------------------");
-		System.out.println(" MAC: ");
+		System.out.println(" WanMAC: " + wanMac.toString());
+		System.out.println(" LanMAC: " + lanMac.toString());
 		System.out.println(" IP: ");
 		System.out.println(" Subnet: ");
 		System.out.println(" Gateway: ");
