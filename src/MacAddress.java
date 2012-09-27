@@ -74,7 +74,6 @@ public class MacAddress {
 	public String toBinString() {
 
 		byte a = macArray[1];
-		String s2, s3 = "";
 		String s = "";
 		
 		for(int i = 0; i < 6; i++)
