@@ -216,9 +216,16 @@ public class Router {
 	
 		try {
 		
-			print("hello \n");
+			System.out.println(" WanMAC: \t"    + vrmSettings.wanMac.toHexString());
+			System.out.println(" WanMAC:(r) \t" + vrmSettings.wanMac.toHexStringRev());
+			System.out.println(" LanMAC: \t"    + vrmSettings.lanMac.toHexString());
+			System.out.println(" LanMAC:(r) \t" + vrmSettings.lanMac.toHexStringRev());
 			
-		
+			System.out.println(" WanMAC: \t"    + vrmSettings.wanMac.toBinString());
+			System.out.println(" WanMAC:(r) \t" + vrmSettings.wanMac.toBinStringRev());
+			System.out.println(" LanMAC: \t"    + vrmSettings.lanMac.toBinString());
+			System.out.println(" LanMAC:(r) \t" + vrmSettings.lanMac.toBinStringRev());
+			
 		}
 		catch(Throwable e) {
 			print("something went wrong with the test: " + e.getMessage() + "\n"); 

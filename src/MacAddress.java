@@ -6,8 +6,9 @@ import java.util.regex.Pattern;
 public class MacAddress {
 
 	// class level variables
-	public boolean validAddress = false;	// verify there are six bytes in macArray
-	private byte[] macArray = new byte[6];	// byte[0] is MSB of address
+	public boolean validAddress = false;		// verify there are six bytes in macArray
+	private byte[] macArray = new byte[6];		// byte[0] is MSB of address
+	private byte[] macArrayRev = new byte[6];	// bits reversed
 	private boolean validMac = false;
 	
 	/*----------------------------------------------------------------------------------------*/
@@ -25,11 +26,12 @@ public class MacAddress {
 		if(macMatcher.find()) {
 			String[] tokens = hexStr.split(":");						// split string into array
 			for(int i = 0; i < 6; i++) {			
-				macArray[i] = (byte)(Integer.parseInt(tokens[i],16));	// convert hex to bytes
+				macArray[i] = (byte)Integer.parseInt(tokens[i],16);	// convert hex to byte
 			}
+			reverseBits();
 		}
 		else
-		{System.out.print("bad");}// bad mac throw exception
+		{System.out.print("bad MAC/n");}// bad mac throw exception
 	
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -43,14 +45,53 @@ public class MacAddress {
 			for(int i = 0; i < 6; i++)
 				macArray[i] = arrayIn[i];
 			validMac = true;
+			reverseBits();
 		}	
 		
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// return hex formated MAC address
-	public String toString() {
+	// reverses the bits in each macAddress byte and stores result in macAddressRev[]
+	private void reverseBits() {
+		
+		for(int i = 0; i < 6; i++) 
+			macArrayRev[i] = (byte) (Integer.reverse((int) macArray[i]) >>> 24);
+			
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return hex formated MAC address string
+	public String toHexString() {
 		
 		return String.format("%02x:%02x:%02x:%02x:%02x:%02x", macArray[0],macArray[1],macArray[2],macArray[3],macArray[4],macArray[5]);
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return hex formated MAC address string with bits reversed
+	public String toHexStringRev() {
+		
+		return String.format("%02x:%02x:%02x:%02x:%02x:%02x", macArrayRev[0],macArrayRev[1],macArrayRev[2],macArrayRev[3],macArrayRev[4],macArrayRev[5]);
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return binary formated address string
+	public String toBinString() {
+
+		byte a = macArray[1];
+		String s2, s3 = "";
+		String s = "";
+		
+		for(int i = 0; i < 6; i++)
+			s += String.format("%8s", Integer.toBinaryString(macArray[i] & 255)).replace(' ','0') + " ";
+		
+		return s;
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return binary formated address string with bits reversed
+	public String toBinStringRev() {
+		
+		String s = "";
+		
+		for(int i = 0; i < 6; i++)
+			s += String.format("%8s", Integer.toBinaryString(macArrayRev[i] & 255)).replace(' ','0') + " ";
+
+		return s;
 	}
 	/*----------------------------------------------------------------------------------------*/
 }
