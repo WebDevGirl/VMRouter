@@ -15,15 +15,24 @@ public class Settings {
 	/*----------------------------------------------------------------------------------------*/
 	// constructor
 	// attempt to load settings from file config.vr
-	// otherwise print message and keep default values
 	public Settings() {
 	
-		loadSettings();
+		loadSettings("config.vr");
 	
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// load settings from current directory
 	public void loadSettings() {
+	
+		System.out.println("settings loaded (not realy)");
+		
+		// settings are saved
+		settingsChanged = false;
+		
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// load settings from current directory
+	public void loadSettings(String fname) {
 	
 		System.out.println("settings loaded (not realy)");
 		
@@ -46,7 +55,7 @@ public class Settings {
 	public void printAll() {
 	
 		System.out.println("Router configuration");
-		System.out.println("--------------------");
+		System.out.println("---------------------------------------------------------------------");
 		System.out.println(" WanMAC: \t"    + wanMac.toHexString());
 		System.out.println(" WanMAC:(r) \t" + wanMac.toHexStringRev());
 		System.out.println(" LanMAC: \t"    + lanMac.toHexString());
@@ -58,8 +67,6 @@ public class Settings {
 		System.out.println(" LanMAC:(r) \t" + lanMac.toBinStringRev());
 		System.out.println(" IP: ");
 		System.out.println(" Subnet: ");
-		System.out.println(" Gateway: ");
-	
 	}
 	/*----------------------------------------------------------------------------------------*/
 
