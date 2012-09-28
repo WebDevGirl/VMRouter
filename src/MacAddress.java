@@ -9,13 +9,14 @@ public class MacAddress {
 	// class level variables
 	public boolean validAddress = false;		// verify there are six bytes in macArray
 	private byte[] macArray = new byte[6];		// byte[0] is MSB of address
-	private byte[] macArrayRev = new byte[6];	// bits reversed
-	private boolean validMac = false;
+	private byte[] macArrayRev = new byte[6];	// bits reversed (not bytes)
+	private boolean validMac = false;			// not implemented
 	
 	/*----------------------------------------------------------------------------------------*/
 	// constructor accepts hex string in form "00:00:00:00:00:00"
-	public MacAddress(String hexStrs) {
+	public MacAddress(String hexStr) {
 		
+		change(hexStr);
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// store mac address 
@@ -25,7 +26,7 @@ public class MacAddress {
 		// six groups separated by ':'
 		// each group is 2 digit hex
 		// upper or lower case
-		hexStr = hexStr.trim();											// trim spaces
+		hexStr = hexStr.trim();															// trim spaces
 		
 		if(hexStr.length() != 17) {
 			{System.out.print("bad MAC\n");}// bad mac throw exception
@@ -33,18 +34,17 @@ public class MacAddress {
 		}
 		
 		Pattern macPattern = Pattern.compile("([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}");		// matching pattern
-		Matcher macMatcher = macPattern.matcher(hexStr);				// pattern to be matched
+		Matcher macMatcher = macPattern.matcher(hexStr);								// pattern to be matched
 
 		if(macMatcher.find()) {
-			String[] tokens = hexStr.split(":");						// split string into array
+			String[] tokens = hexStr.split(":");										// split string into array
 			for(int i = 0; i < 6; i++) {			
-				macArray[i] = (byte)Integer.parseInt(tokens[i],16);	// convert hex to byte
+				macArray[i] = (byte)Integer.parseInt(tokens[i],16);						// convert hex to byte
 			}
 			reverseBits();
 		}
 		else
 			{System.out.print("bad MAC\n");}// bad mac throw exception
-	
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// constructor accepts 6 byte array
@@ -59,7 +59,6 @@ public class MacAddress {
 			validMac = true;
 			reverseBits();
 		}	
-		
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// reverses the bits in each macAddress byte and stores result in macArrayRev[]
@@ -67,7 +66,6 @@ public class MacAddress {
 		
 		for(int i = 0; i < 6; i++) 
 			macArrayRev[i] = (byte) (Integer.reverse((int) macArray[i]) >>> 24);
-			
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return hex formated MAC address string
@@ -111,7 +109,6 @@ public class MacAddress {
 			return true;
 		else
 			return false;
-
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return true if byte arrays in are equal in a and this
@@ -121,7 +118,6 @@ public class MacAddress {
 			return true;
 		else
 			return false;
-
 	}
 	/*----------------------------------------------------------------------------------------*/
 }

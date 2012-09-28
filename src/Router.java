@@ -146,11 +146,22 @@ public class Router {
 		vrmSettings.loadSettings();	
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// get MAC address from user
+	// get Wan/Lan MAC address from user
 	private static void getMAC() {
 	
-		print("get MAC\n");
-		vrmSettings.settingsChanged = true;	
+		try {
+			print("enter Wan MAC: ");
+			String s = console.readLine();
+			vrmSettings.wanMac.change(s);
+			vrmSettings.settingsChanged = true;			// possible settings change
+			print("enter Lan MAC: ");
+			s = console.readLine();
+			vrmSettings.lanMac.change(s);
+			
+		} catch (IOException e) {
+			// nothing we can do
+			e.printStackTrace();
+		}
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// get IP address from user 
