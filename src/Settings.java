@@ -9,8 +9,8 @@ public class Settings {
 	
 	public boolean valuesAreValid = false;		// false until valid values are loaded
 	public boolean settingsChanged = false;		// true after change, false after save
-	public MacAddress wanMac = new MacAddress("01:df:10:ff:ad:af");
-	public MacAddress lanMac = new MacAddress("df:3d:45:1a:1f:ae");
+	public MacAddress wanMac = new MacAddress("01:01:01:01:01:01");
+	public MacAddress lanMac = new MacAddress("f0:f0:f0:f0:f0:f0");
 	
 	/*----------------------------------------------------------------------------------------*/
 	// constructor

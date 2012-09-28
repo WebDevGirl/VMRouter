@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,13 +14,24 @@ public class MacAddress {
 	
 	/*----------------------------------------------------------------------------------------*/
 	// constructor accepts hex string in form "00:00:00:00:00:00"
-	public MacAddress(String hexStr) {
+	public MacAddress(String hexStrs) {
+		
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// store mac address 
+	public void change(String hexStr) {
 		
 		// regex for hex string validation
 		// six groups separated by ':'
 		// each group is 2 digit hex
 		// upper or lower case
-		hexStr = hexStr.trim();											// trim spaces 	
+		hexStr = hexStr.trim();											// trim spaces
+		
+		if(hexStr.length() != 17) {
+			{System.out.print("bad MAC\n");}// bad mac throw exception
+			return;
+		}
+		
 		Pattern macPattern = Pattern.compile("([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}");		// matching pattern
 		Matcher macMatcher = macPattern.matcher(hexStr);				// pattern to be matched
 
@@ -31,7 +43,7 @@ public class MacAddress {
 			reverseBits();
 		}
 		else
-		{System.out.print("bad MAC/n");}// bad mac throw exception
+			{System.out.print("bad MAC\n");}// bad mac throw exception
 	
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -50,7 +62,7 @@ public class MacAddress {
 		
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// reverses the bits in each macAddress byte and stores result in macAddressRev[]
+	// reverses the bits in each macAddress byte and stores result in macArrayRev[]
 	private void reverseBits() {
 		
 		for(int i = 0; i < 6; i++) 
@@ -73,7 +85,6 @@ public class MacAddress {
 	// return binary formated address string
 	public String toBinString() {
 
-		byte a = macArray[1];
 		String s = "";
 		
 		for(int i = 0; i < 6; i++)
@@ -91,6 +102,26 @@ public class MacAddress {
 			s += String.format("%8s", Integer.toBinaryString(macArrayRev[i] & 255)).replace(' ','0') + " ";
 
 		return s;
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return true if byte arrays are equal
+	public boolean equals(byte[] a) {
+		
+		if(Arrays.equals(a, macArray))
+			return true;
+		else
+			return false;
+
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return true if byte arrays in are equal in a and this
+	public boolean equals(MacAddress a) {
+		
+		if(Arrays.equals(a.macArray, macArray))
+			return true;
+		else
+			return false;
+
 	}
 	/*----------------------------------------------------------------------------------------*/
 }

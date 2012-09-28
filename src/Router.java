@@ -67,7 +67,7 @@ public class Router {
 				print("\n1. Show configuration\n");
 				print("2. Save settings\n");
 				print("3. Load last saved\n");
-				print("4. Enter MAC address\n");
+				print("4. Enter Wan/Lan MAC address\n");
 				print("5. Enter IP address\n");
 				print("6. Run the test method\n");
 				print("7. Short menu\n");
@@ -216,15 +216,13 @@ public class Router {
 	
 		try {
 		
-			System.out.println(" WanMAC: \t"    + vrmSettings.wanMac.toHexString());
-			System.out.println(" WanMAC:(r) \t" + vrmSettings.wanMac.toHexStringRev());
-			System.out.println(" LanMAC: \t"    + vrmSettings.lanMac.toHexString());
-			System.out.println(" LanMAC:(r) \t" + vrmSettings.lanMac.toHexStringRev());
-			
-			System.out.println(" WanMAC: \t"    + vrmSettings.wanMac.toBinString());
-			System.out.println(" WanMAC:(r) \t" + vrmSettings.wanMac.toBinStringRev());
-			System.out.println(" LanMAC: \t"    + vrmSettings.lanMac.toBinString());
-			System.out.println(" LanMAC:(r) \t" + vrmSettings.lanMac.toBinStringRev());
+			print("enter a mac address in hex separated by :\n");	
+			String s = console.readLine();
+			MacAddress test = new MacAddress(s);
+			print("hex:\t" + test.toHexString() + "\n");
+			print("hex:r\t" + test.toHexStringRev() + "\n");
+			print("bin:\t" + test.toBinString() + "\n");
+			print("bin:r\t" + test.toBinStringRev() + "\n");
 			
 		}
 		catch(Throwable e) {
