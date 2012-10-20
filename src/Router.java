@@ -33,6 +33,12 @@ public class Router {
 		// say hello
 		print("Virtual router 1.0\n\n");
 		
+		Nic nicOne = new Nic("Nic 1");
+		nicOne.run();
+		Nic nicTwo = new Nic("Nic 2");
+		nicTwo.run();
+		
+		
 		// main loop
 		while(true) {
 			mItem = getMenuItem();
@@ -152,11 +158,11 @@ public class Router {
 		try {
 			print("enter Wan MAC: ");
 			String s = console.readLine();
-			vrmSettings.wanMac.change(s);
+			vrmSettings.wanMac.setHexMac(s);
 			vrmSettings.settingsChanged = true;			// possible settings change
 			print("enter Lan MAC: ");
 			s = console.readLine();
-			vrmSettings.lanMac.change(s);
+			vrmSettings.lanMac.setHexMac(s);
 			
 		} catch (IOException e) {
 			// nothing we can do
