@@ -1,5 +1,5 @@
-// COMP 429 Virtual router class project
-// Ursula, Mo, Kash
+// COMP 429 Virtual router class project 
+// Ursula, Mo, and Kash
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -242,4 +242,4 @@ public class Router {
 	}
 	/*----------------------------------------------------------------------------------------*/
 
-}
+} // test
