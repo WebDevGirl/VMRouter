@@ -10,13 +10,21 @@ public class MacAddress {
 	public boolean validAddress = false;		// verify there are six bytes in macArray
 	private byte[] macArray = new byte[6];		// byte[0] is MSB of address
 	private byte[] macArrayRev = new byte[6];	// bits reversed (not bytes)
-	private boolean validMac = false;			// not implemented
+	private boolean validMac = false;			// not yet implemented
 	
+	/*----------------------------------------------------------------------------------------*/
+	// no arg constructor creates random mac address
+	public MacAddress() {
+		
+		setMac(MacAddress.randomdMac());
+		reverseBits();
+	}
 	/*----------------------------------------------------------------------------------------*/
 	// constructor accepts hex string in form "00:00:00:00:00:00"
 	public MacAddress(String hexStr) {
 		
 		setHexMac(hexStr);
+		reverseBits();
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// constructor accepts 6 byte array
@@ -132,6 +140,17 @@ public class MacAddress {
 			return true;
 		else
 			return false;
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return an array with 6 random bytes
+	public static byte[] randomdMac() {
+		
+		byte randomMac[] = new byte[6];
+		
+		for(int i = 0; i < 6; i++) 
+			randomMac[i] = (byte)(Math.random() * 256) ;
+		
+		return randomMac;
 	}
 	/*----------------------------------------------------------------------------------------*/
 }
