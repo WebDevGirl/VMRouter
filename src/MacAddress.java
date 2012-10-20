@@ -62,6 +62,19 @@ public class MacAddress {
 	}
 
 	/*----------------------------------------------------------------------------------------*/
+	// any six bytes is validMac
+	public void setMac(byte[] arrayIn) {
+		
+		if(arrayIn.length != 6)
+			System.out.print("need six bytes array for mac address ");
+		else {
+			for(int i = 0; i < 6; i++)
+				macArray[i] = arrayIn[i];
+			validMac = true;
+			reverseBits();
+		}	
+	}
+	/*----------------------------------------------------------------------------------------*/
 	// reverses the bits in each macAddress byte and stores result in macArrayRev[]
 	private void reverseBits() {
 		
