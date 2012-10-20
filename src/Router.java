@@ -31,7 +31,7 @@ public class Router {
 		int mItem;
 		
 		// say hello
-		print("Virtual router 1.0 is live\n\n");
+		print("Virtual router 1.0\n\n");
 		
 		// main loop
 		while(true) {
@@ -242,4 +242,4 @@ public class Router {
 	}
 	/*----------------------------------------------------------------------------------------*/
 
-} // test
+} 
