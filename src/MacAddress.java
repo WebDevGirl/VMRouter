@@ -4,6 +4,9 @@ import java.util.regex.Pattern;
 
 // MAC address class
 
+// NOTE: for the time being the the class maintains two mac arrays
+// macArrayRev has bits reversed
+
 public class MacAddress {
 
 	// class level variables
