@@ -4,6 +4,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.zip.CRC32;
 
 public class Router {
 
@@ -231,15 +232,26 @@ public class Router {
 	// use this method to test code 
 	private static void testSomething() {
 	
+		CRC32 testCRC = new CRC32();
+		//String s = "Whenever digital data is stored or interfaced, data corruption might occur. Since the beginning of computer science";
+		
 		try {
 		
-			print("enter a mac address in hex separated by :\n");	
+			
+			
+			print("test crc32 class\n");
+			System.out.println("crc value: " + testCRC.getValue());
+			testCRC.reset();
+			System.out.println("crc value: " + testCRC.getValue());
+
+			print("enter a string: ");
 			String s = console.readLine();
-			MacAddress test = new MacAddress(s);
-			print("hex:\t" + test.toHexString() + "\n");
-			print("hex:r\t" + test.toHexStringRev() + "\n");
-			print("bin:\t" + test.toBinString() + "\n");
-			print("bin:r\t" + test.toBinStringRev() + "\n");
+			testCRC.update(s.getBytes());
+			
+			System.out.println("length: " + s.length());
+			System.out.println("crc value: " + testCRC.getValue());
+			System.out.println(String.format("crc value: %x", (int)(testCRC.getValue())));
+
 			
 		}
 		catch(Throwable e) {
