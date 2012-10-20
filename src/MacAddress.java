@@ -36,7 +36,7 @@ public class MacAddress {
 		Pattern macPattern = Pattern.compile("([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}");		// matching pattern
 		Matcher macMatcher = macPattern.matcher(hexStr);								// pattern to be matched
 
-		if(macMatcher.find()) {
+		if(macMatcher.find()) {															// valid mac string
 			String[] tokens = hexStr.split(":");										// split string into array
 			for(int i = 0; i < 6; i++) {			
 				macArray[i] = (byte)Integer.parseInt(tokens[i],16);						// convert hex to byte
