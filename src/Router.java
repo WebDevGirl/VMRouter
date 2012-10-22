@@ -237,20 +237,34 @@ public class Router {
 		
 		try {
 		
+			byte a[] = {1,2,3,4,5,6};
+			byte a1[] = {6,5,4,3,2,1};
 			
+			print("setup 2 macAddress classes\n");
+			MacAddress m1 = new MacAddress(a);
+			byte[] b = m1.getMacArray();
+			System.out.println(String.format("%d %d %d %d %d %d",b[0],b[1],b[2],b[3],b[4],b[5]));
 			
-			print("test crc32 class\n");
-			System.out.println("crc value: " + testCRC.getValue());
-			testCRC.reset();
-			System.out.println("crc value: " + testCRC.getValue());
+			m1.setMac(a1);
+			b = m1.getMacArray();
+			System.out.println(String.format("%d %d %d %d %d %d",b[0],b[1],b[2],b[3],b[4],b[5]));
+			System.out.println("mac1 equal mac2? " + m1.equals(a));
+			System.out.println("mac2 equal mac2? " + m1.equals(a1));
 
-			print("enter a string: ");
-			String s = console.readLine();
-			testCRC.update(s.getBytes());
 			
-			System.out.println("length: " + s.length());
-			System.out.println("crc value: " + testCRC.getValue());
-			System.out.println(String.format("crc value: %x", (int)(testCRC.getValue())));
+			
+//			print("test crc32 class\n");
+//			System.out.println("crc value: " + testCRC.getValue());
+//			testCRC.reset();
+//			System.out.println("crc value: " + testCRC.getValue());
+//
+//			print("enter a string: ");
+//			String s = console.readLine();
+//			testCRC.update(s.getBytes());
+//			
+//			System.out.println("length: " + s.length());
+//			System.out.println("crc value: " + testCRC.getValue());
+//			System.out.println(String.format("crc value: %x", (int)(testCRC.getValue())));
 
 			
 		}
