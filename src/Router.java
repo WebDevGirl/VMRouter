@@ -237,19 +237,29 @@ public class Router {
 		
 		try {
 		
-			byte a[] = {1,2,3,4,5,6};
-			byte a1[] = {6,5,4,3,2,1};
+			byte a1[] = {1,2,3,4,5,6};
+			byte a2[] = {6,5,4,3,2,1};
 			
 			print("setup 2 macAddress classes\n");
-			MacAddress m1 = new MacAddress(a);
-			byte[] b = m1.getMacArray();
-			System.out.println(String.format("%d %d %d %d %d %d",b[0],b[1],b[2],b[3],b[4],b[5]));
+			MacAddress m1 = new MacAddress(a1);
+			MacAddress m2 = new MacAddress(a2);
+			byte[] b1 = m1.getMacArray();
+			byte[] b2 = m2.getMacArray();
+			System.out.println(m1.toHexString());
+			System.out.println(m2.toHexString());
 			
-			m1.setMac(a1);
-			b = m1.getMacArray();
-			System.out.println(String.format("%d %d %d %d %d %d",b[0],b[1],b[2],b[3],b[4],b[5]));
-			System.out.println("mac1 equal mac2? " + m1.equals(a));
-			System.out.println("mac2 equal mac2? " + m1.equals(a1));
+
+			System.out.println("mac1 equal mac2? " + m1.equals(m2));
+			System.out.println("mac2 equal mac2? " + m1.equals(m1));
+
+			
+			
+			print("clone mac2\n");
+			MacAddress m3 = m2.clone();
+			m2.setMac(a1);
+			System.out.println(m3.toHexString());
+			System.out.println(m2.toHexString());
+			System.out.println("mac2 equal mac3? " + m2.equals(m3));
 
 			
 			

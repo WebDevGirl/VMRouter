@@ -164,4 +164,12 @@ public class MacAddress {
 		return macArrayRev.clone();
 	}
 	/*----------------------------------------------------------------------------------------*/
+	// return a copy of this class 
+	public MacAddress clone() {
+	
+		// return this;
+		// return this.clone();
+		return new MacAddress(macArray);
+	}
+	/*----------------------------------------------------------------------------------------*/
 }
