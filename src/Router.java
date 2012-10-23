@@ -236,6 +236,8 @@ public class Router {
 		//String s = "Whenever digital data is stored or interfaced, data corruption might occur. Since the beginning of computer science";
 		
 		try {
+			
+			byte[] ip = {(byte) 192, (byte) 168, 1, 0};
 		
 			byte a1[] = {1,2,3,4,5,6};
 			byte a2[] = {6,5,4,3,2,1};
@@ -252,8 +254,7 @@ public class Router {
 			System.out.println("mac1 equal mac2? " + m1.equals(m2));
 			System.out.println("mac2 equal mac2? " + m1.equals(m1));
 
-			
-			
+				
 			print("clone mac2\n");
 			MacAddress m3 = m2.clone();
 			m2.setMac(a1);
@@ -261,7 +262,20 @@ public class Router {
 			System.out.println(m2.toHexString());
 			System.out.println("mac2 equal mac3? " + m2.equals(m3));
 
+	
+			print("\ntest IPv4 class\n");
+			print("creating 'bla.bla.bla.bla'\n");
+			IPv4 ip1 = new IPv4("bla.bla.bla.bla"); 
 			
+			print("\ncreating from byte array 192.168.1.0\n");
+			IPv4 ip2 = new IPv4(ip); 
+			System.out.println(String.format("created %s", ip2.toString()));
+			
+			print("\ncreating from string '192.168.1.1'\n");
+			IPv4 ip3 = new IPv4("192.168.1.1"); 
+			System.out.println(String.format("created %s", ip3.toString()));
+			System.out.println(ip3.toBinString());
+
 			
 //			print("test crc32 class\n");
 //			System.out.println("crc value: " + testCRC.getValue());
