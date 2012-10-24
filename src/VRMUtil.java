@@ -1,5 +1,5 @@
 // static class for miscellaneous functions
-public class Util {
+public class VRMUtil {
 	
 	// no variables
 
