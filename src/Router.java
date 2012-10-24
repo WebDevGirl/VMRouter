@@ -8,7 +8,7 @@ import java.util.zip.CRC32;
 
 public class Router {
 
-	// class level variables
+	// class variables
 	
 	// show the long menu
 	static boolean longMenu = true;
@@ -34,10 +34,10 @@ public class Router {
 		// say hello
 		print("Virtual router 1.0\n\n");
 		
-		Nic nicOne = new Nic("Nic 1");
-		nicOne.run();
-		Nic nicTwo = new Nic("Nic 2");
-		nicTwo.run();
+//		Nic nicOne = new Nic("Nic 1");
+//		nicOne.run();
+//		Nic nicTwo = new Nic("Nic 2");
+//		nicTwo.run();
 		
 		
 		// main loop
