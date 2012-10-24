@@ -86,7 +86,7 @@ public class MacAddress {
 	private void reverseBits() {
 		
 		for(int i = 0; i < 6; i++) 
-			macArrayRev[i] = (byte) (Integer.reverse((int) macArray[i]) >>> 24);
+			macArrayRev[i] = Util.reverseByte(macArray[i]);
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return hex formated MAC address string
