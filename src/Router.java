@@ -238,6 +238,7 @@ public class Router {
 		try {
 			
 			byte[] ip = {(byte) 192, (byte) 168, 1, 0};
+			byte[] ip0 = {(byte) 192, (byte) 168, 1, 1};
 		
 			byte a1[] = {1,2,3,4,5,6};
 			byte a2[] = {6,5,4,3,2,1};
@@ -275,7 +276,8 @@ public class Router {
 			IPv4 ip3 = new IPv4("192.168.1.1"); 
 			System.out.println(String.format("created %s", ip3.toString()));
 			System.out.println(ip3.toBinString());
-
+			System.out.println("ip equals 192.168.1.1: " + ip3.equals(ip0));
+			System.out.println("ip3 = ip3 " + ip3.equals(ip3));
 			
 //			print("test crc32 class\n");
 //			System.out.println("crc value: " + testCRC.getValue());

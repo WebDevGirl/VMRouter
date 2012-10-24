@@ -126,19 +126,13 @@ public class MacAddress {
 	// return true if byte arrays are equal
 	public boolean equals(byte[] a) {
 		
-		if(Arrays.equals(a, macArray))
-			return true;
-		else
-			return false;
+		return Arrays.equals(a, macArray);
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return true if byte arrays in are equal in a and this
 	public boolean equals(MacAddress a) {
 		
-		if(Arrays.equals(a.macArray, macArray))
-			return true;
-		else
-			return false;
+		return Arrays.equals(a.macArray, macArray);
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return an array with 6 random bytes
