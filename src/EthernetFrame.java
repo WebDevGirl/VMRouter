@@ -1,4 +1,5 @@
-import java.nio.ByteBuffer;
+// Ethernet frame class
+//
 
 public class EthernetFrame {
 	
