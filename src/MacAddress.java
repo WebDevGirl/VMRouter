@@ -4,23 +4,22 @@ import java.util.regex.Pattern;
 
 // MAC address class
 
-// NOTE: for the time being the the class maintains two mac arrays
-// macArrayRev has bits reversed
+// the class maintains two mac arrays
+// macArray[] = 6 bytes  
+// macArrayRev[] = macArray bits reversed (bytes not reversed)
 
 public class MacAddress {
 
 	// class level variables
-	public boolean validAddress = false;		// verify there are six bytes in macArray
 	private byte[] macArray = new byte[6];		// byte[0] is MSB of address
-	private byte[] macArrayRev = new byte[6];	// bits reversed (not bytes)
-	private boolean validMac = false;			// not yet implemented
+	private byte[] macArrayRev = new byte[6];	// bits reversed (bytes not reversed)
 	
 	/*----------------------------------------------------------------------------------------*/
 	// no arg constructor creates random mac address
 	public MacAddress() {
 		
-		setMac(MacAddress.randomdMac());
-		reverseBits();
+		setMac(getRandomdMac());				// setup a random mac address
+		reverseBits();							
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// constructor accepts hex string in form "00:00:00:00:00:00"
@@ -35,11 +34,9 @@ public class MacAddress {
 	public MacAddress(byte[] arrayIn) {
 		
 		if(arrayIn.length != 6)
-			System.out.print("need six bytes array for mac address ");
+			System.out.print("need six bytes array for mac address ");					// bad mac throw exception
 		else {
-			for(int i = 0; i < 6; i++)
-				macArray[i] = arrayIn[i];
-			validMac = true;
+			macArray = arrayIn.clone();
 			reverseBits();
 		}	
 	}
@@ -51,10 +48,11 @@ public class MacAddress {
 		// six groups separated by ':'
 		// each group is 2 digit hex
 		// upper or lower case
+		
 		hexStr = hexStr.trim();															// trim spaces
 		
 		if(hexStr.length() != 17) {
-			{System.out.print("bad MAC\n");}// bad mac throw exception
+			{System.out.print("bad MAC\n");}											// bad mac throw exception
 			return;
 		}
 		
@@ -79,9 +77,7 @@ public class MacAddress {
 		if(arrayIn.length != 6)
 			System.out.print("need six bytes array for mac address ");
 		else {
-			for(int i = 0; i < 6; i++)
-				macArray[i] = arrayIn[i];
-			validMac = true;
+			macArray = arrayIn.clone();
 			reverseBits();
 		}	
 	}
@@ -90,7 +86,7 @@ public class MacAddress {
 	private void reverseBits() {
 		
 		for(int i = 0; i < 6; i++) 
-			macArrayRev[i] = (byte) (Integer.reverse((int) macArray[i]) >>> 24);
+			macArrayRev[i] = Util.reverseByte(macArray[i]);
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return hex formated MAC address string
@@ -130,23 +126,17 @@ public class MacAddress {
 	// return true if byte arrays are equal
 	public boolean equals(byte[] a) {
 		
-		if(Arrays.equals(a, macArray))
-			return true;
-		else
-			return false;
+		return Arrays.equals(a, macArray);
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return true if byte arrays in are equal in a and this
 	public boolean equals(MacAddress a) {
 		
-		if(Arrays.equals(a.macArray, macArray))
-			return true;
-		else
-			return false;
+		return Arrays.equals(a.macArray, macArray);
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return an array with 6 random bytes
-	public static byte[] randomdMac() {
+	public static byte[] getRandomdMac() {
 		
 		byte randomMac[] = new byte[6];
 		
@@ -154,6 +144,26 @@ public class MacAddress {
 			randomMac[i] = (byte)(Math.random() * 256) ;
 		
 		return randomMac;
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return this mac address array
+	public byte[] getMacArray() {
+	
+		return macArray.clone();
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return this mac address arrayRev
+	public byte[] getMacArrayRev() {
+	
+		return macArrayRev.clone();
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return a copy of this class 
+	public MacAddress clone() {
+	
+		// return this;
+		// return this.clone();
+		return new MacAddress(macArray);
 	}
 	/*----------------------------------------------------------------------------------------*/
 }
