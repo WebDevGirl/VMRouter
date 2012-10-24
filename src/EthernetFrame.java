@@ -93,7 +93,7 @@ public class EthernetFrame {
 		s = srcAddr.toHexString() 	+ "\n" +
 			dstAddr.toHexString() 	+ "\n" +
 			typeLength 				+ "\n" + 
-			data 					+ "\n" +
+			data.toString()		+ "\n" +
 			CRC.toString();
 		
 		return s;

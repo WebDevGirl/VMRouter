@@ -270,6 +270,10 @@ public class Router {
 			System.out.println("ip equals 192.168.1.1: " + ip3.equals(ip0));
 			System.out.println("ip3 = ip3 " + ip3.equals(ip3));
 			
+			print("\nmaking ethernet frame\n");
+			EthernetFrame ef1 = new EthernetFrame(m3,m2,255,new byte[]{'a','b','c'});
+			System.out.println(ef1.toString());
+			
 //			print("test crc32 class\n");
 //			System.out.println("crc value: " + testCRC.getValue());
 //			testCRC.reset();
