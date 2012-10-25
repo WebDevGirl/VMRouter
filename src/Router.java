@@ -4,7 +4,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.zip.CRC32;
+// import java.util.zip.CRC32;
 
 public class Router {
 
@@ -52,12 +52,6 @@ public class Router {
 	private static void print(String s) {
 		
 		System.out.print(s);
-	}
-	/*----------------------------------------------------------------------------------------*/
-	// output integer to console
-	private static void print(int i) {
-		
-		System.out.print(i);
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// get user input
@@ -232,7 +226,7 @@ public class Router {
 	// use this method to test code 
 	private static void testSomething() {
 	
-		CRC32 testCRC = new CRC32();
+		// CRC32 testCRC = new CRC32();
 		//String s = "Whenever digital data is stored or interfaced, data corruption might occur. Since the beginning of computer science";
 		
 		try {
@@ -246,8 +240,6 @@ public class Router {
 			print("setup 2 macAddress classes\n");
 			MacAddress m1 = new MacAddress(a1);
 			MacAddress m2 = new MacAddress(a2);
-			byte[] b1 = m1.getMacArray();
-			byte[] b2 = m2.getMacArray();
 			System.out.println(m1.toHexString());
 			System.out.println(m2.toHexString());
 			
@@ -266,7 +258,6 @@ public class Router {
 	
 			print("\ntest IPv4 class\n");
 			print("creating 'bla.bla.bla.bla'\n");
-			IPv4 ip1 = new IPv4("bla.bla.bla.bla"); 
 			
 			print("\ncreating from byte array 192.168.1.0\n");
 			IPv4 ip2 = new IPv4(ip); 
@@ -278,6 +269,10 @@ public class Router {
 			System.out.println(ip3.toBinString());
 			System.out.println("ip equals 192.168.1.1: " + ip3.equals(ip0));
 			System.out.println("ip3 = ip3 " + ip3.equals(ip3));
+			
+			print("\nmaking ethernet frame\n");
+			EthernetFrame ef1 = new EthernetFrame(m3,m2,255,new byte[]{'a','b','c'});
+			System.out.println(ef1.toString());
 			
 //			print("test crc32 class\n");
 //			System.out.println("crc value: " + testCRC.getValue());
