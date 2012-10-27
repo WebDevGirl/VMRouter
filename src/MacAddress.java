@@ -75,7 +75,7 @@ public class MacAddress {
 	public void setMac(byte[] arrayIn) {
 		
 		if(arrayIn.length != 6)
-			System.out.print("need six bytes array for mac address ");
+			System.out.print("setMac: need six bytes array for mac address ");
 		else {
 			macArray = arrayIn.clone();
 			reverseBits();
