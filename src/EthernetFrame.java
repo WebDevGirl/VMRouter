@@ -1,4 +1,5 @@
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 // Ethernet frame class
 //
@@ -21,25 +22,38 @@ public class EthernetFrame {
 	public EthernetFrame(MacAddress src, MacAddress dst, short typeLength, byte[] dataIn) {
 		
 		System.out.println("... Creating new Ethernet Frame");
-		this.setSrcAddr(src.clone());
-		this.setDstAddr(dst.clone());
+		this.srcAddr = src.clone();
+		this.dstAddr = dst.clone();
 		this.setTypeLength(typeLength);
 		setData(dataIn); 
-		this.CRC.putInt(0, makeCRC());
+
 		
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// constructor. Create a frame from byte array
+	public EthernetFrame(byte[] frameIn) {
+		
+		System.out.println("... Creating new Ethernet Frame from byte array");
+		
+		this.srcAddr = new MacAddress();
+		this.dstAddr = new MacAddress();
+				
+		// reverse bits of frameIn
+		// calc CRC and comapare
+		// compliment first 32
+		this.srcAddr.setMac(Arrays.copyOfRange(frameIn, 0, 6));
+		this.dstAddr.setMac(Arrays.copyOfRange(frameIn, 6, 12));
+		typeLength.put(Arrays.copyOfRange(frameIn, 12, 14));
+		setData(Arrays.copyOfRange(frameIn, 14, getTypeLength() + 14));
+		CRC.put(Arrays.copyOfRange(frameIn, frameIn.length-4, frameIn.length));	
+			
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// generate a new CRC for this frame
-	private int makeCRC() {
+	private int makeCRC(byte[] frame) {
 		
 		// temp dummy value 1.2.3.4
 		return 16909060;	
-	}
-	/*----------------------------------------------------------------------------------------*/
-	// generate new CRC for this frame and compare to existing value. Return true if equal
-	public boolean checkCRC() {
-		
-		return CRC.getInt(0) == makeCRC();
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return current CRC as int
@@ -48,25 +62,15 @@ public class EthernetFrame {
 		return CRC.getInt(0);
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// auto generated getters, setters
+	// getters, setters
 	public MacAddress getSrcAddr() {
 		
 		return srcAddr;
 	}
 
-	public void setSrcAddr(MacAddress srcAddr) {
-		
-		this.srcAddr = srcAddr;
-	}
-
 	public MacAddress getDstAddr() {
 		
 		return dstAddr;
-	}
-
-	public void setDstAddr(MacAddress dstAddr) {
-		
-		this.dstAddr = dstAddr;
 	}
 
 	public short getTypeLength() {
@@ -107,6 +111,7 @@ public class EthernetFrame {
 		
 		String s,t = "";
 		t = new String(data);
+		// replace all non printable here
 		
 		s = "src:  " + srcAddr.toHexString() 	+ "\n" +
 			"dst:  " + dstAddr.toHexString() 	+ "\n" +
@@ -119,5 +124,52 @@ public class EthernetFrame {
 		
 		return s;
 	}
+	/*----------------------------------------------------------------------------------------*/
+	// return frame content as hex string
+	// human consumption only
+	public String toHexString(byte[] frame) {
+		
+		String s = "";
+		int i;
+		
+		for(i=0; i<6; i++)
+			s += String.format("%02x ", frame[i]);
+		s += "\n";
+		for(; i<12; i++)
+			s += String.format("%02x ", frame[i]);
+		s += "\n";
+		for(; i<14; i++)
+			s += String.format("%02x ", frame[i]);
+		s += "\n";	
+		for(; i<data.length + 14; i++)
+			s += String.format("%02x ", frame[i]);
+		s += "\n";
+		for(int j=0; j<4; i++, j++)
+			s += String.format("%02x ", frame[i]);
+		s += "\n";
+		
+		return s;
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return frame content as byte array
+	public byte[] toByteArray() {
+		
+		// treat typeLength as length only, not type
+		int dataLength = data.length;					// data array length incl. padding
+		int totLength = 6 + 6 + 2 + dataLength + 4;		// total frame size
+		byte[] frame = new byte[totLength];
+		
+		System.arraycopy(srcAddr.getMacArray(), 0, frame, 0, 6);	
+		System.arraycopy(dstAddr.getMacArray(), 0, frame, 6, 6);
+		System.arraycopy(typeLength.array(), 0, frame, 12, 2);	
+		System.arraycopy(data, 0, frame, 14, dataLength );
+		// compliment first 32 bits here
+		this.CRC.putInt(0, makeCRC(Arrays.copyOfRange(frame, 0, totLength-4)));
+		System.arraycopy(CRC.array(), 0, frame, 14+dataLength, 4);	
+		// reverse bits
+		
+		return frame;
+	}
+		/*----------------------------------------------------------------------------------------*/
 
 }

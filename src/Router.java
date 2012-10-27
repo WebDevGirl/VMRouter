@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 // import java.util.zip.CRC32;
+import java.util.Arrays;
 
 public class Router {
 
@@ -244,35 +245,19 @@ public class Router {
 			System.out.println(m2.toHexString());
 			
 
-			System.out.println("mac1 equal mac2? " + m1.equals(m2));
-			System.out.println("mac2 equal mac2? " + m1.equals(m1));
-
-				
-			print("clone mac2\n");
-			MacAddress m3 = m2.clone();
-			m2.setMac(a1);
-			System.out.println(m3.toHexString());
-			System.out.println(m2.toHexString());
-			System.out.println("mac2 equal mac3? " + m2.equals(m3));
-
-	
-			print("\ntest IPv4 class\n");
-			print("creating 'bla.bla.bla.bla'\n");
-			
-			print("\ncreating from byte array 192.168.1.0\n");
-			IPv4 ip2 = new IPv4(ip); 
-			System.out.println(String.format("created %s", ip2.toString()));
-			
-			print("\ncreating from string '192.168.1.1'\n");
-			IPv4 ip3 = new IPv4("192.168.1.1"); 
-			System.out.println(String.format("created %s", ip3.toString()));
-			System.out.println(ip3.toBinString());
-			System.out.println("ip equals 192.168.1.1: " + ip3.equals(ip0));
-			System.out.println("ip3 = ip3 " + ip3.equals(ip3));
 			
 			print("\nmaking ethernet frame\n");
-			EthernetFrame ef1 = new EthernetFrame(m3,m2,(short)255,new byte[]{'a','b','c'});
-			System.out.println(ef1.toString());
+			byte[] b = new byte[45];
+			Arrays.fill(b, (byte)97);
+			EthernetFrame ef1 = new EthernetFrame(m1,m2,(short)b.length,b);
+			System.out.println(ef1.toString() + "\n");
+			System.out.println(ef1.toHexString(ef1.toByteArray()));
+			
+			print("testing Ethernet Frame byte array constructor\n");
+			EthernetFrame ef2 = new EthernetFrame(ef1.toByteArray());
+			System.out.println(ef2.toString() + "\n");
+			System.out.println(ef2.toHexString(ef1.toByteArray()) + "\n");
+			
 			
 //			print("test crc32 class\n");
 //			System.out.println("crc value: " + testCRC.getValue());
