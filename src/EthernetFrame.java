@@ -38,9 +38,10 @@ public class EthernetFrame {
 		this.srcAddr = new MacAddress();
 		this.dstAddr = new MacAddress();
 				
-		// reverse bits of frameIn
+		// reverse bits of frameIn here
 		// calc CRC and comapare
 		// compliment first 32
+		// data good now
 		this.srcAddr.setMac(Arrays.copyOfRange(frameIn, 0, 6));
 		this.dstAddr.setMac(Arrays.copyOfRange(frameIn, 6, 12));
 		typeLength.put(Arrays.copyOfRange(frameIn, 12, 14));
@@ -52,7 +53,7 @@ public class EthernetFrame {
 	// generate a new CRC for this frame
 	private int makeCRC(byte[] frame) {
 		
-		// temp dummy value 1.2.3.4
+		// dummy value 1.2.3.4
 		return 16909060;	
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -166,7 +167,7 @@ public class EthernetFrame {
 		// compliment first 32 bits here
 		this.CRC.putInt(0, makeCRC(Arrays.copyOfRange(frame, 0, totLength-4)));
 		System.arraycopy(CRC.array(), 0, frame, 14+dataLength, 4);	
-		// reverse bits
+		// reverse bits here
 		
 		return frame;
 	}
