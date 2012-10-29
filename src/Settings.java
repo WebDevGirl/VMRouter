@@ -9,22 +9,22 @@ public class Settings {
 	
 	public boolean valuesAreValid = false;		// false until valid values are loaded
 	public boolean settingsChanged = false;		// true after change, false after save
-	public MacAddress wanMac = new MacAddress("01:01:01:01:01:01");
-	public MacAddress lanMac = new MacAddress("f0:f0:f0:f0:f0:f0");
+	public MacAddress lanMac = new MacAddress("01:01:01:01:01:01");
+	public MacAddress wanMac = new MacAddress("f0:f0:f0:f0:f0:f0");
 	
 	/*----------------------------------------------------------------------------------------*/
 	// constructor
 	// attempt to load settings from file config.vr
-	public Settings() {
+	public Settings(String fName) {
 	
-		loadSettings("config.vr");
+		loadSettings(fName);
 	
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// load settings from current directory
 	public void loadSettings() {
 	
-		System.out.println("settings loaded (not realy)");
+		System.out.println("settings loaded (comming soon)");
 		
 		// settings are saved
 		settingsChanged = false;
@@ -34,7 +34,7 @@ public class Settings {
 	// load settings from current directory
 	public void loadSettings(String fname) {
 	
-		System.out.println("settings loaded (not realy)");
+		System.out.println("settings loaded (comming soon)");
 		
 		// settings are saved
 		settingsChanged = false;

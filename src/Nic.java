@@ -6,23 +6,30 @@ public class Nic extends Thread {
 	String nicName = "Nic"; 
 	
 	// default MAC address for this Nic
-	MacAddress myMac = new MacAddress();				// address is random
+	MacAddress myMac;									
 	
 	/*----------------------------------------------------------------------------------------*/
-	// simple constructor name and no MAC
+	// constructor name and no MAC
 	// use this only for testing
 	Nic(String s) {
 		
 		nicName = s;
+		myMac = new MacAddress();						// random address
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// normal constructor accepts name and MacAddress
+	// constructor accepts name and MacAddress hex string
+	Nic(String s, String mac) {
+		
+		nicName = s;
+		myMac = new MacAddress();
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// constructor accepts name and MacAddress 
 	Nic(String s, MacAddress mac) {
 		
 		nicName = s;
-		myMac = mac;
+		myMac = mac.clone();
 	}
-
 	/*----------------------------------------------------------------------------------------*/
 	// start execution here
     public void run() {

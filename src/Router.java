@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class Router {
 
-	// class variables
+	// class level variables
 	
 	// show the long menu
 	static boolean longMenu = true;
@@ -18,7 +18,7 @@ public class Router {
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 	
 	// router configuration settings
-	static Settings vrmSettings = new Settings();
+	static Settings vrmSettings = new Settings("config.vr");
 
 	
  	// constructor
@@ -35,10 +35,10 @@ public class Router {
 		// say hello
 		print("Virtual router 1.0\n\n");
 		
-//		Nic nicOne = new Nic("Nic 1");
-//		nicOne.run();
-//		Nic nicTwo = new Nic("Nic 2");
-//		nicTwo.run();
+		Nic nicOne = new Nic("Nic 1", vrmSettings.lanMac);
+		nicOne.run();
+		Nic nicTwo = new Nic("Nic 2", vrmSettings.wanMac);
+		nicTwo.run();
 		
 		
 		// main loop
@@ -232,8 +232,8 @@ public class Router {
 		
 		try {
 			
-			byte[] ip = {(byte) 192, (byte) 168, 1, 0};
-			byte[] ip0 = {(byte) 192, (byte) 168, 1, 1};
+//			byte[] ip = {(byte) 192, (byte) 168, 1, 0};
+//			byte[] ip0 = {(byte) 192, (byte) 168, 1, 1};
 		
 			byte a1[] = {1,2,3,4,5,6};
 			byte a2[] = {6,5,4,3,2,1};
