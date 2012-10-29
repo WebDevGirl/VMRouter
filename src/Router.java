@@ -227,9 +227,9 @@ public class Router {
 	// use this method to test code 
 	private static void testSomething() {
 	
-		// CRC32 testCRC = new CRC32();
 		//String s = "Whenever digital data is stored or interfaced, data corruption might occur. Since the beginning of computer science";
-		
+	
+
 		try {
 			
 //			byte[] ip = {(byte) 192, (byte) 168, 1, 0};
@@ -259,18 +259,13 @@ public class Router {
 			System.out.println(ef2.toHexString(ef1.toByteArray()) + "\n");
 			
 			
-//			print("test crc32 class\n");
-//			System.out.println("crc value: " + testCRC.getValue());
-//			testCRC.reset();
-//			System.out.println("crc value: " + testCRC.getValue());
-//
-//			print("enter a string: ");
-//			String s = console.readLine();
-//			testCRC.update(s.getBytes());
-//			
-//			System.out.println("length: " + s.length());
-//			System.out.println("crc value: " + testCRC.getValue());
-//			System.out.println(String.format("crc value: %x", (int)(testCRC.getValue())));
+			print("test crc32 class\n");
+			print("enter a string: ");
+			String s = console.readLine();
+		
+			System.out.println(VRMUtil.getCRC(s.getBytes()));
+			System.out.println(VRMUtil.getCRCStr(s.getBytes()));
+
 
 			
 		}

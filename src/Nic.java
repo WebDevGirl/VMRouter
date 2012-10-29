@@ -3,7 +3,7 @@
 public class Nic extends Thread {
 	
 	// name of this instance
-	String nicName = "Nic"; 
+	String nicName; 
 	
 	// default MAC address for this Nic
 	MacAddress myMac;									

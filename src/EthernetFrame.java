@@ -26,7 +26,6 @@ public class EthernetFrame {
 		this.dstAddr = dst.clone();
 		this.setTypeLength(typeLength);
 		setData(dataIn); 
-
 		
 	}
 	/*----------------------------------------------------------------------------------------*/
