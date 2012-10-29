@@ -16,7 +16,7 @@ public class IPv4 {
 	// IP v4 only
 	public IPv4(String ipIn) {
 		
-		String[] tempStr = ipIn.split("\\.");
+		String[] tempStr = ipIn.split("\\.");						// split at literal '.' (period)
 		if(tempStr.length != 4)
 			System.out.println("IPv4 need: ddd.ddd.ddd.ddd"); 		// throw exception here
 		else
