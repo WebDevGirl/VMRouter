@@ -257,14 +257,16 @@ public class Router {
 			EthernetFrame ef2 = new EthernetFrame(ef1.toByteArray());
 			System.out.println(ef2.toString() + "\n");
 			System.out.println(ef2.toHexString(ef1.toByteArray()) + "\n");
+			System.out.println(VRMUtil.frameValid(ef2.toByteArray()) + "\n");	
 			
-			
-			print("test crc32 class\n");
-			print("enter a string: ");
-			String s = console.readLine();
-		
-			System.out.println(VRMUtil.getCRC(s.getBytes()));
-			System.out.println(VRMUtil.getCRCStr(s.getBytes()));
+//			print("test crc32 class\n");
+//			print("enter a string: ");
+//			String s = console.readLine();
+//		
+//			long t = 0;
+//			t = VRMUtil.getCRC(s.getBytes());
+//			System.out.println(t);
+//			System.out.println(VRMUtil.getCRCStr(s.getBytes()));
 
 
 			

@@ -29,7 +29,7 @@ public class EthernetFrame {
 		
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// constructor. Create a frame from byte array
+	// constructor. Create a frame from byte array (assumes CRC is valid)
 	public EthernetFrame(byte[] frameIn) {
 		
 		System.out.println("... Creating new Ethernet Frame from byte array");
@@ -41,19 +41,13 @@ public class EthernetFrame {
 		// calc CRC and comapare
 		// compliment first 32
 		// data good now
-		this.srcAddr.setMac(Arrays.copyOfRange(frameIn, 0, 6));
-		this.dstAddr.setMac(Arrays.copyOfRange(frameIn, 6, 12));
-		typeLength.put(Arrays.copyOfRange(frameIn, 12, 14));
-		setData(Arrays.copyOfRange(frameIn, 14, getTypeLength() + 14));
-		CRC.put(Arrays.copyOfRange(frameIn, frameIn.length-4, frameIn.length));	
-			
-	}
-	/*----------------------------------------------------------------------------------------*/
-	// generate a new CRC for this frame
-	private int makeCRC(byte[] frame) {
 		
-		// dummy value 1.2.3.4
-		return 16909060;	
+		this.srcAddr.setMac(Arrays.copyOfRange(frameIn, 0, 6));					// extract dstMAC
+		this.dstAddr.setMac(Arrays.copyOfRange(frameIn, 6, 12));				// extract scrMAC
+		typeLength.put(Arrays.copyOfRange(frameIn, 12, 14));					// extract t/l
+		setData(Arrays.copyOfRange(frameIn, 14, getTypeLength() + 14));			// extract data
+		CRC.put(Arrays.copyOfRange(frameIn, frameIn.length-4, frameIn.length));	// extract CRC	
+			
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return current CRC as int
@@ -159,13 +153,14 @@ public class EthernetFrame {
 		int totLength = 6 + 6 + 2 + dataLength + 4;		// total frame size
 		byte[] frame = new byte[totLength];
 		
-		System.arraycopy(srcAddr.getMacArray(), 0, frame, 0, 6);	
-		System.arraycopy(dstAddr.getMacArray(), 0, frame, 6, 6);
-		System.arraycopy(typeLength.array(), 0, frame, 12, 2);	
-		System.arraycopy(data, 0, frame, 14, dataLength );
-		// compliment first 32 bits here
-		this.CRC.putInt(0, makeCRC(Arrays.copyOfRange(frame, 0, totLength-4)));
-		System.arraycopy(CRC.array(), 0, frame, 14+dataLength, 4);	
+		System.arraycopy(srcAddr.getMacArray(), 0, frame, 0, 6);	// copy dst MAC	to frame
+		System.arraycopy(dstAddr.getMacArray(), 0, frame, 6, 6);	// copy scr MAC to frame
+		System.arraycopy(typeLength.array(), 0, frame, 12, 2);		// copy l/t to frame
+		System.arraycopy(data, 0, frame, 14, dataLength );			// copy data to frame
+		VRMUtil.invertFirst32(frame);									// compliment first 32 bits here
+		this.CRC.putInt(0, VRMUtil.getCRC(Arrays.copyOfRange(frame, 0, totLength-4)));
+		VRMUtil.invertFirst32(frame);									// compliment first 32 bits here
+		System.arraycopy(CRC.array(), 0, frame, 14+dataLength, 4);	// copy CRC to frame
 		// reverse bits here
 		
 		return frame;
