@@ -35,9 +35,9 @@ public class Router {
 		// say hello
 		print("Virtual router 1.0\n\n");
 		
-		Nic nicOne = new Nic("Nic 1", vrmSettings.lanMac);
+		NIC nicOne = new NIC("Nic 1", vrmSettings.lanMac);
 		nicOne.run();
-		Nic nicTwo = new Nic("Nic 2", vrmSettings.wanMac);
+		NIC nicTwo = new NIC("Nic 2", vrmSettings.wanMac);
 		nicTwo.run();
 		
 		

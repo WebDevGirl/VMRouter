@@ -1,6 +1,6 @@
 // Nic class inherits from thread. 
 
-public class Nic extends Thread {
+public class NIC extends Thread {
 	
 	// name of this instance
 	String nicName; 
@@ -11,21 +11,21 @@ public class Nic extends Thread {
 	/*----------------------------------------------------------------------------------------*/
 	// constructor name and no MAC
 	// use this only for testing
-	Nic(String s) {
+	NIC(String s) {
 		
 		nicName = s;
 		myMac = new MacAddress();						// random address
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// constructor accepts name and MacAddress hex string
-	Nic(String s, String mac) {
+	NIC(String s, String mac) {
 		
 		nicName = s;
 		myMac = new MacAddress();
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// constructor accepts name and MacAddress 
-	Nic(String s, MacAddress mac) {
+	NIC(String s, MacAddress mac) {
 		
 		nicName = s;
 		myMac = mac.clone();
