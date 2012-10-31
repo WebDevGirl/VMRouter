@@ -48,6 +48,7 @@ public class Router {
 		System.out.print(s);
 	}
 	/*----------------------------------------------------------------------------------------*/
+	// get command from console
 	private static String[] getCommand() {
 		
 		String inputString = null;
@@ -64,16 +65,21 @@ public class Router {
 		return ret;
 	}
 	/*----------------------------------------------------------------------------------------*/
+	// process command
 	private static void doCommand(String[] command) {
 		
-		if(command.length == 0)								// do nothing 
+		if(command.length == 0)								// empty, do nothing 
 			return;
 		
 		switch(command[0]){
 		
 		case "help" 	: showHelp();				break;
 		case "config"	: showSettings();			break;
-		case "load"		: loadSettings(command);	break;
+		case "route"	: route(command);			break;
+		case "port"		: port(command);			break;
+		case "connect"	: connect(command);			break;
+		case "send"		: send(command);			break;
+		case "include"	: loadSettings(command);	break;
 		case "t"		: testSomething();			break;
 		case "quit" 	: appQuit();				break;
 		case "q" 		: appQuit();				break;
@@ -83,13 +89,92 @@ public class Router {
 	/*----------------------------------------------------------------------------------------*/
 	private static void showHelp(){
 		
-		 System.out.println("help           show this");
-		 System.out.println("config         show router settings");
-		 System.out.println("load <file>    load commands from <file>");
-		 System.out.println("quit           release resources and quit program");
+		 System.out.println("help                                                   show this");
+		 System.out.println("config                                                 show router settings");
+		 System.out.println("load <file>                                            load commands from <file>");
+		 System.out.println("port add <port number> <virtual IP/bits> <mtu>         add port");
+		 System.out.println("port del <port number>                                 delete port");
+		 System.out.println("connect add <local real port> <remote Real IP:port>    add connection");
+		 System.out.println("connect del <port number>                              delete connection");
+		 System.out.println("route add <network ID/subnet bits> <virtual IP>        add to routing table");
+		 System.out.println("route del <network ID/subnet bits> <virtual IP>        delete from routing table");
+		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>  send test packet\n" +
+		                    "                                                       creates a packet with Identification = ID\n" +
+		 		            "                                                       sent to the virtual IP. Data portion consists of\n" +
+		 		            "                                                       N bytes of 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH...\n");
+		 System.out.println("quit                                                   release resources and quit program");
 	}
 	/*----------------------------------------------------------------------------------------*/
+	private static void port(String[] command) {
+		
+		try {
+			switch(command[1]){
+			case "add" :    System.out.println("command: " + command[0] + " " + command[1] + " " +
+								command[2] + " " + command[3] + " " + command[4] + " " );
+						    break;
+			case "del" : System.out.println("command: " + command[0] + " " + command[1] + " " +
+						        command[2]);
+						    break;
+		    default    : System.out.println("usage: port add <port number> <virtual IP/bits> <mtu>");
+			             System.out.println("usage: port del <port number>");
+			}
+		}
+		catch (Exception e){
+			System.out.println("usage: port add <port number> <virtual IP/bits> <mtu>");
+			System.out.println("usage: port del <port number>");
+		}
+	}
 	/*----------------------------------------------------------------------------------------*/
+	private static void connect(String[] command) {
+		
+		try {
+			switch(command[1]){
+			case "add" :    System.out.println("command: " + command[0] + " " + command[1] + " " +
+								command[2] + " " + command[3]);
+						    break;
+			case "del" : System.out.println("command: " + command[0] + " " + command[1] + " " +
+						    command[2]);
+						    break;
+			default    : System.out.println("usage: connect add <port number> <virtual IP/bits> <mtu>");
+			             System.out.println("usage: connect del <port number>");
+			}
+		}
+		catch (Exception e){
+			System.out.println("usage: connect add <port number> <virtual IP/bits> <mtu>");
+			System.out.println("usage: connect del <port number>");
+		}
+	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void send(String[] command) {
+		
+		try {
+			System.out.println("command: " + command[0] + " " + command[1] + " " +
+								command[2] + " " + command[3] + " " + command[4]);
+		}
+		catch (Exception e){
+			System.out.println("usage: send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
+		}
+	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void route(String[] command) {
+		
+		try {
+			switch(command[1]){
+			case "add" :    System.out.println("command: " + command[0] + " " + command[1] + " " +
+								command[2] + " " + command[3]);
+						    break;
+			case "del" : System.out.println("command: " + command[0] + " " + command[1] + " " +
+						    command[2]);
+						    break;
+			default    : System.out.println("usage: route add <network ID/subnet bits> <virtual IP>");
+			             System.out.println("usage: route del <network ID/subnet bits> <virtual IP>");
+			}
+		}
+		catch (Exception e){
+			System.out.println("usage: connect add <port number> <virtual IP/bits> <mtu>");
+			System.out.println("usage: connect del <port number>");
+		}
+	}	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	// print router settings 
