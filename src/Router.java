@@ -92,7 +92,7 @@ public class Router {
 		
 		 System.out.println("help                                                   show this");
 		 System.out.println("config                                                 show router settings");
-		 System.out.println("load <file>                                            load commands from <file>");
+		 System.out.println("include <file>                                         load commands from <file>");
 		 System.out.println("port add <port number> <virtual IP/bits> <mtu>         add port");
 		 System.out.println("port del <port number>                                 delete port");
 		 System.out.println("connect add <local real port> <remote Real IP:port>    add connection");
