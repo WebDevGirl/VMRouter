@@ -11,15 +11,10 @@ public class Router {
 
 	// class level variables
 	
-	// show the long menu
-	static boolean longMenu = true;
-	
+
 	// reader for user input from console
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 	
-	// router configuration settings
-	static Settings vrmSettings = new Settings("config.vr");
-
 	
  	// constructor
  	public Router() {
@@ -30,26 +25,22 @@ public class Router {
 	public static void main(String[] args) {
 
 		// local variables
-		int mItem;
+		String[] command;
 		
 		// say hello
 		print("Virtual router 1.0\n\n");
 		
-		NIC nicOne = new NIC("Nic 1", vrmSettings.lanMac);
-		nicOne.run();
-		NIC nicTwo = new NIC("Nic 2", vrmSettings.wanMac);
-		nicTwo.run();
 		ListenerPort port1 = new ListenerPort(8000);
-		port1.run();
-		
-		
+		port1.start();
+		try {Thread.sleep(100);} catch (InterruptedException e) {}
+	
 		// main loop
-		while(true) {
-			mItem = getMenuItem();
-			processMenuItem(mItem);
+		while(true){
+			
+			command = getCommand();
+			doCommand(command);
 		}
 	}
-
 	/*----------------------------------------------------------------------------------------*/
 	// output string to console
 	private static void print(String s) {
@@ -57,68 +48,52 @@ public class Router {
 		System.out.print(s);
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// get user input
-	private static int getMenuItem(){
+	private static String[] getCommand() {
 		
-		int maxItems = 8;
-		int value = 0;
-		boolean keepGoing = true;
-		String inputString;
-		// BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+		String inputString = null;
 		
-		while(keepGoing) {
-			if(longMenu) {
-				print("\n1. Show configuration\n");
-				print("2. Save settings\n");
-				print("3. Load last saved\n");
-				print("4. Enter Wan/Lan MAC address\n");
-				print("5. Enter IP address\n");
-				print("6. Run the test method\n");
-				print("7. Short menu\n");
-				print("8. Quit\n\n");
-				print(": ");
-			}
-			else {
-				print("\n1=Show 2=Save 3=Load 4=MAC 5=IP 6=Test 7=Long 8=Quit : ");
-			}
-			try {
-					inputString = console.readLine();
-					value = Integer.parseInt(inputString);
-					if(value >= 1 && value <= maxItems)
-						keepGoing = false;
-					else
-						print("enter a value (1-7): ");
-			}
-			catch (IOException e) {
-					print("IO error: " + e.getMessage() + "\n");
-				}
-			catch (NumberFormatException e) {
-					print("Can't parse input: " + e.getMessage() + "\n");
-				}							
+		System.out.print("> ");
+		
+		try { inputString = console.readLine();} 
+		catch (IOException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
-			
-		return value;
+		
+		String[] ret = inputString.split(" ");
+		return ret;
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// process user input
-	private static void processMenuItem(int com) {
+	private static void doCommand(String[] command) {
 		
-		switch(com) {
+		if(command.length == 0)								// do nothing 
+			return;
 		
-			case 1 : printSettings();		break;
-			case 2 : saveSettings();		break;
-			case 3 : loadSettings();		break;
-			case 4 : getMAC();				break;
-			case 5 : getIP();				break;
-			case 6 : testSomething();		break;
-			case 7 : switchMenu();			break;
-			case 8 : appQuit();				break;
-			default:
+		switch(command[0]){
+		
+		case "help" 	: showHelp();				break;
+		case "config"	: showSettings();			break;
+		case "load"		: loadSettings(command);	break;
+		case "t"		: testSomething();			break;
+		case "quit" 	: appQuit();				break;
+		case "q" 		: appQuit();				break;
+		default     	: System.out.println("unknown command (type help for list)");
 		}
 	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void showHelp(){
+		
+		 System.out.println("help           show this");
+		 System.out.println("config         show router settings");
+		 System.out.println("load <file>    load commands from <file>");
+		 System.out.println("quit           release resources and quit program");
+	}
+	/*----------------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	// print router settings 
-	private static void printSettings() {
+	private static void showSettings() {
 	
 		// system info
 		String nameOS = "os.name";  
@@ -134,90 +109,29 @@ public class Router {
 		System.getProperty(architectureOS));
 		
 		// router settings
-		print("\n");
-		vrmSettings.printAll();	
+
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// save router settings 
-	private static void saveSettings() {
-	
-		vrmSettings.saveSettings();
-	}
 	/*----------------------------------------------------------------------------------------*/
 	// load router settings 
-	private static void loadSettings() {
+	private static void loadSettings(String[] command) {
 	
-		vrmSettings.loadSettings();	
-	}
-	/*----------------------------------------------------------------------------------------*/
-	// get Wan/Lan MAC address from user
-	private static void getMAC() {
-	
+		// open file
+		// process commands
 		try {
-			print("enter Wan MAC: ");
-			String s = console.readLine();
-			vrmSettings.wanMac.setHexMac(s);
-			vrmSettings.settingsChanged = true;			// possible settings change
-			print("enter Lan MAC: ");
-			s = console.readLine();
-			vrmSettings.lanMac.setHexMac(s);
-			
-		} catch (IOException e) {
-			// nothing we can do
-			e.printStackTrace();
+			System.out.println("command: " + command[0] + " " + command[1]);
+		}
+		catch (Exception e){
+			System.out.println("usage: load <filename>");
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// get IP address from user 
-	private static void getIP() {
-	
-		print("get IP\n");	
-		vrmSettings.settingsChanged = true;
-	}
 	/*----------------------------------------------------------------------------------------*/
-	// switch between long and short menu
-	private static void switchMenu() {
-	
-		if(longMenu)
-			longMenu = false;
-		else
-			longMenu = true;
-	}
+	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	// exit application properly
 	private static void appQuit() {
 	
-		String s = "";
-		char c = 'x' ;
-		boolean keepGoing = true;
-	
-		try {
-			// confirm quit, force a y/n or Y/N answer
-			if(vrmSettings.settingsChanged) {
-				print("save settings before exit? (y/n): ");
-				do {
-					s = console.readLine();
-					c = s.charAt(0);
-					if(c == 'y' || c == 'Y') {
-						vrmSettings.saveSettings();
-						keepGoing = false;
-					}
-					else {
-						if(c == 'n' || c == 'N')
-							keepGoing = false;
-						else
-							print("press y or n: ");
-					}
-					
-				} while(keepGoing);
-			}
-		}
-		catch (IOException e) {
-				// this is only to please the Java compiler
-				// if we really get an IO exception life has become meaningless and we quit 
-				print("IO error: " + e.getMessage() + "\n");
-		}
-
 		print("\nreleasing resources\n");
 		print("good bye\n");
 		try {console.close();} 

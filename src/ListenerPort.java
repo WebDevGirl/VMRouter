@@ -26,8 +26,10 @@ public class ListenerPort extends Thread {
 			
 		} catch (SocketException e) {
 			
+			System.out.println("listener port says:");
 			e.printStackTrace();
 			System.out.println(e.getMessage());
+			
 		}
 		
 	}
