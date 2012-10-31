@@ -35,7 +35,7 @@ public class NIC extends Thread {
     public void run() {
     	
         System.out.println("created NIC: " + nicName);
-        System.out.println("MAC address: " + myMac.toHexString());
+        System.out.println("MAC address: " + myMac.toHexString());    	
         
         // do work here
     }
