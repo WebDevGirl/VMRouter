@@ -39,6 +39,8 @@ public class Router {
 		nicOne.run();
 		NIC nicTwo = new NIC("Nic 2", vrmSettings.wanMac);
 		nicTwo.run();
+//		ListenerPort port1 = new ListenerPort(8000);
+//		port1.run();
 		
 		
 		// main loop

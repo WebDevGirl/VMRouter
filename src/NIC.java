@@ -11,21 +11,21 @@ public class NIC extends Thread {
 	/*----------------------------------------------------------------------------------------*/
 	// constructor name and no MAC
 	// use this only for testing
-	NIC(String s) {
+	public NIC(String s) {
 		
 		nicName = s;
 		myMac = new MacAddress();						// random address
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// constructor accepts name and MacAddress hex string
-	NIC(String s, String mac) {
+	public NIC(String s, String mac) {
 		
 		nicName = s;
 		myMac = new MacAddress();
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// constructor accepts name and MacAddress 
-	NIC(String s, MacAddress mac) {
+	public NIC(String s, MacAddress mac) {
 		
 		nicName = s;
 		myMac = mac.clone();
