@@ -165,15 +165,15 @@ public class Router {
 								command[2] + " " + command[3]);
 						    break;
 			case "del" : System.out.println("command: " + command[0] + " " + command[1] + " " +
-						    command[2]);
+						    command[2] + " " + command[3]);
 						    break;
 			default    : System.out.println("usage: route add <network ID/subnet bits> <virtual IP>");
 			             System.out.println("usage: route del <network ID/subnet bits> <virtual IP>");
 			}
 		}
 		catch (Exception e){
-			System.out.println("usage: connect add <port number> <virtual IP/bits> <mtu>");
-			System.out.println("usage: connect del <port number>");
+			System.out.println("usage: route add <network ID/subnet bits> <virtual IP>");
+			System.out.println("usage: route del <network ID/subnet bits> <virtual IP>");
 		}
 	}	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
