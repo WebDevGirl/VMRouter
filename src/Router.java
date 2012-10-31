@@ -31,7 +31,7 @@ public class Router {
 		print("Virtual router 1.0\n");
 		print("type help for list of commands\n\n");
 		
-		ListenerPort port1 = new ListenerPort(8000);
+		Listener port1 = new Listener(8000);
 		port1.start();
 		try {Thread.sleep(100);} catch (InterruptedException e) {}
 	

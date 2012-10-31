@@ -7,16 +7,16 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 
 
-public class ListenerPort extends Thread {
+public class Listener extends Thread {
 
 	// class variables
-	private int port = 7000;						// default port
+	private int port = 12345;						// default port
 	private byte[] buffer = new byte[1518];			// max Ethernet frame size
     private DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
     private DatagramSocket datagramSocket;
 	
 	//constructor
-	public ListenerPort(int port) {
+	public Listener(int port) {
 		
 		this.port = port;
 		
@@ -31,7 +31,6 @@ public class ListenerPort extends Thread {
 			System.out.println(e.getMessage());
 			
 		}
-		
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// start execution here

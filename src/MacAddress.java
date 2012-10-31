@@ -34,7 +34,7 @@ public class MacAddress {
 	public MacAddress(byte[] arrayIn) {
 		
 		if(arrayIn.length != 6)
-			System.out.print("need six bytes array for mac address ");					// bad mac throw exception
+			System.out.print("need six bytes array for mac address ");	// bad mac throw exception
 		else {
 			macArray = arrayIn.clone();
 			reverseBits();
@@ -92,13 +92,15 @@ public class MacAddress {
 	// return hex formated MAC address string
 	public String toHexString() {
 		
-		return String.format("%02x:%02x:%02x:%02x:%02x:%02x", macArray[0],macArray[1],macArray[2],macArray[3],macArray[4],macArray[5]);
+		return String.format("%02x:%02x:%02x:%02x:%02x:%02x", macArray[0],macArray[1],
+								macArray[2],macArray[3],macArray[4],macArray[5]);
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return hex formated MAC address string with bits reversed
 	public String toHexStringRev() {
 		
-		return String.format("%02x:%02x:%02x:%02x:%02x:%02x", macArrayRev[0],macArrayRev[1],macArrayRev[2],macArrayRev[3],macArrayRev[4],macArrayRev[5]);
+		return String.format("%02x:%02x:%02x:%02x:%02x:%02x", macArrayRev[0],macArrayRev[1],
+								macArrayRev[2],macArrayRev[3],macArrayRev[4],macArrayRev[5]);
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// return binary formated address string
