@@ -4,6 +4,8 @@
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketAddress;
 import java.net.SocketException;
 
 
@@ -26,7 +28,7 @@ public class Listener extends Thread {
 			
 		} catch (SocketException e) {
 			
-			System.out.println("listener port says:");
+			System.out.println("listener on port " + port + " says:");
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 			

@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class Router {
 
 	// class level variables
-	
+	static Port port1;
 
 	// reader for user input from console
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
@@ -31,8 +31,6 @@ public class Router {
 		print("Virtual router 1.0\n");
 		print("type help for list of commands\n\n");
 		
-		Listener port1 = new Listener(8000);
-		port1.start();
 		try {Thread.sleep(100);} catch (InterruptedException e) {}
 	
 		// main loop
@@ -110,11 +108,9 @@ public class Router {
 		
 		try {
 			switch(command[1]){
-			case "add" :    System.out.println("command: " + command[0] + " " + command[1] + " " +
-								command[2] + " " + command[3] + " " + command[4] + " " );
+			case "add" :    port1 = new Port(Integer.parseInt(command[2]), command[3], Integer.parseInt(command[4]));
 						    break;
-			case "del" : System.out.println("command: " + command[0] + " " + command[1] + " " +
-						        command[2]);
+			case "del" : System.out.println("can't delete yet port " + command[2]);
 						    break;
 		    default    : System.out.println("usage: port add <port number> <virtual IP/bits> <mtu>");
 			             System.out.println("usage: port del <port number>");
@@ -130,18 +126,16 @@ public class Router {
 		
 		try {
 			switch(command[1]){
-			case "add" :    System.out.println("command: " + command[0] + " " + command[1] + " " +
-								command[2] + " " + command[3]);
+			case "add" : port1.connect(command[3]);
 						    break;
-			case "del" : System.out.println("command: " + command[0] + " " + command[1] + " " +
-						    command[2]);
+			case "del" : port1.disconnect();
 						    break;
-			default    : System.out.println("usage: connect add <port number> <virtual IP/bits> <mtu>");
+			default    : System.out.println("usage: connect add <port number> <virtual IP/bits>");
 			             System.out.println("usage: connect del <port number>");
 			}
 		}
 		catch (Exception e){
-			System.out.println("usage: connect add <port number> <virtual IP/bits> <mtu>");
+			System.out.println("usage: connect add <port number> <virtual IP/bits>");
 			System.out.println("usage: connect del <port number>");
 		}
 	}
@@ -220,6 +214,7 @@ public class Router {
 	
 		print("\nreleasing resources\n");
 		print("good bye\n");
+
 		try {console.close();} 
 		catch (IOException e)
 			{print("IO error: " + e.getMessage() + "\n");}		// nothing we can do here
