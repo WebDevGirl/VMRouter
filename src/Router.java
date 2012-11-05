@@ -108,12 +108,11 @@ public class Router {
 		
 		try {
 			switch(command[1]){
-			case "add" :    port1 = new Port(Integer.parseInt(command[2]), command[3], Integer.parseInt(command[4]));
-						    break;
+			case "add" : port1 = new Port(Integer.parseInt(command[2]), command[3], Integer.parseInt(command[4]));
+						 break;
 			case "del" : System.out.println("can't delete yet port " + command[2]);
-						    break;
-		    default    : System.out.println("usage: port add <port number> <virtual IP/bits> <mtu>");
-			             System.out.println("usage: port del <port number>");
+						 break;
+		    default    : throw new Exception();
 			}
 		}
 		catch (Exception e){
@@ -127,11 +126,10 @@ public class Router {
 		try {
 			switch(command[1]){
 			case "add" : port1.connect(command[3]);
-						    break;
+						 break;
 			case "del" : port1.disconnect();
-						    break;
-			default    : System.out.println("usage: connect add <port number> <virtual IP/bits>");
-			             System.out.println("usage: connect del <port number>");
+						 break;
+			default    : throw new Exception();
 			}
 		}
 		catch (Exception e){
@@ -155,14 +153,13 @@ public class Router {
 		
 		try {
 			switch(command[1]){
-			case "add" :    System.out.println("command: " + command[0] + " " + command[1] + " " +
+			case "add" : System.out.println("command: " + command[0] + " " + command[1] + " " +
 								command[2] + " " + command[3]);
-						    break;
+						 break;
 			case "del" : System.out.println("command: " + command[0] + " " + command[1] + " " +
 						    command[2] + " " + command[3]);
-						    break;
-			default    : System.out.println("usage: route add <network ID/subnet bits> <virtual IP>");
-			             System.out.println("usage: route del <network ID/subnet bits> <virtual IP>");
+						 break;
+			default    : throw new Exception();
 			}
 		}
 		catch (Exception e){
