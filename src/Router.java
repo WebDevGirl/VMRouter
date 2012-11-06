@@ -1,4 +1,4 @@
-// COMP 429 Virtual router class project 
+// COMP 429 Virtual router 
 // Ursula, Moe, and Kash
 
 import java.io.BufferedReader;
@@ -6,18 +6,24 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 // import java.util.zip.CRC32;
 import java.util.Arrays;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Router {
 
-	// class level variables
-	static Port port1;
+
+	// port admin class w/ 24 ports max
+	static PortAdmin portAdmin = new PortAdmin(24);
 
 	// reader for user input from console
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 	
 	// startup commands
-	static String[] defaultCom = {  "port add 9000 1.2.3.4/16 1500", 
-									/*"connect add 555 192.168.1.1:8000"*/ };
+	static String[] defaultCom = {  "port add 9000 11.22.33.44/16 1500", "connect add 9000 127.0.0.1:9000",
+									"port add 9001 12.23.34.45/16 1500", "connect add 9001 130.166.45.68:9000",
+									"port add 9002 11.22.33.44/16 1500", "connect add 9002 127.0.0.1:9000",
+									"port add 9003 11.22.33.44/16 1500", "connect add 9003 127.0.0.1:9000" };
+	
+	
  	// constructor
  	public Router() {
  		
@@ -118,9 +124,9 @@ public class Router {
 		
 		try {
 			switch(command[1]){
-			case "add" : port1 = new Port(Integer.parseInt(command[2]), command[3], Integer.parseInt(command[4]));
+			case "add" : portAdmin.add(Integer.parseInt(command[2]), command[3], Integer.parseInt(command[4]));
 						 break;
-			case "del" : System.out.println("can't delete yet port " + command[2]);
+			case "del" : portAdmin.remove(Integer.parseInt(command[2]));
 						 break;
 		    default    : throw new Exception();
 			}
@@ -136,9 +142,9 @@ public class Router {
 		
 		try {
 			switch(command[1]){
-			case "add" : port1.connect(command[3]);
+			case "add" : portAdmin.connect(Integer.parseInt(command[2]), command[3]);
 						 break;
-			case "del" : port1.disconnect();
+			case "del" : portAdmin.disconnect(Integer.parseInt(command[2]));
 						 break;
 			default    : throw new Exception();
 			}
@@ -164,10 +170,10 @@ public class Router {
 	private static void uSend(String[] command) {
 		
 		try {
-			port1.send(command[2].getBytes());
+			portAdmin.usend(Integer.parseInt(command[1]), command[2].getBytes());
 		}
 		catch (Exception e){
-			System.out.println("usage: send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
+			System.out.println("usage: usend <port> <str>");
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -206,7 +212,10 @@ public class Router {
 //		System.getProperty(versionOS));
 //		System.out.println("Architecture of THe OS: " + 
 //		System.getProperty(architectureOS));
-		System.out.println(port1.getSettings());
+		
+		System.out.println("\nMAC                     local   virtual IP      MTU     remote IP/port  connected");
+		System.out.println("___________________________________________________________________________________");
+		System.out.println(portAdmin.getAllPortsConfig());
 		
 		// router settings
 

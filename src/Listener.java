@@ -1,12 +1,8 @@
-// test class for DatagramSocket
-//
+// listener thread for DatagramSocket
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketAddress;
-import java.net.SocketException;
 
 
 public class Listener extends Thread {
@@ -34,7 +30,8 @@ public class Listener extends Thread {
 				
 				datagramSocket.receive(packet);
 				String dataStr = new String(packet.getData(),0, packet.getLength());
-				System.out.println("UDP received: " + packet.getLength() + " bytes\n" + dataStr + "\n");
+				System.out.println(String.format("UDP received: %d bytes from %s \n%s\n", 
+						packet.getLength(), packet.getAddress().toString(), dataStr ));
 				
 			} catch (IOException e) {
 				
