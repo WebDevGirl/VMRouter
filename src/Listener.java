@@ -12,7 +12,7 @@ import java.net.SocketException;
 public class Listener extends Thread {
 
 	// class variables
-	private byte[] buffer = new byte[1518];			// max Ethernet frame size
+	private byte[] buffer = new byte[4000];			// max Ethernet frame size
     private DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
     private DatagramSocket datagramSocket;
 	
@@ -26,14 +26,15 @@ public class Listener extends Thread {
 	// listen for packets and print data
     public void run() {
     	
-		System.out.println("listening on port " + datagramSocket.getPort());
+		System.out.println("listening on port " + datagramSocket.getLocalPort());
 
 		while(true) {
 			
 			try {
 				
 				datagramSocket.receive(packet);
-				System.out.println("received packet: " + packet.getData());
+				String dataStr = new String(packet.getData(),0, packet.getLength());
+				System.out.println("UDP received: " + packet.getLength() + " bytes\n" + dataStr + "\n");
 				
 			} catch (IOException e) {
 				

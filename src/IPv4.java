@@ -1,14 +1,17 @@
 import java.util.Arrays;
 
 // IPv4 class
-// were appropriate treat byte arrays as big endians
+// treat byte arrays as big endians
 
 public class IPv4 {
 	
 	// class variables
+	int remotePort;
 	
 	// 4 byte IP array
 	byte[] IPArray = new byte[4];
+	byte[] IPSubnet = new byte[4];
+	int IPSubBits;
 	
 	/*----------------------------------------------------------------------------------------*/
 	// constructor takes a string in standard IP octet form "ddd.ddd.ddd.ddd"
@@ -16,17 +19,22 @@ public class IPv4 {
 	// IP v4 only
 	public IPv4(String ipIn) {
 		
-		String[] tempStr = ipIn.split("\\.");						// split at literal '.' (period)
-		if(tempStr.length != 4)
+		
+		String[] srcStr = ipIn.split("/");								// for port
+		String[] IPStr = srcStr[0].split("\\.");							// split at literal '.' (period)
+		if(IPStr.length != 4)
 			System.out.println("IPv4 need: ddd.ddd.ddd.ddd"); 		// throw exception here
 		else
 			try {
 				for(int i = 0; i < 4; i++) 
-					IPArray[i] = (byte)Integer.parseInt(tempStr[i]);
+					IPArray[i] = (byte)Integer.parseInt(IPStr[i]);
 			}
 			catch (Throwable e) {
 				System.out.println(e.toString());
 			}
+		
+		if(srcStr.length == 2)
+			IPSubBits = Integer.parseInt(srcStr[1]);
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// constructor takes 4 byte array[]

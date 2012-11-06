@@ -15,7 +15,9 @@ public class Router {
 	// reader for user input from console
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 	
-	
+	// startup commands
+	static String[] defaultCom = {  "port add 8000 1.2.3.4/16 1500", 
+									"connect add 555 127.0.0.1:8000" };
  	// constructor
  	public Router() {
  		
@@ -30,6 +32,10 @@ public class Router {
 		// say hello
 		print("Virtual router 1.0\n");
 		print("type help for list of commands\n\n");
+		
+		// run the built in startup commands
+		for(int i = 0; i < defaultCom.length; i++)
+			doCommand(defaultCom[i].split(" "));
 		
 		try {Thread.sleep(100);} catch (InterruptedException e) {}
 	
@@ -51,7 +57,8 @@ public class Router {
 	private static String[] getCommand() {
 		
 		String inputString = null;
-		
+	
+		try {Thread.sleep(100);} catch (InterruptedException e) {}
 		System.out.print("> ");
 		
 		try { inputString = console.readLine();} 
@@ -78,6 +85,7 @@ public class Router {
 		case "port"		: port(command);			break;
 		case "connect"	: connect(command);			break;
 		case "send"		: send(command);			break;
+		case "usend"	: uSend(command);			break;
 		case "include"	: loadSettings(command);	break;
 		case "t"		: testSomething();			break;
 		case "quit" 	: appQuit();				break;
@@ -101,6 +109,8 @@ public class Router {
 		                    "                                                       creates a packet with Identification = ID\n" +
 		 		            "                                                       sent to the virtual IP. Data portion consists of\n" +
 		 		            "                                                       N bytes of 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH...\n");
+
+		 System.out.println("usend <local port> <str>                               UDP send str to local port (uses current port settings)" );
 		 System.out.println("quit                                                   release resources and quit program");
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -118,6 +128,7 @@ public class Router {
 		catch (Exception e){
 			System.out.println("usage: port add <port number> <virtual IP/bits> <mtu>");
 			System.out.println("usage: port del <port number>");
+			e.printStackTrace();
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -133,8 +144,9 @@ public class Router {
 			}
 		}
 		catch (Exception e){
-			System.out.println("usage: connect add <port number> <virtual IP/bits>");
-			System.out.println("usage: connect del <port number>");
+			System.out.println("usage: connect add <local port> <remote IP:port>");
+			System.out.println("usage: connect del <local port>");
+			e.printStackTrace();
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -143,6 +155,16 @@ public class Router {
 		try {
 			System.out.println("command: " + command[0] + " " + command[1] + " " +
 								command[2] + " " + command[3] + " " + command[4]);
+		}
+		catch (Exception e){
+			System.out.println("usage: send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
+		}
+	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void uSend(String[] command) {
+		
+		try {
+			port1.send(command[2].getBytes());
 		}
 		catch (Exception e){
 			System.out.println("usage: send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
@@ -172,18 +194,19 @@ public class Router {
 	// print router settings 
 	private static void showSettings() {
 	
-		// system info
-		String nameOS = "os.name";  
-		String versionOS = "os.version";  
-		String architectureOS = "os.arch";
-
-		// print some OS info
-		System.out.println("\nName of the OS: " + 
-		System.getProperty(nameOS));
-		System.out.println("Version of the OS: " + 
-		System.getProperty(versionOS));
-		System.out.println("Architecture of THe OS: " + 
-		System.getProperty(architectureOS));
+//		// system info
+//		String nameOS = "os.name";  
+//		String versionOS = "os.version";  
+//		String architectureOS = "os.arch";
+//
+//		// print some OS info
+//		System.out.println("\nName of the OS: " + 
+//		System.getProperty(nameOS));
+//		System.out.println("Version of the OS: " + 
+//		System.getProperty(versionOS));
+//		System.out.println("Architecture of THe OS: " + 
+//		System.getProperty(architectureOS));
+		System.out.println(port1.getSettings());
 		
 		// router settings
 
