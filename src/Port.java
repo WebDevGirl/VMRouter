@@ -47,7 +47,7 @@ public class Port {
 	/*----------------------------------------------------------------------------------------*/
 	// store remote IP and remote port number
 	// start listener
-	public void connect(String ipRemotePort) {
+	public void connect(String ipRemotePort)  {
 		
 		if(isConnected == true) {
 			System.out.println(localPort + ": disconnect before connecting");
@@ -57,6 +57,15 @@ public class Port {
 			remoteIP = new IPv4(t[0]);									// store remote IP
 			remotePort = Integer.parseInt(t[1]);						// store remote port num
 			
+			InetAddress inetAddress = null;
+			try {
+				inetAddress = InetAddress.getByAddress(remoteIP.IPArray);
+			} catch (UnknownHostException e) {
+				System.out.println("port connect unknown host: " + remoteIP.toString());
+				e.printStackTrace();
+				return;
+			}
+			this.datagramSocket.connect(inetAddress, remotePort);
 			this.listenPort = new Listener(datagramSocket);				// new listener thread
 			this.listenPort.start();									// start listening
 			
@@ -74,6 +83,7 @@ public class Port {
 			return;
 		}
 		
+		this.datagramSocket.disconnect();		
 		listenPort = null;											// destroy listener thread
 		try {														// by forcing garbage collection
 																	// 
@@ -123,19 +133,19 @@ public class Port {
 		String s = null;
 		
 		// MAC, local port, virtual IP, MTU, remote IP, remote port, connect status
-		s  = String.format("%s\t", macAddress.toDecString());
-		s += String.format("%d\t", localPort);
-		s += String.format("%s\t", virtualIP.toString());
-		s += String.format("%d\t", MTU);
+		s  = String.format("%-25s", macAddress.toDecString());
+		s += String.format("%-7d", localPort);
+		s += String.format("%-18s", virtualIP.toString());
+		s += String.format("%-7d", MTU);
 		
 		if(isConnected == true) {
-			s += String.format("%s:", remoteIP.toString());
-			s += String.format("%d\t", remotePort);
+			s += String.format("%-18s", remoteIP.toString());
+			s += String.format("%-7d", remotePort);
 		}
 		else {
 			s += "n/a\tn/a\t";
 		}
-		s += String.format("%s\n", isConnected);
+		s += String.format("%-6s\n", isConnected);
 		
 		return s;
 	}
