@@ -28,7 +28,8 @@ public class Port {
 		this.virtualIP = new IPv4(myIP);							// this ports virtual IP
 		this.MTU = mtu;												// this ports (segment) MTU
 		this.datagramSocket = new DatagramSocket(localPort);		// used by writer & listener class
-	
+		this.listenPort = new Listener(datagramSocket);				// new listener thread
+
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// store remote IP and remote port number
@@ -39,10 +40,9 @@ public class Port {
 		remoteIP = new IPv4(t[0]);									// store remote IP
 		remotePort = Integer.parseInt(t[1]);						// store remote port num
 		
-		this.listenPort = new Listener(datagramSocket);				// new listener thread
 		this.listenPort.start();									// start listening
 		
-		System.out.println("connected to " + remoteIP.toString() + ":" + remotePort);
+		System.out.println(localPort + " connected to " + remoteIP.toString() + ":" + remotePort);
 		isConnected = true;											
 
 	}
@@ -86,7 +86,7 @@ public class Port {
 		
 		InetAddress address = InetAddress.getByAddress(remoteIP.getIP());
 		DatagramPacket packet = new DatagramPacket(data, data.length, address, remotePort);
-		System.out.println("UDP sent: " + data.length +" bytes to " + remoteIP.toString() + remotePort );
+		System.out.println("UDP sent: " + data.length +" bytes to " + remoteIP.toString() + ":"+ remotePort );
 		String dataStr = new String(packet.getData());
 		System.out.println(dataStr);
 		datagramSocket.send(packet);
