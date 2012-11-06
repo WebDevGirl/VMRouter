@@ -72,7 +72,7 @@ public class Port {
 			e.printStackTrace();
 		}	
 		
-		System.out.println("port " + localPort + " stoped listening");
+		System.out.println("port " + localPort + " stopped listening");
 		isConnected = false;	
 		
 	}
@@ -92,10 +92,11 @@ public class Port {
 		
 		InetAddress address = InetAddress.getByAddress(remoteIP.getIP());
 		DatagramPacket packet = new DatagramPacket(data, data.length, address, remotePort);
-		System.out.println("UDP sent: " + data.length +" bytes to " + remoteIP.toString() + ":"+ remotePort );
+		System.out.println("UDP send: " + data.length +" bytes to " + remoteIP.toString() + ":"+ remotePort );
 		String dataStr = new String(packet.getData());
 		System.out.println(dataStr);
 		datagramSocket.send(packet);
+		System.out.println(packet.getAddress() + "  " + packet.getSocketAddress());
 
 	}
 	/*----------------------------------------------------------------------------------------*/
