@@ -36,14 +36,20 @@ public class Port {
 	// start listener
 	public void connect(String ipRemotePort) {
 		
-		String[] t = ipRemotePort.split(":");						// no input checking
-		remoteIP = new IPv4(t[0]);									// store remote IP
-		remotePort = Integer.parseInt(t[1]);						// store remote port num
-		
-		this.listenPort.start();									// start listening
-		
-		System.out.println(localPort + " connected to " + remoteIP.toString() + ":" + remotePort);
-		isConnected = true;											
+		if(isConnected == true) {
+			System.out.println(localPort + ": disconnect before connecting");
+		}
+		else {
+			String[] t = ipRemotePort.split(":");						// no input checking
+			remoteIP = new IPv4(t[0]);									// store remote IP
+			remotePort = Integer.parseInt(t[1]);						// store remote port num
+			
+			this.listenPort = new Listener(datagramSocket);				// new listener thread
+			this.listenPort.start();									// start listening
+			
+			System.out.println(localPort + " connected to " + remoteIP.toString() + ":" + remotePort);
+			isConnected = true;	
+		}
 
 	}
 	/*----------------------------------------------------------------------------------------*/
