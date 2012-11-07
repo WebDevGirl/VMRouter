@@ -28,10 +28,10 @@ public class Port {
 	// throws exception if port exists
 	public Port(int localPort, String myIP, int mtu) throws SocketException, UnknownHostException {
 		
-		InetAddress inetAddress;
-//		InetAddress inetAddress = InetAddress.getByName("0.0.0.0");
-//		this.datagramSocket = new DatagramSocket(localPort, inetAddress);		// used by writer & listener class
-		this.datagramSocket = new DatagramSocket(localPort);
+//		InetAddress inetAddress;
+		InetAddress inetAddress = InetAddress.getByName("0.0.0.0");
+		this.datagramSocket = new DatagramSocket(localPort, inetAddress);		// used by writer & listener class
+//		this.datagramSocket = new DatagramSocket(localPort);
 		this.listenPort = new Listener(datagramSocket);				// new listener thread
 		this.localPort = localPort;									// port on this PC
 		this.virtualIP = new IPv4(myIP);							// this ports' virtual IP
@@ -60,15 +60,6 @@ public class Port {
 			remoteIP = new IPv4(t[0]);									// store remote IP
 			remotePort = Integer.parseInt(t[1]);						// store remote port num
 			
-			InetAddress inetAddress = null;
-			try {
-				inetAddress = InetAddress.getByAddress(remoteIP.IPArray);
-			} catch (UnknownHostException e) {
-				System.out.println("port connect unknown host: " + remoteIP.toString());
-				e.printStackTrace();
-				return;
-			}
-			//this.datagramSocket.connect(inetAddress, remotePort);
 			this.listenPort = new Listener(datagramSocket);				// new listener thread
 			this.listenPort.start();									// start listening
 			
