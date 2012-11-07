@@ -28,7 +28,10 @@ public class Port {
 	// throws exception if port exists
 	public Port(int localPort, String myIP, int mtu) throws SocketException, UnknownHostException {
 		
-		this.datagramSocket = new DatagramSocket(localPort);		// used by writer & listener class
+		InetAddress inetAddress;
+//		InetAddress inetAddress = InetAddress.getByName("0.0.0.0");
+//		this.datagramSocket = new DatagramSocket(localPort, inetAddress);		// used by writer & listener class
+		this.datagramSocket = new DatagramSocket(localPort);
 		this.listenPort = new Listener(datagramSocket);				// new listener thread
 		this.localPort = localPort;									// port on this PC
 		this.virtualIP = new IPv4(myIP);							// this ports' virtual IP
@@ -37,7 +40,7 @@ public class Port {
 		// setup the MAC address for this port
 		ByteBuffer macBytes = ByteBuffer.allocate(6);
 		
-		InetAddress inetAddress = InetAddress.getLocalHost(); 		// local host IP 
+		inetAddress = InetAddress.getLocalHost(); 		// local host IP 
 		macBytes.put(inetAddress.getAddress(), 0, 4);				// M5:M4:M3:M2 = IP
 		macBytes.putShort((short) localPort);						// M1:M0 = localPort
 		macAddress = new MacAddress(macBytes.array());				// set MAC address
@@ -143,7 +146,7 @@ public class Port {
 			s += String.format("%-7d", remotePort);
 		}
 		else {
-			s += "n/a\tn/a\t";
+			s += String.format("%-18s","n/a               n/a    ");
 		}
 		s += String.format("%-6s\n", isConnected);
 		
