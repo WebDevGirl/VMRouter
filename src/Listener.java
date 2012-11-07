@@ -30,8 +30,8 @@ public class Listener extends Thread {
 				
 				datagramSocket.receive(packet);
 				String dataStr = new String(packet.getData(),0, packet.getLength());
-				System.out.println(String.format("UDP received: %d bytes from %s \n%s\n", 
-						packet.getLength(), packet.getAddress().toString(), dataStr ));
+				System.out.println(String.format("UDP received: %d bytes from %s:%d \n%s\n", 
+						packet.getLength(), packet.getAddress().toString(), packet.getPort(), dataStr ));
 				
 			} catch (IOException e) {
 				

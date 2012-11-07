@@ -68,7 +68,7 @@ public class Port {
 				e.printStackTrace();
 				return;
 			}
-			this.datagramSocket.connect(inetAddress, remotePort);
+			//this.datagramSocket.connect(inetAddress, remotePort);
 			this.listenPort = new Listener(datagramSocket);				// new listener thread
 			this.listenPort.start();									// start listening
 			
@@ -86,7 +86,7 @@ public class Port {
 			return;
 		}
 		
-		this.datagramSocket.disconnect();		
+		//this.datagramSocket.disconnect();		
 		listenPort = null;											// destroy listener thread
 		try {														// by forcing garbage collection
 																	// 
@@ -94,7 +94,7 @@ public class Port {
 			
 		} catch (Throwable e) {
 			
-			System.out.println("disconnecting port " + localPort);
+			System.out.println("port disconnect: finalize error " + localPort);
 			e.printStackTrace();
 		}	
 		
