@@ -127,19 +127,19 @@ public class Port {
 		String s = null;
 		
 		// MAC, local port, virtual IP, MTU, remote IP, remote port, connect status
-		s  = String.format("%-25s", macAddress.toDecString());
-		s += String.format("%-7d", localPort);
-		s += String.format("%-18s", virtualIP.toString());
+		s  = String.format("%-22s", macAddress.toDecString());
+		s += String.format("%-6d", localPort);
+		s += String.format("%-17s", virtualIP.toString());
 		s += String.format("%-7d", MTU);
 		
 		if(isConnected == true) {
-			s += String.format("%-18s", remoteIP.toString());
-			s += String.format("%-7d", remotePort);
+			s += String.format("%-17s", remoteIP.toString());
+			s += String.format("%-6d", remotePort);
 		}
 		else {
-			s += String.format("%-18s","n/a               n/a    ");
+			s += String.format("%-17s","n/a               n/a    ");
 		}
-		s += String.format("%-6s\n", isConnected);
+		s += String.format("%-5s\n", isConnected);
 		
 		return s;
 	}

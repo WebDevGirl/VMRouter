@@ -210,8 +210,8 @@ public class Router {
 //		System.out.println("Architecture of THe OS: " + 
 //		System.getProperty(architectureOS));
 		
-		System.out.println("\nMAC                     local   virtual IP        MTU    remote IP :       port  connected");
-		System.out.println("______________________________________________________________________________________________");
+		System.out.println("\nMAC                   local  virtual IP      MTU    remote IP :      port  conn");
+		System.out.println("_______________________________________________________________________________");
 		System.out.println(portAdmin.getAllPortsConfig());
 		
 		// router settings
