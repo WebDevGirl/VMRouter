@@ -99,22 +99,18 @@ public class Router {
 	/*----------------------------------------------------------------------------------------*/
 	private static void showHelp(){
 		
-		 System.out.println("help                                                   show this");
-		 System.out.println("config                                                 show router settings");
-		 System.out.println("include <file>                                         load commands from <file>");
-		 System.out.println("port add <port number> <virtual IP/bits> <mtu>         add port");
-		 System.out.println("port del <port number>                                 delete port");
-		 System.out.println("connect add <local real port> <remote Real IP:port>    add connection");
-		 System.out.println("connect del <port number>                              delete connection");
-		 System.out.println("route add <network ID/subnet bits> <virtual IP>        add to routing table");
-		 System.out.println("route del <network ID/subnet bits> <virtual IP>        delete from routing table");
-		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>  send test packet\n" +
-		                    "                                                       creates a packet with Identification = ID\n" +
-		 		            "                                                       sent to the virtual IP. Data portion consists of\n" +
-		 		            "                                                       N bytes of 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH...\n");
-
-		 System.out.println("usend <local port> <str>                               UDP send str to local port (uses current port settings)" );
-		 System.out.println("quit                                                   release resources and quit program");
+		 System.out.println("help                                                 ");
+		 System.out.println("config                                               ");
+		 System.out.println("include <file>                                       ");
+		 System.out.println("port add <port number> <virtual IP/bits> <mtu>       ");
+		 System.out.println("port del <port number>                               ");
+		 System.out.println("connect add <local real port> <remote Real IP:port>  ");
+		 System.out.println("connect del <port number>                            ");
+		 System.out.println("route add <network ID/subnet bits> <virtual IP>      ");
+		 System.out.println("route del <network ID/subnet bits> <virtual IP>      ");
+		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
+		 System.out.println("usend <local port> <str>                             ");
+		 System.out.println("quit                                                 ");
 	}
 	/*----------------------------------------------------------------------------------------*/
 	private static void port(String[] command) {
@@ -131,7 +127,7 @@ public class Router {
 		catch (Exception e){
 			System.out.println("usage: port add <port number> <virtual IP/bits> <mtu>");
 			System.out.println("usage: port del <port number>");
-			e.printStackTrace();
+			System.out.println(e.toString());
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -149,7 +145,7 @@ public class Router {
 		catch (Exception e){
 			System.out.println("usage: connect add <local port> <remote IP:port>");
 			System.out.println("usage: connect del <local port>");
-			e.printStackTrace();
+			System.out.println(e.toString());
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -161,6 +157,7 @@ public class Router {
 		}
 		catch (Exception e){
 			System.out.println("usage: send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
+			System.out.println(e.toString());
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -171,6 +168,7 @@ public class Router {
 		}
 		catch (Exception e){
 			System.out.println("usage: usend <port> <str>");
+			System.out.println(e.toString());
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -190,6 +188,7 @@ public class Router {
 		catch (Exception e){
 			System.out.println("usage: route add <network ID/subnet bits> <virtual IP>");
 			System.out.println("usage: route del <network ID/subnet bits> <virtual IP>");
+			System.out.println(e.toString());
 		}
 	}	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
@@ -225,6 +224,7 @@ public class Router {
 		// open file
 		// process commands
 		try {
+			
 			System.out.println("command: " + command[0] + " " + command[1]);
 		}
 		catch (Exception e){

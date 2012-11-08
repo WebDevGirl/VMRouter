@@ -136,7 +136,7 @@ public class Port {
 			s += String.format("%-6d", remotePort);
 		}
 		else {
-			s += String.format("%-17s","n/a               n/a    ");
+			s += String.format("%-20s","n/a              n/a");
 		}
 		s += String.format("%-5s\n", isConnected);
 		
