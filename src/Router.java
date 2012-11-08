@@ -18,7 +18,7 @@ public class Router {
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 	
 	// startup commands
-	static String[] defaultCom = {  "port add 9000 111.212.323.44/16 1500", "connect add 9000 130.166.45.106:9000" };
+	static String[] defaultCom = {  "port add 9000 111.212.323.44/16 1500", "connect add 9000 130.166.45.147:9000" };
 	
 	
  	// constructor
