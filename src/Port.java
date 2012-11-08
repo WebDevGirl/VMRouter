@@ -113,7 +113,6 @@ public class Port {
 		String dataStr = new String(packet.getData());
 		System.out.println(dataStr);
 		datagramSocket.send(packet);
-		System.out.println(packet.getAddress() + "  " + packet.getSocketAddress());
 
 	}
 	/*----------------------------------------------------------------------------------------*/
