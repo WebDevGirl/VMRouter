@@ -66,10 +66,10 @@ public class Router {
 		
 		try { inputString = console.readLine();} 
 		catch (IOException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
+			System.out.println(e.toString());
 		}
 		
+		inputString = inputString.trim();
 		String[] ret = inputString.split(" ");
 		return ret;
 	}
@@ -77,7 +77,7 @@ public class Router {
 	// process command
 	private static void doCommand(String[] command) {
 		
-		if(command.length == 0)								// empty, do nothing 
+		if(command[0].length() == 0)								// empty, do nothing 
 			return;
 		
 		switch(command[0]){
