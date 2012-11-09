@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
@@ -28,19 +30,18 @@ public class Port {
 	// throws exception if port exists
 	public Port(int localPort, String myIP, int mtu) throws SocketException, UnknownHostException {
 		
-//		InetAddress inetAddress;
-		InetAddress inetAddress = InetAddress.getByName("0.0.0.0");
-		this.datagramSocket = new DatagramSocket(localPort, inetAddress);		// used by writer & listener class
-//		this.datagramSocket = new DatagramSocket(localPort);
-		this.listenPort = new Listener(datagramSocket);				// new listener thread
+		InetAddress inetAddress;
+//		InetAddress inetAddress = InetAddress.getByName("0.0.0.0");
+//		this.datagramSocket = new DatagramSocket(localPort, inetAddress);		// used by writer & listener class
+		this.datagramSocket = new DatagramSocket(localPort);
+		// this.listenPort = new Listener(datagramSocket);				// new listener thread
 		this.localPort = localPort;									// port on this PC
 		this.virtualIP = new IPv4(myIP);							// this ports' virtual IP
 		this.MTU = mtu;												// this ports (segment) MTU
 		
-		// setup the MAC address for this port
+		// build the MAC address for this port
 		ByteBuffer macBytes = ByteBuffer.allocate(6);
-		
-		inetAddress = InetAddress.getLocalHost(); 		// local host IP 
+		inetAddress = InetAddress.getLocalHost(); 					// local host IP 
 		macBytes.put(inetAddress.getAddress(), 0, 4);				// M5:M4:M3:M2 = IP
 		macBytes.putShort((short) localPort);						// M1:M0 = localPort
 		macAddress = new MacAddress(macBytes.array());				// set MAC address
@@ -60,6 +61,19 @@ public class Port {
 			remoteIP = new IPv4(t[0]);									// store remote IP
 			remotePort = Integer.parseInt(t[1]);						// store remote port num
 			
+			
+			
+//			InetAddress inetAddress = null;
+//			try {
+//				inetAddress = InetAddress.getByAddress(remoteIP.getIP());
+//			} catch (UnknownHostException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			datagramSocket.connect(inetAddress, remotePort);
+			
+			
+			
 			this.listenPort = new Listener(datagramSocket);				// new listener thread
 			this.listenPort.start();									// start listening
 			
@@ -77,7 +91,6 @@ public class Port {
 			return;
 		}
 		
-		//this.datagramSocket.disconnect();		
 		listenPort = null;											// destroy listener thread
 		try {														// by forcing garbage collection
 																	// 
@@ -128,11 +141,11 @@ public class Port {
 		// MAC, local port, virtual IP, MTU, remote IP, remote port, connect status
 		s  = String.format("%-22s", macAddress.toDecString());
 		s += String.format("%-6d", localPort);
-		s += String.format("%-17s", virtualIP.toString());
+		s += String.format("%-16s", virtualIP.toString());
 		s += String.format("%-7d", MTU);
 		
 		if(isConnected == true) {
-			s += String.format("%-17s", remoteIP.toString());
+			s += String.format("%-16s", remoteIP.toString());
 			s += String.format("%-6d", remotePort);
 		}
 		else {

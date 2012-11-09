@@ -23,8 +23,11 @@ public class Router {
 									 "port add 9002 111.212.323.44/16 1500", "connect add 9002 130.166.45.147:9002",
 									 "port add 9003 111.212.323.44/16 1500", "connect add 9003 130.166.45.147:9003",
 									 "port add 9004 111.212.323.44/16 1500", "connect add 9004 130.166.45.147:9004",
-									 "port add 9005 111.212.323.44/16 1500", "connect add 9005 130.166.45.147:9005",
-									 "port add 9006 111.212.323.44/16 1500", "connect add 9006 130.166.45.147:9006"  };
+									 "port add 9005 111.212.323.44/16 1500", "connect add 9005 130.166.45.147:5000",
+									 "port add 9006 111.212.323.44/16 1500", "connect add 9006 130.166.45.147:5000",
+									 "usend 9000 junk","usend 9001 junk", "usend 9002 junk", "usend 9003 junk", 
+									 "usend 9004 junk", "usend 9005 junk", "usend 9006 junk" 
+	};
 	
 	
  	// constructor
@@ -43,10 +46,11 @@ public class Router {
 		print("type help for list of commands\n\n");
 		
 		// run the built in startup commands
-		for(int i = 0; i < defaultCom.length; i++)
+		for(int i = 0; i < defaultCom.length; i++) {
 			doCommand(defaultCom[i].split(" "));
-		
-		try {Thread.sleep(100);} catch (InterruptedException e) {}
+		}
+
+		// try {Thread.sleep(100);} catch (InterruptedException e) {}
 	
 		// main loop
 		while(true){
@@ -215,7 +219,7 @@ public class Router {
 //		System.out.println("Architecture of THe OS: " + 
 //		System.getProperty(architectureOS));
 		
-		System.out.println("\nMAC                   local  virtual IP      MTU    remote IP :      port  conn");
+		System.out.println("\nMAC                   port  virtual IP      MTU    remote IP     : port  conn");
 		System.out.println("_______________________________________________________________________________");
 		System.out.println(portAdmin.getAllPortsConfig());
 		
