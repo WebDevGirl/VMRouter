@@ -153,6 +153,7 @@ public class EthernetFrame {
 		int totLength = 6 + 6 + 2 + dataLength + 4;		// total frame size
 		byte[] frame = new byte[totLength];
 		
+		
 		System.arraycopy(srcAddr.getMacArray(), 0, frame, 0, 6);	// copy dst MAC	to frame
 		System.arraycopy(dstAddr.getMacArray(), 0, frame, 6, 6);	// copy scr MAC to frame
 		System.arraycopy(typeLength.array(), 0, frame, 12, 2);		// copy l/t to frame

@@ -1,49 +1,37 @@
-// test class for DatagramSocket
-//
+// listener thread for DatagramSocket
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.SocketException;
 
 
-public class ListenerPort extends Thread {
+public class Listener extends Thread {
 
 	// class variables
-	private int port = 7000;						// default port
-	private byte[] buffer = new byte[1518];			// max Ethernet frame size
+	private byte[] buffer = new byte[4000];			// max Ethernet frame size
     private DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
     private DatagramSocket datagramSocket;
 	
 	//constructor
-	public ListenerPort(int port) {
-		
-		this.port = port;
-		
-		try {
-			
-			this.datagramSocket = new DatagramSocket(port);
-			
-		} catch (SocketException e) {
-			
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
-		
+	public Listener(DatagramSocket dgSocket) {
+				
+		this.datagramSocket = dgSocket;
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// start execution here
-	// listen for packets
+	// listen for packets and print data
     public void run() {
     	
-		System.out.println("listening on port " + port);
+		System.out.println("listening on port " + datagramSocket.getLocalPort());
 
 		while(true) {
 			
 			try {
 				
 				datagramSocket.receive(packet);
-				System.out.println("received packet: " + packet.getData());
+				String dataStr = new String(packet.getData(),0, packet.getLength());
+				System.out.println(String.format("UDP received: %d bytes from %s:%d \n%s\n", 
+						packet.getLength(), packet.getAddress().toString(), packet.getPort(), dataStr ));
 				
 			} catch (IOException e) {
 				

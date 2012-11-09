@@ -1,4 +1,4 @@
-// COMP 429 Virtual router class project 
+// COMP 429 Virtual router 
 // Ursula, Moe, and Kash
 
 import java.io.BufferedReader;
@@ -6,20 +6,29 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 // import java.util.zip.CRC32;
 import java.util.Arrays;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Router {
 
-	// class level variables
-	
-	// show the long menu
-	static boolean longMenu = true;
-	
+
+	// port admin class w/ 24 ports max
+	static PortAdmin portAdmin = new PortAdmin(24);
+
 	// reader for user input from console
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 	
-	// router configuration settings
-	static Settings vrmSettings = new Settings("config.vr");
-
+	// startup commands
+	static String[] defaultCom = {   "port add 9000 111.212.323.44/16 1500", "connect add 9000 130.166.45.147:9000",
+									 "port add 9001 111.212.323.44/16 1500", "connect add 9001 130.166.45.147:9001",
+									 "port add 9002 111.212.323.44/16 1500", "connect add 9002 130.166.45.147:9002",
+									 "port add 9003 111.212.323.44/16 1500", "connect add 9003 130.166.45.147:9003",
+									 "port add 9004 111.212.323.44/16 1500", "connect add 9004 130.166.45.147:9004",
+									 "port add 9005 111.212.323.44/16 1500", "connect add 9005 130.166.45.147:5000",
+									 "port add 9006 111.212.323.44/16 1500", "connect add 9006 130.166.45.147:5000",
+									 "usend 9000 junk","usend 9001 junk", "usend 9002 junk", "usend 9003 junk", 
+									 "usend 9004 junk", "usend 9005 junk", "usend 9006 junk" 
+	};
+	
 	
  	// constructor 
  	public Router() {
@@ -30,26 +39,26 @@ public class Router {
 	public static void main(String[] args) {
 
 		// local variables
-		int mItem;
+		String[] command;
 		
 		// say hello
-		print("Virtual router 1.0\n\n");
+		print("Virtual router 1.0\n");
+		print("type help for list of commands\n\n");
 		
-		NIC nicOne = new NIC("Nic 1", vrmSettings.lanMac);
-		nicOne.run();
-		NIC nicTwo = new NIC("Nic 2", vrmSettings.wanMac);
-		nicTwo.run();
-		ListenerPort port1 = new ListenerPort(8000);
-		port1.run();
-		
-		
+		// run the built in startup commands
+		for(int i = 0; i < defaultCom.length; i++) {
+			doCommand(defaultCom[i].split(" "));
+		}
+
+		// try {Thread.sleep(100);} catch (InterruptedException e) {}
+	
 		// main loop
-		while(true) {
-			mItem = getMenuItem();
-			processMenuItem(mItem);
+		while(true){
+			
+			command = getCommand();
+			doCommand(command);
 		}
 	}
-
 	/*----------------------------------------------------------------------------------------*/
 	// output string to console
 	private static void print(String s) {
@@ -57,169 +66,191 @@ public class Router {
 		System.out.print(s);
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// get user input
-	private static int getMenuItem(){
+	// get command from console
+	private static String[] getCommand() {
 		
-		int maxItems = 8;
-		int value = 0;
-		boolean keepGoing = true;
-		String inputString;
-		// BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+		String inputString = null;
+	
+		try {Thread.sleep(100);} catch (InterruptedException e) {}
+		System.out.print("> ");
 		
-		while(keepGoing) {
-			if(longMenu) {
-				print("\n1. Show configuration\n");
-				print("2. Save settings\n");
-				print("3. Load last saved\n");
-				print("4. Enter Wan/Lan MAC address\n");
-				print("5. Enter IP address\n");
-				print("6. Run the test method\n");
-				print("7. Short menu\n");
-				print("8. Quit\n\n");
-				print(": ");
-			}
-			else {
-				print("\n1=Show 2=Save 3=Load 4=MAC 5=IP 6=Test 7=Long 8=Quit : ");
-			}
-			try {
-					inputString = console.readLine();
-					value = Integer.parseInt(inputString);
-					if(value >= 1 && value <= maxItems)
-						keepGoing = false;
-					else
-						print("enter a value (1-7): ");
-			}
-			catch (IOException e) {
-					print("IO error: " + e.getMessage() + "\n");
-				}
-			catch (NumberFormatException e) {
-					print("Can't parse input: " + e.getMessage() + "\n");
-				}							
+		try { inputString = console.readLine();} 
+		catch (IOException e) {
+			System.out.println(e.toString());
 		}
-			
-		return value;
+		
+		inputString = inputString.trim();
+		String[] ret = inputString.split(" ");
+		return ret;
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// process user input
-	private static void processMenuItem(int com) {
+	// process command
+	private static void doCommand(String[] command) {
 		
-		switch(com) {
+		if(command[0].length() == 0)								// empty, do nothing 
+			return;
 		
-			case 1 : printSettings();		break;
-			case 2 : saveSettings();		break;
-			case 3 : loadSettings();		break;
-			case 4 : getMAC();				break;
-			case 5 : getIP();				break;
-			case 6 : testSomething();		break;
-			case 7 : switchMenu();			break;
-			case 8 : appQuit();				break;
-			default:
+		switch(command[0]){
+		
+		case "help" 	: showHelp();				break;
+		case "config"	: showSettings();			break;
+		case "route"	: route(command);			break;
+		case "port"		: port(command);			break;
+		case "connect"	: connect(command);			break;
+		case "send"		: send(command);			break;
+		case "usend"	: uSend(command);			break;
+		case "include"	: loadSettings(command);	break;
+		case "t"		: testSomething();			break;
+		case "quit" 	: appQuit();				break;
+		case "q" 		: appQuit();				break;
+		default     	: System.out.println("unknown command (type help for list)");
 		}
 	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void showHelp(){
+		
+		 System.out.println("help                                                 ");
+		 System.out.println("config                                               ");
+		 System.out.println("include <file>                                       ");
+		 System.out.println("port add <port number> <virtual IP/bits> <mtu>       ");
+		 System.out.println("port del <port number>                               ");
+		 System.out.println("connect add <local real port> <remote Real IP:port>  ");
+		 System.out.println("connect del <port number>                            ");
+		 System.out.println("route add <network ID/subnet bits> <virtual IP>      ");
+		 System.out.println("route del <network ID/subnet bits> <virtual IP>      ");
+		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
+		 System.out.println("usend <local port> <str>                             ");
+		 System.out.println("quit                                                 ");
+	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void port(String[] command) {
+		
+		try {
+			switch(command[1]){
+			case "add" : portAdmin.add(Integer.parseInt(command[2]), command[3], Integer.parseInt(command[4]));
+						 break;
+			case "del" : portAdmin.remove(Integer.parseInt(command[2]));
+						 break;
+		    default    : throw new Exception();
+			}
+		}
+		catch (Exception e){
+			System.out.println("usage: port add <port number> <virtual IP/bits> <mtu>");
+			System.out.println("usage: port del <port number>");
+			System.out.println(e.toString());
+		}
+	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void connect(String[] command) {
+		
+		try {
+			switch(command[1]){
+			case "add" : portAdmin.connect(Integer.parseInt(command[2]), command[3]);
+						 break;
+			case "del" : portAdmin.disconnect(Integer.parseInt(command[2]));
+						 break;
+			default    : throw new Exception();
+			}
+		}
+		catch (Exception e){
+			System.out.println("usage: connect add <local port> <remote IP:port>");
+			System.out.println("usage: connect del <local port>");
+			System.out.println(e.toString());
+		}
+	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void send(String[] command) {
+		
+		try {
+			System.out.println("command: " + command[0] + " " + command[1] + " " +
+								command[2] + " " + command[3] + " " + command[4]);
+		}
+		catch (Exception e){
+			System.out.println("usage: send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
+			System.out.println(e.toString());
+		}
+	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void uSend(String[] command) {
+		
+		try {
+			portAdmin.usend(Integer.parseInt(command[1]), command[2].getBytes());
+		}
+		catch (Exception e){
+			System.out.println("usage: usend <port> <str>");
+			System.out.println(e.toString());
+		}
+	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void route(String[] command) {
+		
+		try {
+			switch(command[1]){
+			case "add" : System.out.println("command: " + command[0] + " " + command[1] + " " +
+								command[2] + " " + command[3]);
+						 break;
+			case "del" : System.out.println("command: " + command[0] + " " + command[1] + " " +
+						    command[2] + " " + command[3]);
+						 break;
+			default    : throw new Exception();
+			}
+		}
+		catch (Exception e){
+			System.out.println("usage: route add <network ID/subnet bits> <virtual IP>");
+			System.out.println("usage: route del <network ID/subnet bits> <virtual IP>");
+			System.out.println(e.toString());
+		}
+	}	/*----------------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	// print router settings 
-	private static void printSettings() {
+	private static void showSettings() {
 	
-		// system info
-		String nameOS = "os.name";  
-		String versionOS = "os.version";  
-		String architectureOS = "os.arch";
-
-		// print some OS info
-		System.out.println("\nName of the OS: " + 
-		System.getProperty(nameOS));
-		System.out.println("Version of the OS: " + 
-		System.getProperty(versionOS));
-		System.out.println("Architecture of THe OS: " + 
-		System.getProperty(architectureOS));
+//		// system info
+//		String nameOS = "os.name";  
+//		String versionOS = "os.version";  
+//		String architectureOS = "os.arch";
+//
+//		// print some OS info
+//		System.out.println("\nName of the OS: " + 
+//		System.getProperty(nameOS));
+//		System.out.println("Version of the OS: " + 
+//		System.getProperty(versionOS));
+//		System.out.println("Architecture of THe OS: " + 
+//		System.getProperty(architectureOS));
+		
+		System.out.println("\nMAC                   port  virtual IP      MTU    remote IP     : port  conn");
+		System.out.println("_______________________________________________________________________________");
+		System.out.println(portAdmin.getAllPortsConfig());
 		
 		// router settings
-		print("\n");
-		vrmSettings.printAll();	
+
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// save router settings 
-	private static void saveSettings() {
-	
-		vrmSettings.saveSettings();
-	}
 	/*----------------------------------------------------------------------------------------*/
 	// load router settings 
-	private static void loadSettings() {
+	private static void loadSettings(String[] command) {
 	
-		vrmSettings.loadSettings();	
-	}
-	/*----------------------------------------------------------------------------------------*/
-	// get Wan/Lan MAC address from user
-	private static void getMAC() {
-	
+		// open file
+		// process commands
 		try {
-			print("enter Wan MAC: ");
-			String s = console.readLine();
-			vrmSettings.wanMac.setHexMac(s);
-			vrmSettings.settingsChanged = true;			// possible settings change
-			print("enter Lan MAC: ");
-			s = console.readLine();
-			vrmSettings.lanMac.setHexMac(s);
 			
-		} catch (IOException e) {
-			// nothing we can do
-			e.printStackTrace();
+			System.out.println("command: " + command[0] + " " + command[1]);
+		}
+		catch (Exception e){
+			System.out.println("usage: load <filename>");
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// get IP address from user 
-	private static void getIP() {
-	
-		print("get IP\n");	
-		vrmSettings.settingsChanged = true;
-	}
 	/*----------------------------------------------------------------------------------------*/
-	// switch between long and short menu
-	private static void switchMenu() {
-	
-		if(longMenu)
-			longMenu = false;
-		else
-			longMenu = true;
-	}
+	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	// exit application properly
 	private static void appQuit() {
 	
-		String s = "";
-		char c = 'x' ;
-		boolean keepGoing = true;
-	
-		try {
-			// confirm quit, force a y/n or Y/N answer
-			if(vrmSettings.settingsChanged) {
-				print("save settings before exit? (y/n): ");
-				do {
-					s = console.readLine();
-					c = s.charAt(0);
-					if(c == 'y' || c == 'Y') {
-						vrmSettings.saveSettings();
-						keepGoing = false;
-					}
-					else {
-						if(c == 'n' || c == 'N')
-							keepGoing = false;
-						else
-							print("press y or n: ");
-					}
-					
-				} while(keepGoing);
-			}
-		}
-		catch (IOException e) {
-				// this is only to please the Java compiler
-				// if we really get an IO exception life has become meaningless and we quit 
-				print("IO error: " + e.getMessage() + "\n");
-		}
-
 		print("\nreleasing resources\n");
 		print("good bye\n");
+
 		try {console.close();} 
 		catch (IOException e)
 			{print("IO error: " + e.getMessage() + "\n");}		// nothing we can do here

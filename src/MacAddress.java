@@ -34,7 +34,7 @@ public class MacAddress {
 	public MacAddress(byte[] arrayIn) {
 		
 		if(arrayIn.length != 6)
-			System.out.print("need six bytes array for mac address ");					// bad mac throw exception
+			System.out.print("need six bytes array for mac address ");	// bad mac throw exception
 		else {
 			macArray = arrayIn.clone();
 			reverseBits();
@@ -89,19 +89,28 @@ public class MacAddress {
 			macArrayRev[i] = VRMUtil.reverseByte(macArray[i]);
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// return hex formated MAC address string
+	// return hex MAC address string
 	public String toHexString() {
 		
-		return String.format("%02x:%02x:%02x:%02x:%02x:%02x", macArray[0],macArray[1],macArray[2],macArray[3],macArray[4],macArray[5]);
+		return String.format("%02x:%02x:%02x:%02x:%02x:%02x", macArray[0],macArray[1],
+								macArray[2],macArray[3],macArray[4],macArray[5]);
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// return hex formated MAC address string with bits reversed
+	// return decimal MAC address string
+	public String toDecString() {
+		
+		return String.format("%d:%d:%d:%d:%d:%d", macArray[0]&255, macArray[1]&255,macArray[2]&255,
+								macArray[3]&255,macArray[4]&255,macArray[5]&255);
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// return hex MAC address string with bits reversed
 	public String toHexStringRev() {
 		
-		return String.format("%02x:%02x:%02x:%02x:%02x:%02x", macArrayRev[0],macArrayRev[1],macArrayRev[2],macArrayRev[3],macArrayRev[4],macArrayRev[5]);
+		return String.format("%02x:%02x:%02x:%02x:%02x:%02x", macArrayRev[0],macArrayRev[1],
+								macArrayRev[2],macArrayRev[3],macArrayRev[4],macArrayRev[5]);
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// return binary formated address string
+	// return binary address string
 	public String toBinString() {
 
 		String s = "";
@@ -146,13 +155,13 @@ public class MacAddress {
 		return randomMac;
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// return this mac address array
+	// return this MAC address array
 	public byte[] getMacArray() {
 	
 		return macArray.clone();
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// return this mac address arrayRev
+	// return this MAC address arrayRev
 	public byte[] getMacArrayRev() {
 	
 		return macArrayRev.clone();
