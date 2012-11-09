@@ -112,6 +112,25 @@ public class PortAdmin {
 			System.out.println("port " + portNo + " does not exists");	
 	}
 	/*----------------------------------------------------------------------------------------*/
+	// send string in UDP 
+	public void asend(byte[] data) {
+		
+		Enumeration<Integer> keys = VRPorts.keys();
+		
+		while(keys.hasMoreElements()) { 
+			Object key = keys.nextElement();
+			try {
+				
+				VRPorts.get(key).send(data);
+				
+			} catch (IOException e) {
+				
+				System.out.println("PortAdmin: error sending data on port " + key);
+				e.printStackTrace();
+			}
+		}	
+	}
+	/*----------------------------------------------------------------------------------------*/
 	public String getAllPortsConfig() {
 		
 		String s = "";

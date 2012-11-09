@@ -22,7 +22,8 @@ public class Listener extends Thread {
 	// listen for packets and print data
     public void run() {
     	
-		System.out.println("listening on port " + datagramSocket.getLocalPort());
+		System.out.println(String.format("new thread %d listening on port %d", this.getId(), 
+				datagramSocket.getLocalPort()));
 
 		while(true) {
 			
@@ -30,7 +31,8 @@ public class Listener extends Thread {
 				
 				datagramSocket.receive(packet);
 				String dataStr = new String(packet.getData(),0, packet.getLength());
-				System.out.println(String.format("UDP received: %d bytes from %s:%d \n%s\n", 
+				System.out.println(String.format("thread %d port %d received: %d bytes from %s:%d \n%s\n", 
+						this.getId(),datagramSocket.getLocalPort(),
 						packet.getLength(), packet.getAddress().toString(), packet.getPort(), dataStr ));
 				
 			} catch (IOException e) {

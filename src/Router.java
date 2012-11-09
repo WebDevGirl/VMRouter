@@ -19,15 +19,14 @@ public class Router {
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 	
 	// startup commands
-	static String[] defaultCom = {   "port add 9000 111.212.323.44/16 1500", "connect add 9000 130.166.45.147:9000",
-									 "port add 9001 111.212.323.44/16 1500", "connect add 9001 130.166.45.147:9001",
-									 "port add 9002 111.212.323.44/16 1500", "connect add 9002 130.166.45.147:9002",
-									 "port add 9003 111.212.323.44/16 1500", 
-									 "port add 9004 111.212.323.44/16 1500", "connect add 9004 130.166.45.147:9004",
-									 "port add 9005 111.212.323.44/16 1500", "connect add 9005 130.166.45.147:5000",
-									 "port add 9006 111.212.323.44/16 1500", "connect add 9006 130.166.45.147:5000",
-									 "usend 9000 junk","usend 9001 junk", "usend 9002 junk", "usend 9003 junk", 
-									 "usend 9004 junk", "usend 9005 junk", "usend 9006 junk" 
+	static String[] defaultCom = {   "port add 9000 111.212.323.44/16 1500", "connect add 9000 192.168.1.106:9000",
+									 "port add 9001 111.212.323.44/16 1500", "connect add 9001 192.168.1.106:9000",
+									 "port add 9002 111.212.323.44/16 1500", "connect add 9002 192.168.1.106:9002",
+									 "port add 9003 111.212.323.44/16 1500", "connect add 9003 127.0.0.1:9003",
+									 "port add 9004 111.212.323.44/16 1500", "connect add 9004 192.168.1.106:9005",
+									 "port add 9005 111.212.323.44/16 1500", "connect add 9005 192.168.1.106:5000",
+									 "port add 9006 111.212.323.44/16 1500", "connect add 9006 192.168.1.106:5000",
+
 	};
 	
 	
@@ -101,6 +100,7 @@ public class Router {
 		case "connect"	: connect(command);			break;
 		case "send"		: send(command);			break;
 		case "usend"	: uSend(command);			break;
+		case "asend"	: aSend(command);			break;
 		case "include"	: loadSettings(command);	break;
 		case "t"		: testSomething();			break;
 		case "quit" 	: appQuit();				break;
@@ -122,6 +122,7 @@ public class Router {
 		 System.out.println("route del <network ID/subnet bits> <virtual IP>      ");
 		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
 		 System.out.println("usend <local port> <str>                             ");
+		 System.out.println("asend <str>                                          ");
 		 System.out.println("quit                                                 ");
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -180,6 +181,17 @@ public class Router {
 		}
 		catch (Exception e){
 			System.out.println("usage: usend <port> <str>");
+			System.out.println(e.toString());
+		}
+	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void aSend(String[] command) {
+		
+		try {
+			portAdmin.asend(command[1].getBytes());
+		}
+		catch (Exception e){
+			System.out.println("usage: asend <str>");
 			System.out.println(e.toString());
 		}
 	}
