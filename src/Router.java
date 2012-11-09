@@ -25,7 +25,7 @@ public class Router {
 									 "port add 9003 111.212.323.44/16 1500", "connect add 9003 127.0.0.1:9003",
 									 "port add 9004 111.212.323.44/16 1500", "connect add 9004 192.168.1.106:9005",
 									 "port add 9005 111.212.323.44/16 1500", "connect add 9005 192.168.1.106:5000",
-									 "port add 9006 111.212.323.44/16 1500", "connect add 9006 192.168.1.106:5000",
+									 "port add 9006 111.212.323.44/16 1500", 
 
 	};
 	
@@ -116,8 +116,10 @@ public class Router {
 		 System.out.println("include <file>                                       ");
 		 System.out.println("port add <port number> <virtual IP/bits> <mtu>       ");
 		 System.out.println("port del <port number>                               ");
+		 System.out.println("port dela (delete all ports)                         ");
 		 System.out.println("connect add <local real port> <remote Real IP:port>  ");
 		 System.out.println("connect del <port number>                            ");
+		 System.out.println("connect dela  (delete all connections)               ");
 		 System.out.println("route add <network ID/subnet bits> <virtual IP>      ");
 		 System.out.println("route del <network ID/subnet bits> <virtual IP>      ");
 		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
@@ -130,16 +132,18 @@ public class Router {
 		
 		try {
 			switch(command[1]){
-			case "add" : portAdmin.add(Integer.parseInt(command[2]), command[3], Integer.parseInt(command[4]));
+			case "add" : portAdmin.addPort(Integer.parseInt(command[2]), command[3], Integer.parseInt(command[4]));
 						 break;
-			case "del" : portAdmin.remove(Integer.parseInt(command[2]));
+			case "del" : portAdmin.removePort(Integer.parseInt(command[2]));
 						 break;
-		    default    : throw new Exception();
+			case "dela": portAdmin.removeAll();
+			 break;		 default: throw new Exception();
 			}
 		}
 		catch (Exception e){
 			System.out.println("usage: port add <port number> <virtual IP/bits> <mtu>");
 			System.out.println("usage: port del <port number>");
+			System.out.println("usage: port dela (delete all ports)");
 			System.out.println(e.toString());
 		}
 	}
@@ -152,12 +156,14 @@ public class Router {
 						 break;
 			case "del" : portAdmin.disconnect(Integer.parseInt(command[2]));
 						 break;
-			default    : throw new Exception();
+			case "dela": portAdmin.disconnectAll();
+			break;		 default: throw new Exception();
 			}
 		}
 		catch (Exception e){
 			System.out.println("usage: connect add <local port> <remote IP:port>");
 			System.out.println("usage: connect del <local port>");
+			System.out.println("usage: connect dela (delete all connections)");
 			System.out.println(e.toString());
 		}
 	}

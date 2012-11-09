@@ -24,7 +24,7 @@ public class PortAdmin {
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// add port
-	public void add(int portNo, String myIP, int mtu) {
+	public void addPort(int portNo, String myIP, int mtu) {
 		
 		
 		if(existsPort(portNo)) {
@@ -51,9 +51,12 @@ public class PortAdmin {
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// delete port and call garbage collector
-	public void remove(int portNo) {
+	public void removePort(int portNo) {
 		
 		if(existsPort(portNo)) {
+			
+			VRPorts.get(portNo).disconnect();
+			VRPorts.get(portNo).datagramSocket.close();
 			VRPorts.remove(portNo);
 			System.out.println("port " + portNo + " deleted");
 			try {
@@ -71,6 +74,18 @@ public class PortAdmin {
 		}
 	}	
 	/*----------------------------------------------------------------------------------------*/
+	// remove all ports
+	public void removeAll() {
+		
+		Enumeration<Integer> keys = VRPorts.keys();
+
+		while(keys.hasMoreElements()) { 
+			Object key = keys.nextElement();
+			removePort((Integer)key);
+		}	
+		try { finalize(); } catch (Throwable e) { e.printStackTrace(); }
+	}
+/*----------------------------------------------------------------------------------------*/
 	public void connect(int portNo, String connectStr) {
 		
 		if(existsPort(portNo)) {
@@ -87,6 +102,17 @@ public class PortAdmin {
 		}
 		else
 			System.out.println("port " + portNo + " does not exists");
+	}
+	/*----------------------------------------------------------------------------------------*/
+	// disconnect all ports
+	public void disconnectAll() {
+		
+		Enumeration<Integer> keys = VRPorts.keys();
+		
+		while(keys.hasMoreElements()) { 
+			Object key = keys.nextElement();
+			VRPorts.get(key).disconnect();
+		}	
 	}
 	/*----------------------------------------------------------------------------------------*/
 	private boolean existsPort(int portNo) {

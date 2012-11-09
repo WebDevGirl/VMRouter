@@ -21,7 +21,7 @@ public class Port {
 	private IPv4 remoteIP;					// physical remote IP for UDP packets
 	private int remotePort;					// physical remote port for UDP packets
 	private Listener listenPort;			// listener thread
-	private DatagramSocket datagramSocket;	// used by listener and writer
+	public DatagramSocket datagramSocket;	// used by listener and writer
 	private boolean isConnected = false;	// true after connect, false after disconnect
 	
 	/*----------------------------------------------------------------------------------------*/
@@ -76,7 +76,7 @@ public class Port {
 			System.out.println("port " + localPort + " already disconnected");
 			return;
 		}
-		
+
 		listenPort = null;											// destroy listener thread
 		try {														// by forcing garbage collection
 			
@@ -143,13 +143,14 @@ public class Port {
 		return s;
 	}
 	/*----------------------------------------------------------------------------------------*/
-	/*----------------------------------------------------------------------------------------*/
-	/*----------------------------------------------------------------------------------------*/
-	/*----------------------------------------------------------------------------------------*/
 	// return port number
 	public int getPortNum() {
 		return localPort;
 	}
+	/*----------------------------------------------------------------------------------------*/
+
+	/*----------------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 
 }

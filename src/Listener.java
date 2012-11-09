@@ -29,11 +29,14 @@ public class Listener extends Thread {
 			
 			try {
 				
+				if(datagramSocket.isClosed())
+					break;				
 				datagramSocket.receive(packet);
 				String dataStr = new String(packet.getData(),0, packet.getLength());
 				System.out.println(String.format("thread %d port %d received: %d bytes from %s:%d \n%s\n", 
 						this.getId(),datagramSocket.getLocalPort(),
 						packet.getLength(), packet.getAddress().toString(), packet.getPort(), dataStr ));
+
 				
 			} catch (IOException e) {
 				
@@ -41,7 +44,7 @@ public class Listener extends Thread {
 				System.out.println(e.getMessage());
 			}
 		}
-        
+		System.out.println("i died");
     }
 	/*----------------------------------------------------------------------------------------*/
 
