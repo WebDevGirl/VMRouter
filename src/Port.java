@@ -61,18 +61,13 @@ public class Port {
 			remoteIP = new IPv4(t[0]);									// store remote IP
 			remotePort = Integer.parseInt(t[1]);						// store remote port num
 			
-			
-			
-//			InetAddress inetAddress = null;
-//			try {
-//				inetAddress = InetAddress.getByAddress(remoteIP.getIP());
-//			} catch (UnknownHostException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			datagramSocket.connect(inetAddress, remotePort);
-			
-			
+			SocketAddress address = new InetSocketAddress(remoteIP.toString(), remotePort);	
+			try {
+				datagramSocket.connect(address);
+			} catch (SocketException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			this.listenPort = new Listener(datagramSocket);				// new listener thread
 			this.listenPort.start();									// start listening
@@ -93,7 +88,8 @@ public class Port {
 		
 		listenPort = null;											// destroy listener thread
 		try {														// by forcing garbage collection
-																	// 
+			
+			datagramSocket.disconnect();							// 
 			finalize();												// collect garbage
 			
 		} catch (Throwable e) {
