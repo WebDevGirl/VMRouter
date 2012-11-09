@@ -34,7 +34,6 @@ public class Port {
 //		InetAddress inetAddress = InetAddress.getByName("0.0.0.0");
 //		this.datagramSocket = new DatagramSocket(localPort, inetAddress);		// used by writer & listener class
 		this.datagramSocket = new DatagramSocket(localPort);
-		// this.listenPort = new Listener(datagramSocket);				// new listener thread
 		this.localPort = localPort;									// port on this PC
 		this.virtualIP = new IPv4(myIP);							// this ports' virtual IP
 		this.MTU = mtu;												// this ports (segment) MTU
@@ -61,14 +60,6 @@ public class Port {
 			remoteIP = new IPv4(t[0]);									// store remote IP
 			remotePort = Integer.parseInt(t[1]);						// store remote port num
 			
-			SocketAddress address = new InetSocketAddress(remoteIP.toString(), remotePort);	
-			try {
-				datagramSocket.connect(address);
-			} catch (SocketException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
 			this.listenPort = new Listener(datagramSocket);				// new listener thread
 			this.listenPort.start();									// start listening
 			
@@ -89,7 +80,6 @@ public class Port {
 		listenPort = null;											// destroy listener thread
 		try {														// by forcing garbage collection
 			
-			datagramSocket.disconnect();							// 
 			finalize();												// collect garbage
 			
 		} catch (Throwable e) {
@@ -145,7 +135,7 @@ public class Port {
 			s += String.format("%-6d", remotePort);
 		}
 		else {
-			s += String.format("%-23s","n/a              n/a");
+			s += String.format("%-22s","n/a             n/a");
 		}
 		s += String.format("%-5s\n", isConnected);
 		

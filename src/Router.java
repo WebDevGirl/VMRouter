@@ -2,6 +2,7 @@
 // Ursula, Moe, and Kash
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 // import java.util.zip.CRC32;
@@ -21,7 +22,7 @@ public class Router {
 	static String[] defaultCom = {   "port add 9000 111.212.323.44/16 1500", "connect add 9000 130.166.45.147:9000",
 									 "port add 9001 111.212.323.44/16 1500", "connect add 9001 130.166.45.147:9001",
 									 "port add 9002 111.212.323.44/16 1500", "connect add 9002 130.166.45.147:9002",
-									 "port add 9003 111.212.323.44/16 1500", "connect add 9003 130.166.45.147:9003",
+									 "port add 9003 111.212.323.44/16 1500", 
 									 "port add 9004 111.212.323.44/16 1500", "connect add 9004 130.166.45.147:9004",
 									 "port add 9005 111.212.323.44/16 1500", "connect add 9005 130.166.45.147:5000",
 									 "port add 9006 111.212.323.44/16 1500", "connect add 9006 130.166.45.147:5000",
@@ -48,6 +49,7 @@ public class Router {
 		// run the built in startup commands
 		for(int i = 0; i < defaultCom.length; i++) {
 			doCommand(defaultCom[i].split(" "));
+			try {Thread.sleep(50);} catch (InterruptedException e) {}
 		}
 
 		// try {Thread.sleep(100);} catch (InterruptedException e) {}
@@ -103,7 +105,7 @@ public class Router {
 		case "t"		: testSomething();			break;
 		case "quit" 	: appQuit();				break;
 		case "q" 		: appQuit();				break;
-		default     	: System.out.println("unknown command (type help for list)");
+		default     	: System.out.println("unknown command: " + command[0]);
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -231,14 +233,23 @@ public class Router {
 	// load router settings 
 	private static void loadSettings(String[] command) {
 	
-		// open file
-		// process commands
+		String[] s = null;
+		
 		try {
 			
-			System.out.println("command: " + command[0] + " " + command[1]);
+			FileReader getCommand = new FileReader(command[1]);
+			while(getCommand.hasNext()) { 
+				s = (getCommand.readLine().trim()).split(" ");
+				doCommand(s);
+			}
 		}
-		catch (Exception e){
-			System.out.println("usage: load <filename>");
+		catch (ArrayIndexOutOfBoundsException e){
+			
+			System.out.println("usage: include <filename>");
+		}
+		catch (FileNotFoundException e) {
+			
+			System.out.println("file not found: " + command[1]);
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
