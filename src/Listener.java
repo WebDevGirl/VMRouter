@@ -44,7 +44,7 @@ public class Listener extends Thread {
 				System.out.println(e.getMessage());
 			}
 		}
-		System.out.println("i died");
+		System.out.println("thread " + this.getId() + " died");
     }
 	/*----------------------------------------------------------------------------------------*/
 

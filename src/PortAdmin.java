@@ -55,7 +55,7 @@ public class PortAdmin {
 		
 		if(existsPort(portNo)) {
 			
-			VRPorts.get(portNo).disconnect();
+			disconnect(portNo);
 			VRPorts.get(portNo).datagramSocket.close();
 			VRPorts.remove(portNo);
 			System.out.println("port " + portNo + " deleted");
