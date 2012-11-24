@@ -5,37 +5,47 @@ import java.util.ArrayList;
 // should only have one instance of this class for all threads to search
 
 public class RoutingTable {
-	private ArrayList<String[]> _RoutingTable = new ArrayList<String[]>();
-    private IPv4 _defaultRoute = new IPv4 ("0.0.0.0");
+	private ArrayList<String[]> routeTable = new ArrayList<String[]>();
+    private IPv4 defaultRoute;
 	
 	// constructor 
 	public RoutingTable() {
 		
-	
+	/*
+	 	RoutingTable rt = new RoutingTable();
+		rt.addDefaultRoute(new IPv4("127.0.0.1"));
+		IPv4 route2 = rt.nextRoute(new IPv4("127.1.1.1"));
+		System.out.println(route2.toString());
+	 */
 		
 	}
 	
 	/*----------------------------------------------------------------------------------------*/
-	public IPv4 nextRoute() {
-		IPv4 ip;
+	public IPv4 nextRoute(IPv4 ip) {
+		//System.out.println("RoutingTable: ... search table for gateway for IP: " + ip.toString()); 
+		IPv4 gateway = null; 
 		
 		//-- Search for Gateway in Routing Table
-		//---- TODO
+		//---- TODO loop through routeTable;
 		
-		//-- Return default route if none found
-		ip = _defaultRoute; 
+		//-- Return Default if no ip found
+		if (gateway == null) {
+			//System.out.println("RoutingTable: ... no IP found, using default"); 
+			gateway = defaultRoute; 
+		}
 		
 		//-- Sanity Check that an IP address has been set
-		if (ip.equals(new IPv4("0.0.0.0"))) {
+		if (gateway == null) {
+			//TODO: Throw an exception up
 			System.out.println("RoutingTable: errror no default route set"); 
 		}
 		
-		return ip;
+		return gateway;
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// Add the default route to Routing Table
-	public void addDefaultRoute(IPv4 defaultRoute) {
-		_defaultRoute = defaultRoute; 
+	public void addDefaultRoute(IPv4 route) {
+		defaultRoute = route; 
 	}
 	
 	/*----------------------------------------------------------------------------------------*/
