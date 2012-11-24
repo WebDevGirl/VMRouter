@@ -52,6 +52,20 @@ public class IPDatagram {
 	/*----------------------------------------------------------------------------------------*/
 	public IPDatagram(byte[] packetIn) {
 	
+		versionAndHLength.put(packetIn[0]);
+		typeOfService.put(packetIn[1]);
+		// System.arraycopy(packetIn, 2, totalLength, 0, 2);
+		totalLength.put(packetIn, 2, 2);
+		ID.put(packetIn, 4, 2);
+		FlagsFOffset.put(packetIn, 6, 2);
+		TTL.put(packetIn, 8, 1);
+		protocol.put(packetIn, 9, 1);
+		headerChecksum.put(packetIn, 10, 2);
+
+		srcIP.setIP(Arrays.copyOfRange(packetIn, 12, 16));
+		dstIP.setIP(Arrays.copyOfRange(packetIn, 16, 20));
+		data = Arrays.copyOfRange(packetIn, 20, packetIn.length);
+		
 	}
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
@@ -62,17 +76,17 @@ public class IPDatagram {
 		byte[] ipDatagram = new byte[totalLength.getShort(0)];
 		
 		
-		System.arraycopy(versionAndHLength, 0, ipDatagram, 0, 1);	// copy version# and header length to datagram
-		System.arraycopy(typeOfService, 0, ipDatagram, 1, 1);		// type of service byte
-		System.arraycopy(totalLength, 0, ipDatagram, 2, 2);
-		System.arraycopy(ID, 0, ipDatagram, 4, 2);
-		System.arraycopy(FlagsFOffset, 0, ipDatagram, 7, 2);
-		System.arraycopy(TTL, 0, ipDatagram, 9, 1);
-		System.arraycopy(protocol, 0, ipDatagram, 10, 1);
-		System.arraycopy(headerChecksum, 0, ipDatagram, 11, 1);
-		System.arraycopy(srcIP.getIP(), 0, ipDatagram, 13, 4);
-		System.arraycopy(dstIP.getIP(), 0, ipDatagram, 17, 4);
-		System.arraycopy(data, 0, ipDatagram, 17, data.length);
+		System.arraycopy(versionAndHLength.array(), 0, ipDatagram, 0, 1);	// copy version# and header length to datagram
+		System.arraycopy(typeOfService.array(), 0, ipDatagram, 1, 1);		// type of service byte
+		System.arraycopy(totalLength.array(), 0, ipDatagram, 2, 2);
+		System.arraycopy(ID.array(), 0, ipDatagram, 4, 2);
+		System.arraycopy(FlagsFOffset.array(), 0, ipDatagram, 6, 2);
+		System.arraycopy(TTL.array(), 0, ipDatagram, 8, 1);
+		System.arraycopy(protocol.array(), 0, ipDatagram, 9, 1);
+		System.arraycopy(headerChecksum.array(), 0, ipDatagram, 10, 2);
+		System.arraycopy(srcIP.getIP(), 0, ipDatagram, 12, 4);
+		System.arraycopy(dstIP.getIP(), 0, ipDatagram, 16, 4);
+		System.arraycopy(data, 0, ipDatagram, 20, data.length);
 
 		
 		return ipDatagram;

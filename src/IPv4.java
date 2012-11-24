@@ -47,6 +47,14 @@ public class IPv4 {
 		IPArray = ipIn.clone();											// assign a copy of ipIn
 	}
 	/*----------------------------------------------------------------------------------------*/
+	public void setIP(byte[] ipIn) {
+		
+		if(ipIn.length != 4)
+			System.out.println("IPv4 class: bad IP array"); 			// throw exception here
+		
+		IPArray = ipIn.clone();											// assign a copy of ipIn
+	}
+	/*----------------------------------------------------------------------------------------*/
 	// compare IParray to input arg
 	public boolean equals(byte[] ipIn) {
 		

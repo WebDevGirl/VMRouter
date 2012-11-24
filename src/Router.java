@@ -25,14 +25,6 @@ public class Router {
 									 "port add 15003 111.212.323.44/16 1500", "connect add 15003 127.0.0.1:15003",
 									 "port add 15004 111.212.323.44/16 1500", "connect add 15004 127.0.0.1:15004",
 									 "port add 15005 111.212.323.44/16 1500", "connect add 15005 127.0.0.1:15005",
-									 "port add 15006 111.212.323.44/16 1500", "connect add 15006 127.0.0.1:15006",
-									 "port add 15007 111.212.323.44/16 1500", "connect add 15007 127.0.0.1:15000",
-									 "port add 15008 111.212.323.44/16 1500", "connect add 15008 127.0.0.1:15001",
-									 "port add 15009 111.212.323.44/16 1500", "connect add 15009 127.0.0.1:15002",
-									 "port add 15010 111.212.323.44/16 1500", "connect add 15010 127.0.0.1:15003",
-									 "port add 15011 111.212.323.44/16 1500", "connect add 15011 127.0.0.1:15004",
-									 "port add 15012 111.212.323.44/16 1500", "connect add 15012 127.0.0.1:15005",
-									 "port add 15013 111.212.323.44/16 1500", "connect add 15013 127.0.0.1:15006",
 
 	};
 	
@@ -342,7 +334,10 @@ public class Router {
 			IPv4 srcIP = new IPv4("1.2.3.4");
 			IPv4 dstIP = new IPv4("5.6.7.8");
 			IPDatagram ipDatagram = new IPDatagram("hello world".getBytes(), (short) 0, srcIP, dstIP);
-			System.out.println(ipDatagram.toString());
+			System.out.println(ipDatagram.toString() + "\n");
+			System.out.println(ipDatagram.toHexString(ipDatagram.toByteArray()) + "\n");
+			IPDatagram ipDatagram2 = new IPDatagram(ipDatagram.toByteArray());
+			System.out.println(ipDatagram2.toHexString(ipDatagram2.toByteArray()) + "\n");
 			
 		}
 		catch(Throwable e) {
