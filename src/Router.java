@@ -228,7 +228,8 @@ public class Router {
 			System.out.println("usage: route del <network ID/subnet bits> <virtual IP>");
 			System.out.println(e.toString());
 		}
-	}	/*----------------------------------------------------------------------------------------*/
+	}	
+	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	// print router settings 
@@ -345,7 +346,8 @@ public class Router {
 			
 		}
 		catch(Throwable e) {
-			print("something went wrong with the test: " + e.getMessage() + "\n"); 
+			print("something went wrong with the test: ");
+			e.printStackTrace(); 
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
