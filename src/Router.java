@@ -19,13 +19,20 @@ public class Router {
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 	
 	// startup commands
-	static String[] defaultCom = {   "port add 9000 111.212.323.44/16 1500", "connect add 9000 192.168.1.106:9000",
-									 "port add 9001 111.212.323.44/16 1500", "connect add 9001 192.168.1.106:9000",
-									 "port add 9002 111.212.323.44/16 1500", "connect add 9002 192.168.1.106:9002",
-									 "port add 9003 111.212.323.44/16 1500", "connect add 9003 127.0.0.1:9003",
-									 "port add 9004 111.212.323.44/16 1500", "connect add 9004 192.168.1.106:9005",
-									 "port add 9005 111.212.323.44/16 1500", "connect add 9005 192.168.1.106:5000",
-									 "port add 9006 111.212.323.44/16 1500", 
+	static String[] defaultCom = {   "port add 15000 111.212.323.44/16 1500", "connect add 15000 127.0.0.1:15000",
+									 "port add 15001 111.212.323.44/16 1500", "connect add 15001 127.0.0.1:15001",
+									 "port add 15002 111.212.323.44/16 1500", "connect add 15002 127.0.0.1:15002",
+									 "port add 15003 111.212.323.44/16 1500", "connect add 15003 127.0.0.1:15003",
+									 "port add 15004 111.212.323.44/16 1500", "connect add 15004 127.0.0.1:15004",
+									 "port add 15005 111.212.323.44/16 1500", "connect add 15005 127.0.0.1:15005",
+									 "port add 15006 111.212.323.44/16 1500", "connect add 15006 127.0.0.1:15006",
+									 "port add 15007 111.212.323.44/16 1500", "connect add 15007 127.0.0.1:15000",
+									 "port add 15008 111.212.323.44/16 1500", "connect add 15008 127.0.0.1:15001",
+									 "port add 15009 111.212.323.44/16 1500", "connect add 15009 127.0.0.1:15002",
+									 "port add 15010 111.212.323.44/16 1500", "connect add 15010 127.0.0.1:15003",
+									 "port add 15011 111.212.323.44/16 1500", "connect add 15011 127.0.0.1:15004",
+									 "port add 15012 111.212.323.44/16 1500", "connect add 15012 127.0.0.1:15005",
+									 "port add 15013 111.212.323.44/16 1500", "connect add 15013 127.0.0.1:15006",
 
 	};
 	
@@ -34,6 +41,7 @@ public class Router {
  	public Router() {
  		
  	}
+ 	
 	/*----------------------------------------------------------------------------------------*/
 	// program entry point
 	public static void main(String[] args) {
@@ -330,7 +338,10 @@ public class Router {
 //			System.out.println(t);
 //			System.out.println(VRMUtil.getCRCStr(s.getBytes()));
 
-
+			IPv4 srcIP = new IPv4("1.2.3.4");
+			IPv4 dstIP = new IPv4("5.6.7.8");
+			IPDatagram ipDatagram = new IPDatagram("hello world".getBytes(), (short) 0, srcIP, dstIP);
+			System.out.println(ipDatagram.toString());
 			
 		}
 		catch(Throwable e) {

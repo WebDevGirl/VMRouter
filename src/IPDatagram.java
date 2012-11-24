@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class IPDatagram {
 	
 	// class variables
-	private byte versionAndHLength;								// IPversion + header length
+	private ByteBuffer versionAndHLength = ByteBuffer.allocate(1);	// IPversion + header length
 	private byte typeOfService;									// not used set to 0
 	private ByteBuffer totalLength =  ByteBuffer.allocate(2);	// total packet length
 	private ByteBuffer ID =  ByteBuffer.allocate(2);			// packed id
@@ -30,7 +30,7 @@ public class IPDatagram {
 		}
 		
 		
-		this.versionAndHLength = 69;								// IPv4=4 HLen=5
+		this.versionAndHLength.put((byte) 69);						// IPv4=4 HLen=5
 		this.typeOfService = 0;										// not used
 		this.totalLength.putShort(0, (short) (20 + dataIn.length));	// total length of the packet
 		this.ID.putShort(0, id);									// packet ID
@@ -56,6 +56,16 @@ public class IPDatagram {
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
+	public byte[] toByteArray()
+	{
+
+		byte[] ipDatagram = new byte[totalLength.getShort(0)];
+		
+		
+		System.arraycopy(versionAndHLength, 0, ipDatagram, 0, 1);	// copy dst MAC	to frame
+
+		return "1234567890".getBytes();
+	}
 	/*----------------------------------------------------------------------------------------*/
 	// convert the contents of the IP
 	public String toString() {
@@ -64,7 +74,7 @@ public class IPDatagram {
 		t = new String(data);
 		// replace all non printable here
 		
-		s = "version and header length: " + versionAndHLength 			+ "\n" +
+		s = "version and header length: " + versionAndHLength.get()		+ "\n" +
 			"type of service:           " + typeOfService     			+ "\n" +
 			"total length:              " + totalLength.getShort(0) 	+ "\n" +
 			"packet ID:                 " + ID.getShort(0)				+ "\n" +
