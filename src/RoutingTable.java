@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 
 public class RoutingTable {
 	private ArrayList<IPv4[]> routeTable = new ArrayList<IPv4[]>();
-    private IPv4 defaultRoute;
+    private IPv4 defaultRoute = new IPv4("0.0.0.0");
     private IPv4 badIP = new IPv4("0.0.0.0");
 	
 	// constructor 
