@@ -361,11 +361,18 @@ public class Router {
 			byte[] ipArray = new byte[] {1,2,3,4};
 			System.out.println("port for ip is: " + portAdmin.getPort(ipArray) + "\n\n");
 			
-			
-			ByteBuffer ipBytes = ByteBuffer.allocate(4).putInt((int) (Long.reverse((long)Math.pow(2, 1) - 1) >>> 32));
 
-			System.out.println(Integer.toBinaryString(ipBytes.getInt(0)));
+			// make a 4 byte subnet byte buffer
+			int n = 8; // 8 bits
+			ByteBuffer ipBytes = ByteBuffer.allocate(4).putInt((int) (Long.reverse((long)Math.pow(2, n) - 1) >>> 32));
 
+			// make an array
+			byte[] t = ipBytes.array();
+
+			// print the bytes
+			for(int i = 0; i < 4; i++)
+				System.out.print(String.format("%8s", Integer.toBinaryString(t[i] & 255)).replace(' ','0') + " ");
+			System.out.println("");
 			
 		}
 		catch(Throwable e) {
