@@ -28,14 +28,6 @@ public class Router {
 									 "port add 15003 111.212.323.44/16 1500", "connect add 15003 127.0.0.1:15003",
 									 "port add 15004 111.212.323.44/16 1500", "connect add 15004 127.0.0.1:15004",
 									 "port add 15005 111.212.323.44/16 1500", "connect add 15005 127.0.0.1:15005",
-									 "port add 15006 111.212.323.44/16 1500", "connect add 15006 127.0.0.1:15006",
-									 "port add 15007 111.212.323.44/16 1500", "connect add 15007 127.0.0.1:15000",
-									 "port add 15008 111.212.323.44/16 1500", "connect add 15008 127.0.0.1:15001",
-									 "port add 15009 111.212.323.44/16 1500", "connect add 15009 127.0.0.1:15002",
-									 "port add 15010 111.212.323.44/16 1500", "connect add 15010 127.0.0.1:15003",
-									 "port add 15011 111.212.323.44/16 1500", "connect add 15011 127.0.0.1:15004",
-									 "port add 15012 111.212.323.44/16 1500", "connect add 15012 127.0.0.1:15005",
-									 "port add 15013 111.212.323.44/16 1500", "connect add 15013 127.0.0.1:15006",
 									 "route add 1.1.1.1/16 1.1.1.4", "route add 123.123.123.123/16 4.4.4.4",
 									 "route add 130.166.13.0/22 5.5.5.5", "route add 44.44.44.44/29 8.8.8.8",
 									 "route add default 13.13.13.13"
@@ -243,8 +235,8 @@ public class Router {
 			System.out.println("usage: route add <network ID/subnet bits> <virtual IP>");
 			System.out.println("usage: route del <network ID/subnet bits> <virtual IP>");
 			System.out.println(e.toString());
-		}		
-	}	/*----------------------------------------------------------------------------------------*/
+		}
+	}	
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	// print router settings 
@@ -359,11 +351,17 @@ public class Router {
 			IPv4 srcIP = new IPv4("1.2.3.4");
 			IPv4 dstIP = new IPv4("5.6.7.8");
 			IPDatagram ipDatagram = new IPDatagram("hello world".getBytes(), (short) 0, srcIP, dstIP);
+			System.out.println(ipDatagram.toString() + "\n");
+			System.out.println(ipDatagram.toHexString(ipDatagram.toByteArray()) + "\n");
+			IPDatagram ipDatagram2 = new IPDatagram(ipDatagram.toByteArray());
+			System.out.println(ipDatagram2.toHexString(ipDatagram2.toByteArray()) + "\n");
+			
 			System.out.println(ipDatagram.toString());
 			
 		}
 		catch(Throwable e) {
-			print("something went wrong with the test: " + e.getMessage() + "\n"); 
+			print("something went wrong with the test: ");
+			e.printStackTrace(); 
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
