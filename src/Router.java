@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 // import java.util.zip.CRC32;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
@@ -356,7 +357,15 @@ public class Router {
 			IPDatagram ipDatagram2 = new IPDatagram(ipDatagram.toByteArray());
 			System.out.println(ipDatagram2.toHexString(ipDatagram2.toByteArray()) + "\n");
 			
-			System.out.println(ipDatagram.toString());
+			
+			byte[] ipArray = new byte[] {1,2,3,4};
+			System.out.println("port for ip is: " + portAdmin.getPort(ipArray) + "\n\n");
+			
+			
+			ByteBuffer ipBytes = ByteBuffer.allocate(4).putInt((int) (Long.reverse((long)Math.pow(2, 1) - 1) >>> 32));
+
+			System.out.println(Integer.toBinaryString(ipBytes.getInt(0)));
+
 			
 		}
 		catch(Throwable e) {

@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -85,7 +86,21 @@ public class PortAdmin {
 		}	
 		try { finalize(); } catch (Throwable e) { e.printStackTrace(); }
 	}
-/*----------------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------*/
+	// match ip and return port number
+	public int getPort(byte[] ipArray) {
+		
+		Enumeration<Integer> keys = VRPorts.keys();
+
+		while(keys.hasMoreElements()) { 
+			Object key = keys.nextElement();
+			if( Arrays.equals(ipArray, VRPorts.get((Integer)key).getVirtualIP()))
+				return(VRPorts.get((Integer)key).getPortNum());
+		}
+		
+		return(-1);
+		
+	}/*----------------------------------------------------------------------------------------*/
 	public void connect(int portNo, String connectStr) {
 		
 		if(existsPort(portNo)) {

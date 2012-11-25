@@ -92,7 +92,7 @@ public class IPDatagram {
 		return ipDatagram;
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// return datagrtam as hex string
+	// return datagram as hex string
 	// human consumption only
 	public String toHexString(byte[] buffer) {
 		
