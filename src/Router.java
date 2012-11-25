@@ -77,24 +77,28 @@ public class Router {
 	// get command from console
 	private static String[] getCommand() {
 		
-		String inputString = null;
-		String[] ret;
+		String inputString = "";
+		String[] ret = new String[] {""};
 	
-		try {Thread.sleep(100);} catch (InterruptedException e) {}
+		try {Thread.sleep(50);} catch (InterruptedException e) {}
 		System.out.print("> ");
 		
-		try { inputString = console.readLine();} 
-		catch (IOException e) {
-			System.out.println(e.toString());
-		}
-		
-		// this will handle end of file for text file redirected input
-		try {
-			inputString = inputString.trim();
-			ret = inputString.split(" ");
-		}
+		try { 
+				inputString = console.readLine();               //////////////////////////////
+				if(inputString == null) {                       appQuit();  /////!!!!!!!!!!!!! 
+															    //////////////////////////////
+					console.close();
+					console = new BufferedReader(new InputStreamReader(System.in));
+				}
+				else {
+				
+					inputString = inputString.trim();
+					ret = inputString.split(" ");
+				}
+		} 
 		catch (Exception e) {
-			ret = " ".split(" ");
+			System.out.println(e.toString());
+			ret = new String[] {"EOF"};
 		}
 		
 		return ret;
