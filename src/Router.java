@@ -374,6 +374,9 @@ public class Router {
 				System.out.print(String.format("%8s", Integer.toBinaryString(t[i] & 255)).replace(' ','0') + " ");
 			System.out.println("");
 			
+			//-- Test nextRoute
+			routeTable.nextRoute(new IPv4("150.123.16.16"));
+			
 		}
 		catch(Throwable e) {
 			print("something went wrong with the test: ");

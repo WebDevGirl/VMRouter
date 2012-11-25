@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.nio.ByteBuffer;
 
 // RoutingTable Class
 // the class returns an IP of the next 'hop'
@@ -20,15 +22,52 @@ public class RoutingTable {
 	 */
 		
 	}
-	
 	/*----------------------------------------------------------------------------------------*/
 	public IPv4 nextRoute(IPv4 ip) {
 		//System.out.println("RoutingTable: ... search table for gateway for IP: " + ip.toString()); 
 		IPv4 gateway = null; 
 		
-		//-- Search for Gateway in Routing Table
-		//---- TODO loop through routeTable;
+		// Set IP Bytes
+		byte[] testIP = ip.getIP();
 		
+		
+		// Loop Through Routing Table Looking for Matching Network ID
+		for (IPv4[] ipRecord : routeTable) {
+			
+			//-- NetworkIP w/ Subnet Mask
+			IPv4 networkRec = ipRecord[0];
+			IPv4 gatewayRec = ipRecord[1];
+			
+			// Set Subnet Mask byte array in some magical way
+			ByteBuffer subnetMask = ByteBuffer.allocate(4).putInt((int) (Long.reverse((long)Math.pow(2, networkRec.IPSubBits) - 1) >>> 32));
+			byte []  subnet = new IPv4(subnetMask.array()).getIP();
+			
+			// Set NetworkID byte array to Match
+			byte [] networkID = networkRec.getIP();
+					
+			// Outcome IP Address
+			byte[]  testIPOutcome = new byte[4]; 
+			
+			for (int x = 0; x < 4; x ++){ 
+				testIPOutcome[x] = (byte) (testIP[x] & subnet[x]); 
+	        }
+			
+			/*
+			System.out.println(Integer.toBinaryString(subnetMask.getInt(0)));
+			System.out.println("subnetMaskBytes: " + new IPv4(subnetMaskBytes).toString());
+			System.out.println("networkID: " + new IPv4(networkID).toString());
+			System.out.println("testIP: " + ip.toString());
+			System.out.println("testIPOutcome: " + new IPv4(testIPOutcome).toString());
+			System.out.println("network: " + networkRec.toString());
+			System.out.println(networkRec.equals(new IPv4(testIPOutcome))); */
+						
+			if (networkRec.equals(new IPv4(testIPOutcome))) {
+				gateway = gatewayRec;
+			}
+			
+		}
+
+						
 		//-- Return Default if no ip found
 		if (gateway == null) {
 			//System.out.println("RoutingTable: ... no IP found, using default"); 
@@ -41,6 +80,7 @@ public class RoutingTable {
 			System.out.println("RoutingTable: errror no default route set"); 
 		}
 		
+		System.out.println("::: route the packet for " + ip.toString() + " to gateay: " +gateway.toString());
 		return gateway;
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -122,7 +162,8 @@ public class RoutingTable {
 	/*----------------------------------------------------------------------------------------*/
 	// Display table in our console. 
 	public void printTable() {
-		   int size = routeTable.size();
+		  	
+		int size = routeTable.size();
 		   
 		   System.out.println("");
 		   System.out.println("-------------------------------------------------------------------------------");
