@@ -14,6 +14,9 @@ public class Router {
 
 	// port admin class w/ 24 ports max
 	static PortAdmin portAdmin = new PortAdmin(24);
+	
+	// router table setup
+	static RoutingTable routeTable = new RoutingTable();
 
 	// reader for user input from console
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
@@ -33,6 +36,9 @@ public class Router {
 									 "port add 15011 111.212.323.44/16 1500", "connect add 15011 127.0.0.1:15004",
 									 "port add 15012 111.212.323.44/16 1500", "connect add 15012 127.0.0.1:15005",
 									 "port add 15013 111.212.323.44/16 1500", "connect add 15013 127.0.0.1:15006",
+									 "route add 1.1.1.1/16 1.1.1.4", "route add 123.123.123.123/16 4.4.4.4",
+									 "route add 130.166.13.0/22 5.5.5.5", "route add 44.44.44.44/29 8.8.8.8",
+									 "route add default 13.13.13.13"
 
 	};
 	
@@ -45,7 +51,7 @@ public class Router {
 	/*----------------------------------------------------------------------------------------*/
 	// program entry point
 	public static void main(String[] args) {
-
+		
 		// local variables
 		String[] command;
 		
@@ -211,23 +217,33 @@ public class Router {
 	}
 	/*----------------------------------------------------------------------------------------*/
 	private static void route(String[] command) {
-		
 		try {
-			switch(command[1]){
-			case "add" : System.out.println("command: " + command[0] + " " + command[1] + " " +
-								command[2] + " " + command[3]);
-						 break;
-			case "del" : System.out.println("command: " + command[0] + " " + command[1] + " " +
-						    command[2] + " " + command[3]);
-						 break;
-			default    : throw new Exception();
+			
+			System.out.println("command: " + command[0] + " " + command[1] + " " +
+					command[2] + " " + command[3]);
+
+			String networkID = command[2];
+			String gatewayIP = command[3];
+			
+			if (command[2].trim().equals("default")) {
+				// Add default route to routing table
+				routeTable.addDefaultRoute(gatewayIP);
+			} else {
+				// Add new route to Routing Table
+				switch(command[1]){
+				case "add" : routeTable.addRoute(networkID, gatewayIP);
+							 break;
+				case "del" : routeTable.delRoute(networkID, gatewayIP); 
+							 break;
+				default    : throw new Exception();
+				}
 			}
 		}
 		catch (Exception e){
 			System.out.println("usage: route add <network ID/subnet bits> <virtual IP>");
 			System.out.println("usage: route del <network ID/subnet bits> <virtual IP>");
 			System.out.println(e.toString());
-		}
+		}		
 	}	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
@@ -250,6 +266,8 @@ public class Router {
 		System.out.println("\nMAC                   port  virtual IP      MTU    remote IP     : port  conn");
 		System.out.println("_______________________________________________________________________________");
 		System.out.println(portAdmin.getAllPortsConfig());
+		
+		routeTable.printTable();
 		
 		// router settings
 
