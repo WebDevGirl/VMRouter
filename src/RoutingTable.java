@@ -80,7 +80,7 @@ public class RoutingTable {
 			System.out.println("RoutingTable: errror no default route set"); 
 		}
 		
-		System.out.println("::: route the packet for " + ip.toString() + " to gateay: " +gateway.toString());
+		System.out.println("RoutingTable: route the packet for " + ip.toString() + " to gateay: " +gateway.toString());
 		return gateway;
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -93,19 +93,11 @@ public class RoutingTable {
 		
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// Add route to Routing Table
-	public void addRoute(IPv4 networkID, IPv4 gatewayIP) {
-	
-		 IPv4[] ipArr = new IPv4[2];
-		 
-		 ipArr[0] = networkID;
-		 ipArr[1] = gatewayIP;
-		 
-		//-- Add record to table 
-		routeTable.add(ipArr);
-		
+	// Delete Default Route
+	public void delDefaultRoute() {
+		defaultRoute = null;			
 	}
-	
+	/*----------------------------------------------------------------------------------------*/
 	public void addRoute(String network, String gateway) {
 		
 		IPv4 networkID = new IPv4(network);
