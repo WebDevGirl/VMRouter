@@ -23,7 +23,7 @@ public class Router {
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 	
 	// startup commands
-	static String[] defaultCom = {   "port add 15000 111.212.323.44/16 1500", "connect add 15000 127.0.0.1:15000",
+/*	static String[] defaultCom = {   "port add 15000 111.212.323.44/16 1500", "connect add 15000 127.0.0.1:15000",
 									 "port add 15001 111.212.323.44/16 1500", "connect add 15001 127.0.0.1:15001",
 									 "port add 15002 111.212.323.44/16 1500", "connect add 15002 127.0.0.1:15002",
 									 "port add 15003 111.212.323.44/16 1500", "connect add 15003 127.0.0.1:15003",
@@ -34,7 +34,7 @@ public class Router {
 									 "route add default 13.13.13.13"
 
 	};
-	
+	*/
 	
  	// constructor 
  	public Router() {
@@ -52,11 +52,11 @@ public class Router {
 		print("Virtual router 1.0\n");
 		print("type help for list of commands\n\n");
 		
-		// run the built in startup commands
+/*		// run the built in startup commands
 		for(int i = 0; i < defaultCom.length; i++) {
 			doCommand(defaultCom[i].split(" "));
 			try {Thread.sleep(50);} catch (InterruptedException e) {}
-		}
+		}*/
 
 		// try {Thread.sleep(100);} catch (InterruptedException e) {}
 	
@@ -78,6 +78,7 @@ public class Router {
 	private static String[] getCommand() {
 		
 		String inputString = null;
+		String[] ret;
 	
 		try {Thread.sleep(100);} catch (InterruptedException e) {}
 		System.out.print("> ");
@@ -87,8 +88,15 @@ public class Router {
 			System.out.println(e.toString());
 		}
 		
-		inputString = inputString.trim();
-		String[] ret = inputString.split(" ");
+		// this will handle end of file for text file redirected input
+		try {
+			inputString = inputString.trim();
+			ret = inputString.split(" ");
+		}
+		catch (Exception e) {
+			ret = " ".split(" ");
+		}
+		
 		return ret;
 	}
 	/*----------------------------------------------------------------------------------------*/
