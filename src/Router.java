@@ -36,11 +36,6 @@ public class Router {
 	};
 	*/
 	
- 	// constructor 
- 	public Router() {
- 		
- 	}
- 	
 	/*----------------------------------------------------------------------------------------*/
 	// program entry point
 	public static void main(String[] args) {
@@ -74,14 +69,14 @@ public class Router {
 		System.out.print(s);
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// get command from console
+	// get command from stdin
 	private static String[] getCommand() {
 		
 		String inputString = "";
 		String[] ret = new String[] {""};
 	
 		try {Thread.sleep(50);} catch (InterruptedException e) {}
-		System.out.print("> ");
+		System.out.print(System.getProperty("user.dir") + " :) ");
 		
 		try { 
 				inputString = console.readLine();               //////////////////////////////
@@ -123,9 +118,8 @@ public class Router {
 		case "include"	: loadSettings(command);	break;
 		case "t"		: testSomething();			break;
 		case "quit" 	: appQuit();				break;
-		case "dir" 		: dir(command);				break;
 		case "q" 		: appQuit();				break;
-		default     	: System.out.println("unknown command: " + command[0]);
+		default     	: sysCmd(command);					// shell commands
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -145,7 +139,7 @@ public class Router {
 		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
 		 System.out.println("usend <local port> <str>                             ");
 		 System.out.println("asend <str>                                          ");
-		 System.out.println("dir (windows only)                                   ");
+		 System.out.println("<system command> | <options>                         ");
 		 System.out.println("quit                                                 ");
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -304,28 +298,36 @@ public class Router {
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
-	private static void dir(String[] command) {
-		
-		
-		try {
-				Process p=Runtime.getRuntime().exec("cmd /c dir " ); 
-				p.waitFor(); 
-				BufferedReader reader=new BufferedReader(new InputStreamReader(p.getInputStream())); 
-				String s=reader.readLine(); 
-				while ((s = reader.readLine()) != null) 
-				        System.out.println(s);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-	}
 	/*----------------------------------------------------------------------------------------*/
+	private static void sysCmd(String[] command) {
+		
+		Process p;
+		String cmd = "";
+		String sp = System.getProperty("os.name");
+		
+		if(sp.startsWith("Windows"))
+			cmd = "cmd /c ";								// windows only
+		
+		for(int i = 0; i < command.length; i++) 
+			cmd += " " + command[i];
+		System.out.println(sp + ": " + cmd);
+
+		try {
+			p = Runtime.getRuntime().exec(cmd);
+			p.waitFor();
+			BufferedReader reader=new BufferedReader(new InputStreamReader(p.getInputStream())); 
+			String s = reader.readLine();
+			while ((s = reader.readLine()) != null) 
+		        System.out.println(s);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
+		 catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	// exit application properly
