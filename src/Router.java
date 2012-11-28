@@ -123,6 +123,7 @@ public class Router {
 		case "include"	: loadSettings(command);	break;
 		case "t"		: testSomething();			break;
 		case "quit" 	: appQuit();				break;
+		case "dir" 		: dir(command);				break;
 		case "q" 		: appQuit();				break;
 		default     	: System.out.println("unknown command: " + command[0]);
 		}
@@ -144,6 +145,7 @@ public class Router {
 		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
 		 System.out.println("usend <local port> <str>                             ");
 		 System.out.println("asend <str>                                          ");
+		 System.out.println("dir (windows only)                                   ");
 		 System.out.println("quit                                                 ");
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -302,6 +304,27 @@ public class Router {
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
+	private static void dir(String[] command) {
+		
+		
+		try {
+				Process p=Runtime.getRuntime().exec("cmd /c dir " ); 
+				p.waitFor(); 
+				BufferedReader reader=new BufferedReader(new InputStreamReader(p.getInputStream())); 
+				String s=reader.readLine(); 
+				while ((s = reader.readLine()) != null) 
+				        System.out.println(s);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
@@ -387,9 +410,12 @@ public class Router {
 			System.out.println("");
 			
 			//-- Test nextRoute
+			System.out.println("test route for 150.123.16.16");
 			routeTable.nextRoute(new IPv4("150.123.16.16"));
 			
+
 		}
+		
 		catch(Throwable e) {
 			print("something went wrong with the test: ");
 			e.printStackTrace(); 
