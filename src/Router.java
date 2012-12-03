@@ -47,6 +47,14 @@ public class Router {
 		print("Virtual router 1.0\n");
 		print("type help for list of commands\n\n");
 		
+		// process first command line arg
+		if(args.length >= 1) {
+			String[] comm = { "include", args[0] };
+			System.out.println("processing " + comm[0] + " " + comm[1]);
+			doCommand(comm);
+		}
+			
+		
 /*		// run the built in startup commands
 		for(int i = 0; i < defaultCom.length; i++) {
 			doCommand(defaultCom[i].split(" "));
