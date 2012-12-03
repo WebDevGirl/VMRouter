@@ -45,7 +45,7 @@ public class EthernetFrame {
 		this.srcAddr.setMac(Arrays.copyOfRange(frameIn, 0, 6));					// extract dstMAC
 		this.dstAddr.setMac(Arrays.copyOfRange(frameIn, 6, 12));				// extract scrMAC
 		typeLength.put(Arrays.copyOfRange(frameIn, 12, 14));					// extract t/l
-		setData(Arrays.copyOfRange(frameIn, 14, getTypeLength() + 14));			// extract data
+		setData(Arrays.copyOfRange(frameIn, 14, frameIn.length - 4));			// extract data
 		CRC.put(Arrays.copyOfRange(frameIn, frameIn.length-4, frameIn.length));	// extract CRC	
 			
 	}
@@ -87,8 +87,10 @@ public class EthernetFrame {
 		
 		byte[] pad = new byte[DATA_PAD_LEN];					// all 0 pad
 		
-		if(data.length > DATA_MAX_LEN)
+		if(data.length > DATA_MAX_LEN) {
 			System.out.println("frame data buffer exeeds max length: " + DATA_MAX_LEN);
+			
+		}
 		
 		else if(data.length < DATA_PAD_LEN) {
 			System.arraycopy(data, 0, pad, 0, data.length);		// pad if data length < DATA_PAD_LEN
