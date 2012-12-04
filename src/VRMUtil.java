@@ -17,6 +17,15 @@ public class VRMUtil {
 		return (byte) (Integer.reverse((int) byteIn) >>> 24);
 	}
 	/*----------------------------------------------------------------------------------------*/
+	// reverse bits in each byte byteIn
+	// return new array
+	static public void reverseArrayBits(byte[] bytesIn) {
+		
+		for(int i = 0; i < bytesIn.length; i++)
+			bytesIn[i] = reverseByte(bytesIn[i]);
+		
+	}
+	/*----------------------------------------------------------------------------------------*/
 	// return an array with 6 random bytes
 	public static byte[] getRandomdMac() {
 		
@@ -33,11 +42,20 @@ public class VRMUtil {
 	public static int getCRC(byte[] data) {
 		
 		CRC32 testCRC = new CRC32();
+		int ret;
 		
+//		reverseArrayBits(data);
+//		invertFirst32(data);
+
 		testCRC.reset();
 		testCRC.update(data);
-		// System.out.println("long value: " + testCRC.getValue());	
-		return (int)testCRC.getValue();
+		System.out.println("long value: " + Long.toHexString(testCRC.getValue()));	
+		ret = (int)testCRC.getValue();
+		
+//		invertFirst32(data);
+//		reverseArrayBits(data);
+
+		return ret /*^ 0xffffffff*/;
 		
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -67,12 +85,30 @@ public class VRMUtil {
 		crc.put(Arrays.copyOfRange(data, data.length-4, data.length));		// extract CRC
 		frame = Arrays.copyOfRange(data, 0, data.length-4);					// remove CRC from frame
 		
-		invertFirst32(frame);
 		boolean ret = (crc.getInt(0) == getCRC(frame));						// compare CRCs
-		invertFirst32(frame);
 
 		return ret;
 	}
 	/*----------------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------*/
+	// test crc
+    public static byte[] crcByLibrary(byte[] bytes)
+    {
+            java.util.zip.CRC32 crc = new java.util.zip.CRC32();
+                    crc.update(bytes);
+                    //System.out.println("CRC32 (via Java's library)     = " + Long.toHexString(x.getValue()));
+           
+                    byte[] check = java.math.BigInteger.valueOf(crc.getValue() ^ 0xffffffff).toByteArray();
+                    byte[] finalcheck = new byte[4];
+                    for (int x = 0; x < 4; x++)
+                    {
+                            if (check.length > x)
+                            finalcheck[x] = check[check.length-1-x];
+                           
+                    }
+                    return finalcheck;
+    }
+
+		/*----------------------------------------------------------------------------------------*/
 
 }

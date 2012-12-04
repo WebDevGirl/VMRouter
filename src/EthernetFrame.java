@@ -160,14 +160,11 @@ public class EthernetFrame {
 		System.arraycopy(dstAddr.getMacArray(), 0, frame, 6, 6);	// copy scr MAC to frame
 		System.arraycopy(typeLength.array(), 0, frame, 12, 2);		// copy l/t to frame
 		System.arraycopy(data, 0, frame, 14, dataLength );			// copy data to frame
-		VRMUtil.invertFirst32(frame);								// compliment first 32 bits here
-		this.CRC.putInt(0, VRMUtil.getCRC(Arrays.copyOfRange(frame, 0, totLength-4)));
-		VRMUtil.invertFirst32(frame);								// compliment first 32 bits here
+		this.CRC.putInt(0, VRMUtil.getCRC(Arrays.copyOfRange(frame, 0, totLength-4)));	// calc CRC
 		System.arraycopy(CRC.array(), 0, frame, 14+dataLength, 4);	// copy CRC to frame
 		// reverse bits here
 		
 		return frame;
 	}
-		/*----------------------------------------------------------------------------------------*/
 
 }

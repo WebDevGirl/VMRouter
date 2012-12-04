@@ -11,3 +11,5 @@ the shell now executes some system commands: ls,dir with options
 Added command line processing. The command line now may include a 
 parameter naming a file with commands. The command line parameter is processed as an include.
 Ex: java -jar vrm.jar setup
+
+12/3/12
