@@ -83,7 +83,7 @@ public class Router {
 		String[] ret = new String[] {""};
 	
 		try {Thread.sleep(50);} catch (InterruptedException e) {}
-		System.out.print(System.getProperty("user.dir") + ":) ");
+		System.out.print("\n" + System.getProperty("user.dir") + ":) ");
 		
 		try { 
 				inputString = console.readLine();               //////////////////////////////
@@ -112,6 +112,7 @@ public class Router {
 		if(command[0].length() == 0)								// empty, do nothing 
 			return;
 		
+		System.out.println("");
 		switch(command[0]){
 		
 		case "help" 	: showHelp();				break;
@@ -431,9 +432,7 @@ public class Router {
 			System.out.println(frame.toHexString(frame.toByteArray()));
 			System.out.println(frame.toString());
 			
-			System.out.println("textcrc");
-			byte[] t4 = VRMUtil.crcByLibrary(bytes2);
-			System.out.println(String.format("%02x:%02x:%02x:%02x", t4[0],t4[1],t4[2],t4[3]));
+			System.out.println("sample data:" + VRMUtil.getSampleData(1024));
 			
 			
 

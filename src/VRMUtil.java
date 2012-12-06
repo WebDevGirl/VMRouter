@@ -90,25 +90,35 @@ public class VRMUtil {
 		return ret;
 	}
 	/*----------------------------------------------------------------------------------------*/
+	// return some sample data
+	// truncates to
+	public static String getSampleData(int dataLength) {
+		
+		int a,b;
+		String data = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		String ret = "";
+		
+		try {
+			if(dataLength > 1024) {
+				dataLength = 1024;
+				System.out.println("VRMUtil: sample data length reduced to " + dataLength);
+			}
+			
+			a = dataLength / 26;
+			b = dataLength % 26;
+			for(int i = 0; i < a; i++)
+				ret += data;
+			ret += new String(Arrays.copyOfRange(data.getBytes(), 0, b));
+		} catch (Exception e) {
+			// unspecified error
+			System.out.println("VRMUtil: can't produce sample data");
+			return null;
+		}	
+		
+		System.out.println("created " + ret.length() + " bytes of sample data");
+		return ret;
+	}
 	/*----------------------------------------------------------------------------------------*/
-	// test crc
-    public static byte[] crcByLibrary(byte[] bytes)
-    {
-            java.util.zip.CRC32 crc = new java.util.zip.CRC32();
-                    crc.update(bytes);
-                    //System.out.println("CRC32 (via Java's library)     = " + Long.toHexString(x.getValue()));
-           
-                    byte[] check = java.math.BigInteger.valueOf(crc.getValue() ^ 0xffffffff).toByteArray();
-                    byte[] finalcheck = new byte[4];
-                    for (int x = 0; x < 4; x++)
-                    {
-                            if (check.length > x)
-                            finalcheck[x] = check[check.length-1-x];
-                           
-                    }
-                    return finalcheck;
-    }
-
-		/*----------------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------*/
 
 }
