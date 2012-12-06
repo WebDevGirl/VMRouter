@@ -144,6 +144,7 @@ public class RoutingTable {
 			// Remove record if match found
 			if(rtIndex > -1) {
 				routeTable.remove(rtIndex);
+				System.out.println("route " + network + " to " + gateway + " removed");
 			} else { 
 				// No match found
 				System.out.println("No record found in routing table");
