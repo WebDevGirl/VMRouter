@@ -4,10 +4,11 @@ VMRouter
 Comp 429 - Networking Virtual Router Class Project
 
 =============================================================================================
-Note: for now the program exits after it's done processing commands if redirecting the input 
-with < 
+12/6/12
+Added method to VRMUtil to create sample data. Max 1024 bytes
 =============================================================================================
-The router shell now executes system commands either in Windows or Linux i.e. ls, dir /?
+The router shell now executes system commands either in Windows or Linux i.e. ls, dir options
+are passed to the system as well. 
 Note: some commands are meaningless since a new temporary command shell has to be invoked
 for example: trying to change directories has no effect on the current runtime environment
 since it was executed in a temporary shell 
@@ -17,8 +18,8 @@ Added command line processing. The command line may include a parameter naming a
 commands. The command line parameter is processed as an include command
 Ex: java -jar vrm.jar setup
 =============================================================================================
-12/6/12
-Added method to VRMUtil to create sample data. Max 1024 bytes
+Note: for now the program exits after it's done processing commands if redirecting the input 
+with < 
 =============================================================================================
 =============================================================================================
 =============================================================================================
