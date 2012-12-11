@@ -13,10 +13,10 @@ public class Router {
 
 
 	// port admin class w/ 24 ports max
-	static PortAdmin portAdmin = new PortAdmin(24);
+	static PortAdmin portAdmin = new PortAdmin(48);
 	
 	// router table setup
-	static RoutingTable routeTable = new RoutingTable();
+	static RoutingTable routeTable = new RoutingTable(1024);
 
 	// reader for user input from console
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
@@ -86,11 +86,11 @@ public class Router {
 		System.out.print("\n" + System.getProperty("user.dir") + ":) ");
 		
 		try { 
-				inputString = console.readLine();               //////////////////////////////
-				if(inputString == null) {                       appQuit();  /////!!!!!!!!!!!!! 
-															    //////////////////////////////
-					console.close();
-					console = new BufferedReader(new InputStreamReader(System.in));
+				inputString = console.readLine();              
+				if(inputString == null) {                       
+					//////////////////////////////										    
+					appQuit();  /////!!!!!!!!!!!!!  TODO
+					//////////////////////////////
 				}
 				else {
 				
@@ -112,6 +112,9 @@ public class Router {
 		if(command[0].length() == 0)								// empty, do nothing 
 			return;
 		
+		if(command[0].startsWith("//"))								// comment, do nothing
+			return;
+		
 		System.out.println("");
 		switch(command[0]){
 		
@@ -124,6 +127,7 @@ public class Router {
 		case "usend"	: uSend(command);			break;
 		case "asend"	: aSend(command);			break;
 		case "include"	: loadSettings(command);	break;
+		case "troute"	: testRoute(command);		break;
 		case "t"		: testSomething();			break;
 		case "quit" 	: appQuit();				break;
 		case "q" 		: appQuit();				break;
@@ -147,6 +151,7 @@ public class Router {
 		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
 		 System.out.println("usend <local port> <str>                             ");
 		 System.out.println("asend <str>                                          ");
+		 System.out.println("troute ip                                            ");
 		 System.out.println("<system command> | <options>                         ");
 		 System.out.println("quit                                                 ");
 	}
@@ -187,7 +192,7 @@ public class Router {
 			System.out.println("usage: connect add <local port> <remote IP:port>");
 			System.out.println("usage: connect del <local port>");
 			System.out.println("usage: connect dela (delete all connections)");
-			System.out.println(e.toString());
+			// System.out.println(e.toString());
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -212,6 +217,11 @@ public class Router {
 			System.out.println("usage: usend <port> <str>");
 			System.out.println(e.toString());
 		}
+	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void testRoute(String[] command) {
+	
+		routeTable.nextRoute(new IPv4(command[1]));
 	}
 	/*----------------------------------------------------------------------------------------*/
 	private static void aSend(String[] command) {
@@ -251,7 +261,7 @@ public class Router {
 		catch (Exception e){
 			System.out.println("usage: route add <network ID/subnet bits> <virtual IP>");
 			System.out.println("usage: route del <network ID/subnet bits> <virtual IP>");
-			System.out.println(e.toString());
+			// System.out.println(e.toString());
 		}
 	}	
 	/*----------------------------------------------------------------------------------------*/
@@ -419,10 +429,7 @@ public class Router {
 				System.out.print(String.format("%8s", Integer.toBinaryString(t[i] & 255)).replace(' ','0') + " ");
 			System.out.println("");
 			
-			//-- Test nextRoute
-			System.out.println("test route for 150.123.16.16");
-			routeTable.nextRoute(new IPv4("150.123.16.16"));
-			System.out.println("\n\n");
+
 			
 			byte[] bytes  = new byte[] {0x00,0x10,(byte) 0xA4,0x7B,(byte) 0xEA,(byte) 0x80,0x00,0x12,0x34,0x56,0x78,(byte) 0x90,0x08,0x00,0x45,0x00,0x00,0x2E,(byte) 0xB3,(byte) 0xFE,0x00,0x00,(byte) 0x80,0x11,0x05,0x40,(byte) 0xC0,(byte) 0xA8,0x00,0x2C,(byte) 0xC0,(byte) 0xA8,0x00,0x04,0x04,0x00,0x04,0x00,0x00,0x1A,0x2D,(byte) 0xE8,0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F,0x10,0x11,(byte) 0xE6,(byte) 0xC5,0x3D,(byte) 0xB2};
 			byte[] bytes2 = new byte[] {0x00,0x10,(byte) 0xA4,0x7B,(byte) 0xEA,(byte) 0x80,0x00,0x12,0x34,0x56,0x78,(byte) 0x90,0x08,0x00,0x45,0x00,0x00,0x2E,(byte) 0xB3,(byte) 0xFE,0x00,0x00,(byte) 0x80,0x11,0x05,0x40,(byte) 0xC0,(byte) 0xA8,0x00,0x2C,(byte) 0xC0,(byte) 0xA8,0x00,0x04,0x04,0x00,0x04,0x00,0x00,0x1A,0x2D,(byte) 0xE8,0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F,0x10,0x11};
@@ -434,8 +441,15 @@ public class Router {
 			
 			System.out.println("sample data:" + VRMUtil.getSampleData(1024));
 			
-			
+			//-- Test nextRoute
+			System.out.println("test route for 150.128.0.0");
+			routeTable.nextRoute(new IPv4("150.128.0.0"));
 
+			System.out.println("test route for 150.129.0.0");
+			routeTable.nextRoute(new IPv4("150.129.0.0"));
+			
+			System.out.println("test route for 150.130.0.0");
+			routeTable.nextRoute(new IPv4("150.130.0.0"));
 		}
 		
 		catch(Throwable e) {

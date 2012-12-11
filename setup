@@ -1,14 +1,26 @@
+// router test setup
+
 port add 5010 1.2.3.4/16 1400
 port add 5011 1.2.3.4/16 1400
 port add 5012 1.2.3.4/16 1400
 port add 5013 1.2.3.4/16 1400
 port add 5014 1.2.3.4/16 1400
 port add 5015 1.2.3.4/16 1400
+
 connect add 5010 192.168.1.106:5010
 connect add 5011 192.168.1.106:5011
 connect add 5012 192.168.1.106:5012
 connect add 5013 192.168.1.100:5010
 connect add 5014 192.168.1.100:5011
 connect add 5015 192.168.1.100:5012
-route add 150.123.16.16/24 1.2.3.4
-route add 150.123.16.16/16 5.5.5.5
+
+// add some routes
+
+route add 150.129.0.0/9 1.2.3.4
+route add 150.129.0.0/8 2.2.2.2
+route add 150.130.0.0/16 3.3.3.3
+route add 150.129.0.0/16 5.5.5.5
+
+// test a route
+
+troute 150.129.0.0

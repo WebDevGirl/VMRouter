@@ -27,6 +27,11 @@ public class PortAdmin {
 	// add port
 	public void addPort(int portNo, String myIP, int mtu) {
 		
+		if(VRPorts.size() == maxPorts) {
+			
+			System.out.println("Maximum ports: " + maxPorts);
+			return;
+		}
 		
 		if(existsPort(portNo)) {
 			System.out.println("port " + portNo + " exists");

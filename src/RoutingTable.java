@@ -10,9 +10,14 @@ public class RoutingTable {
 	private ArrayList<IPv4[]> routeTable = new ArrayList<IPv4[]>();
     private IPv4 defaultRoute = new IPv4("0.0.0.0");
     private IPv4 badIP = new IPv4("0.0.0.0");
+    
+    // maximum number of routes not including default route
+    private int maxRoutes;							
 	
 	// constructor 
-	public RoutingTable() {
+	public RoutingTable(int maxRoutes) {
+		
+		this.maxRoutes = maxRoutes;
 		
 	/*
 	 	RoutingTable rt = new RoutingTable();
@@ -86,6 +91,7 @@ public class RoutingTable {
 	/*----------------------------------------------------------------------------------------*/
 	// Add the default route to Routing Table
 	public void addDefaultRoute(String route) {
+		
 		IPv4 ipRoute = new IPv4(route);
 		if (!ipRoute.equals(badIP)) {
 			defaultRoute = new IPv4(route);
@@ -95,6 +101,7 @@ public class RoutingTable {
 	/*----------------------------------------------------------------------------------------*/
 	// Delete Default Route
 	public void delDefaultRoute() {
+		
 		defaultRoute = null;			
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -103,6 +110,11 @@ public class RoutingTable {
 		IPv4 networkID = new IPv4(network);
 		IPv4 gatewayIP = new IPv4(gateway);
 		
+		// check if table full
+		if(routeTable.size() >= maxRoutes) {
+			System.out.println("Routing table max entries: " + maxRoutes);
+			return;
+		}
 		
 		if (networkID.equals(badIP) || networkID.IPSubBits == 0 || gatewayIP.equals(badIP)) {
 			System.out.println("RT Error: Need a valid networkID with subnet mask and a valid gateway");

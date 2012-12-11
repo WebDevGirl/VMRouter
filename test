@@ -1,46 +1,22 @@
- Volume in drive D has no label.
- Volume Serial Number is 748D-07AC
+ Volume in drive C has no label.
+ Volume Serial Number is 3CAF-52AB
 
- Directory of D:\EclipsePortable\Data\workspace\VMRouter
+ Directory of C:\EclipsePortable\VMRouter\VMRouter
 
-11/28/2012  02:50 AM    <DIR>          .
-11/28/2012  02:50 AM    <DIR>          ..
-11/23/2012  09:38 PM               295 .classpath
-11/23/2012  09:38 PM             6,148 .DS_Store
-11/27/2012  10:28 PM    <DIR>          .git
-11/24/2012  10:16 PM               169 .gitignore
-10/30/2012  09:43 PM               367 .project
-11/23/2012  09:38 PM    <DIR>          .settings
-11/26/2012  01:23 AM    <DIR>          bin
-11/23/2012  09:38 PM                37 default
-11/28/2012  02:30 AM               136 README.md
-11/23/2012  09:38 PM                18 s.sh
-11/09/2012  01:51 AM               410 setup
-11/27/2012  10:28 PM    <DIR>          src
-11/28/2012  02:50 AM                 0 test
-               9 File(s)          7,580 bytes
-               6 Dir(s)  236,280,741,888 bytes free
- Volume in drive D has no label.
- Volume Serial Number is 748D-07AC
-
- Directory of D:\EclipsePortable\Data\workspace\VMRouter
-
-11/28/2012  02:50 AM    <DIR>          .
-11/28/2012  02:50 AM    <DIR>          ..
-11/23/2012  09:38 PM               295 .classpath
-11/23/2012  09:38 PM             6,148 .DS_Store
-11/27/2012  10:28 PM    <DIR>          .git
-11/24/2012  10:16 PM               169 .gitignore
-10/30/2012  09:43 PM               367 .project
-11/23/2012  09:38 PM    <DIR>          .settings
-11/26/2012  01:23 AM    <DIR>          bin
-11/23/2012  09:38 PM                37 default
-11/28/2012  02:30 AM               136 README.md
-11/23/2012  09:38 PM                18 s.sh
-11/09/2012  01:51 AM               410 setup
-11/27/2012  10:28 PM    <DIR>          src
-11/28/2012  02:50 AM               935 test
-               9 File(s)          8,515 bytes
-               6 Dir(s)  236,280,741,888 bytes free
-ce:45:1d:a6
-4c:ce:77:e4
+12/03/2012  02:55 PM    <DIR>          .
+12/03/2012  02:55 PM    <DIR>          ..
+11/27/2012  06:32 PM               295 .classpath
+11/27/2012  06:32 PM             6,148 .DS_Store
+12/10/2012  02:53 PM    <DIR>          .git
+11/27/2012  06:32 PM               169 .gitignore
+10/19/2012  06:20 PM               367 .project
+11/27/2012  06:32 PM    <DIR>          .settings
+12/10/2012  02:53 PM    <DIR>          bin
+11/27/2012  06:32 PM                37 default
+12/10/2012  04:19 PM             3,392 README.md
+11/27/2012  06:32 PM                18 s.sh
+12/10/2012  04:02 PM               631 setup
+12/03/2012  02:55 PM    <DIR>          src
+12/10/2012  04:19 PM                 0 test
+               9 File(s)         11,057 bytes
+               6 Dir(s)  200,809,725,952 bytes free

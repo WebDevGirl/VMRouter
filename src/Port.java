@@ -34,7 +34,7 @@ public class Port {
 //		InetAddress inetAddress = InetAddress.getByName("0.0.0.0");
 //		this.datagramSocket = new DatagramSocket(localPort, inetAddress);		// used by writer & listener class
 		this.datagramSocket = new DatagramSocket(localPort);
-		this.localPort = localPort;									// port on this PC
+		this.localPort = localPort & 65535;							// port on this PC max 65535
 		this.virtualIP = new IPv4(myIP);							// this ports' virtual IP
 		this.MTU = mtu;												// this ports (segment) MTU
 		

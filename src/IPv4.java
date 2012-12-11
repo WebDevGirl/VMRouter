@@ -20,8 +20,8 @@ public class IPv4 {
 	public IPv4(String ipIn) {
 		
 		
-		String[] srcStr = ipIn.split("/");								// for port
-		String[] IPStr = srcStr[0].split("\\.");							// split at literal '.' (period)
+		String[] srcStr = ipIn.split("/");							// for port
+		String[] IPStr = srcStr[0].split("\\.");					// split at literal '.' (period)
 		if(IPStr.length != 4)
 			System.out.println("IPv4 need: ddd.ddd.ddd.ddd"); 		// throw exception here
 		else
@@ -34,7 +34,7 @@ public class IPv4 {
 			}
 		
 		if(srcStr.length == 2)
-			IPSubBits = Integer.parseInt(srcStr[1]);
+			IPSubBits = Integer.parseInt(srcStr[1]) & 31;			// subnet int max = 31
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// constructor takes 4 byte array[]
