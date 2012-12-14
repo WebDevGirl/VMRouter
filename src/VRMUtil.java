@@ -90,8 +90,8 @@ public class VRMUtil {
 		return ret;
 	}
 	/*----------------------------------------------------------------------------------------*/
-	// return some sample data
-	// truncates to
+	// return some sample data a string of length dataLength
+	// truncates to 1024 bytes
 	public static String getSampleData(int dataLength) {
 		
 		int a,b;

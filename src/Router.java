@@ -53,6 +53,7 @@ public class Router {
 			doCommand(comm);
 		}
 			
+		doCommand("include setup".split(" "));
 		
 /*		// run the built in startup commands
 		for(int i = 0; i < defaultCom.length; i++) {
@@ -129,10 +130,22 @@ public class Router {
 		case "include"	: loadSettings(command);	break;
 		case "troute"	: testRoute(command);		break;
 		case "t"		: testSomething();			break;
+		case "sleep"	: sleep(command);			break;
 		case "quit" 	: appQuit();				break;
 		case "q" 		: appQuit();				break;
 		default     	: sysCmd(command);					// shell commands
 		}
+	}
+	/*----------------------------------------------------------------------------------------*/
+	private static void sleep(String[] command) {
+		// TODO Auto-generated method stub
+		try {
+			Thread.sleep(Integer.parseInt(command[1]));
+		} catch (NumberFormatException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			System.out.println("usage: sleep <miliseconds>");
+			e.printStackTrace();
+		}	
 	}
 	/*----------------------------------------------------------------------------------------*/
 	private static void showHelp(){
@@ -146,8 +159,8 @@ public class Router {
 		 System.out.println("connect add <local real port> <remote Real IP:port>  ");
 		 System.out.println("connect del <port number>                            ");
 		 System.out.println("connect dela  (delete all connections)               ");
-		 System.out.println("route add <network ID/subnet bits> <virtual IP>      ");
-		 System.out.println("route del <network ID/subnet bits> <virtual IP>      ");
+		 System.out.println("route add [<network ID/bits> | default] <virtual IP> ");
+		 System.out.println("route del <network ID/bits> <virtual IP>             ");
 		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
 		 System.out.println("usend <local port> <str>                             ");
 		 System.out.println("asend <str>                                          ");
@@ -173,6 +186,7 @@ public class Router {
 			System.out.println("usage: port del <port number>");
 			System.out.println("usage: port dela (delete all ports)");
 			System.out.println(e.toString());
+			e.printStackTrace();
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -221,7 +235,8 @@ public class Router {
 	/*----------------------------------------------------------------------------------------*/
 	private static void testRoute(String[] command) {
 	
-		routeTable.nextRoute(new IPv4(command[1]));
+		IPv4 testIP = routeTable.nextRoute(new IPv4(command[1]));
+		System.out.println("port to route " + testIP.toString() + " is " + portAdmin.getPort(testIP.IPArray));
 	}
 	/*----------------------------------------------------------------------------------------*/
 	private static void aSend(String[] command) {

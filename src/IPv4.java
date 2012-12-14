@@ -1,3 +1,4 @@
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 // IPv4 class
@@ -10,7 +11,8 @@ public class IPv4 {
 	
 	// 4 byte IP array
 	byte[] IPArray = new byte[4];
-	byte[] IPSubnet = new byte[4];
+	byte[] networkID = new byte[4];
+	byte[] IPSubnet;
 	int IPSubBits;
 	
 	/*----------------------------------------------------------------------------------------*/
@@ -18,7 +20,6 @@ public class IPv4 {
 	// decimals are parsed into bytes. decimals > 255 are truncated
 	// IP v4 only
 	public IPv4(String ipIn) {
-		
 		
 		String[] srcStr = ipIn.split("/");							// for port
 		String[] IPStr = srcStr[0].split("\\.");					// split at literal '.' (period)
@@ -33,8 +34,13 @@ public class IPv4 {
 				System.out.println(e.toString());
 			}
 		
-		if(srcStr.length == 2)
+		// if a subnet was given make the mask and network id
+		if(srcStr.length == 2) {
 			IPSubBits = Integer.parseInt(srcStr[1]) & 31;			// subnet int max = 31
+			IPSubnet = (ByteBuffer.allocate(4).putInt((int) (Long.reverse((long)Math.pow(2, IPSubBits) - 1) >>> 32))).array();
+			for(int i = 0; i < 4; i++) 
+				networkID[i] = (byte) (IPArray[i] & IPSubnet[i]);
+		}
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// constructor takes 4 byte array[]
@@ -78,6 +84,7 @@ public class IPv4 {
 		
 		return IPArray.clone();											// return a copy of IPArray
 	}
+
 	/*----------------------------------------------------------------------------------------*/
 	// return string representation in standard form ddd.ddd.ddd.ddd
 	public String toString() {

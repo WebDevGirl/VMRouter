@@ -96,10 +96,25 @@ public class PortAdmin {
 	public int getPort(byte[] ipArray) {
 		
 		Enumeration<Integer> keys = VRPorts.keys();
+		byte[] ipNetworkID = new byte[4];
 
+//		while(keys.hasMoreElements()) { 
+//			Object key = keys.nextElement();
+//			if( Arrays.equals(ipArray, VRPorts.get((Integer)key).getVirtualIP()))
+//				return(VRPorts.get((Integer)key).getPortNum());
+//		}
+		
 		while(keys.hasMoreElements()) { 
 			Object key = keys.nextElement();
-			if( Arrays.equals(ipArray, VRPorts.get((Integer)key).getVirtualIP()))
+			
+			byte[] subnet = VRPorts.get((Integer)key).getSubnet();		// get the ports subnet
+			byte[] portNetID = VRPorts.get((Integer)key).getNetworkID();// get the ports network
+			
+			for(int i = 0; i < 4; i++) 
+				ipNetworkID[i] = (byte) (ipArray[i] & subnet[i]);			// turn ipArray into network id
+			
+			
+			if( Arrays.equals(portNetID, ipNetworkID))
 				return(VRPorts.get((Integer)key).getPortNum());
 		}
 		
@@ -141,7 +156,7 @@ public class PortAdmin {
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// send string in UDP 
-	public void usend(int portNo, byte[] data) {
+	public <syncronized> void usend(int portNo, byte[] data) {
 		
 		if(existsPort(portNo)) {
 			try {
@@ -177,6 +192,7 @@ public class PortAdmin {
 		}	
 	}
 	/*----------------------------------------------------------------------------------------*/
+	// return port configuration as a string
 	public String getAllPortsConfig() {
 		
 		String s = "";
@@ -190,6 +206,21 @@ public class PortAdmin {
 		return s;
 	}
 	/*----------------------------------------------------------------------------------------*/
+	// route an Ethernet frame with an IP datagram test packed
+	public <syncronized> void sendTestPacket(IPv4 srcIP, IPv4 dstIP, short id, int sampleLength) {
+		
+		// make an IPDatagram
+		byte[] sampleData = VRMUtil.getSampleData(sampleLength).getBytes();
+		IPDatagram samplePacket = new IPDatagram(sampleData, id, srcIP, dstIP);
+		
+		// get routing and port info
+		IPv4 targetIP = Router.routeTable.nextRoute(dstIP);
+		int port = getPort(targetIP.IPArray);
+		MacAddress srcMAC = VRPorts.get(port).getMac();
+		
+		
+		
+	}
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/

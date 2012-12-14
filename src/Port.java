@@ -128,7 +128,9 @@ public class Port {
 		// MAC, local port, virtual IP, MTU, remote IP, remote port, connect status
 		s  = String.format("%-22s", macAddress.toDecString());
 		s += String.format("%-6d", localPort);
-		s += String.format("%-16s", virtualIP.toString());
+		s += String.format("%s/", virtualIP.toString());
+		s += String.format("%d\t", virtualIP.IPSubBits);
+		
 		s += String.format("%-7d", MTU);
 		
 		if(isConnected == true) {
@@ -145,6 +147,7 @@ public class Port {
 	/*----------------------------------------------------------------------------------------*/
 	// return port number
 	public int getPortNum() {
+		
 		return localPort;
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -154,8 +157,26 @@ public class Port {
 		return virtualIP.IPArray;
 	}
 	/*----------------------------------------------------------------------------------------*/
-
+	public MacAddress getMac() {
+		
+		return macAddress;
+	}
 	/*----------------------------------------------------------------------------------------*/
+	// return this IP object
+	public IPv4 getIPv4() {
+		
+		return virtualIP;
+	}
+	/*----------------------------------------------------------------------------------------*/
+	public byte[] getNetworkID() {
+		
+		return virtualIP.networkID;
+	}
+	/*----------------------------------------------------------------------------------------*/
+	public byte[] getSubnet() {
+		
+		return virtualIP.IPSubnet;
+	}
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 

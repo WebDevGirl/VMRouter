@@ -2,7 +2,7 @@
 // Process Ethernet frames
 
 
-public class PacketManager extends Thread {
+public class PacketManager {
 
 	// 
 
@@ -20,6 +20,11 @@ public class PacketManager extends Thread {
 	}
 	/*----------------------------------------------------------------------------------------*/
 	//
+	public <syncronized> syncronized send(EthernetFrame f) {
+		
+		return null;
+		
+	}
 	/*----------------------------------------------------------------------------------------*/
 	//
 	/*----------------------------------------------------------------------------------------*/
