@@ -3,6 +3,14 @@ VMRouter
 
 Comp 429 - Networking Virtual Router Class Project
 
+
+=============================================================================================
+12/13/12
+PortAdmin method getPort now returns the right port number for a destination IP.  
+=============================================================================================
+12/13/12
+Added network ID and subnet mask to IPv4 class
+Ports now have a subnet and network ID
 =============================================================================================
 12/10/12
 created kill command file to crash the router
