@@ -3,6 +3,8 @@ VMRouter
 
 Comp 429 - Networking Virtual Router Class Project
 
+Router works on the local machine. usend and asend are now disabled since they weren't
+using packets or frames.   
 
 =============================================================================================
 12/13/12
@@ -21,7 +23,6 @@ make 1025 routing entries
 Added code to limit maximum number of ports and routing table entries
 48 ports
 1024 routing entries + default route
-
 =============================================================================================
 12/10/12
 Lines starting with '//' are now ignored (comments)

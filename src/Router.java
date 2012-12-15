@@ -53,7 +53,7 @@ public class Router {
 			doCommand(comm);
 		}
 			
-		doCommand("include setup".split(" "));
+		//doCommand("include setup".split(" "));
 		
 /*		// run the built in startup commands
 		for(int i = 0; i < defaultCom.length; i++) {
@@ -125,8 +125,8 @@ public class Router {
 		case "port"		: port(command);			break;
 		case "connect"	: connect(command);			break;
 		case "send"		: send(command);			break;
-		case "usend"	: uSend(command);			break;
-		case "asend"	: aSend(command);			break;
+//		case "usend"	: uSend(command);			break;
+//		case "asend"	: aSend(command);			break;
 		case "include"	: loadSettings(command);	break;
 		case "troute"	: testRoute(command);		break;
 		case "t"		: testSomething();			break;
