@@ -22,7 +22,7 @@ public class Router {
 	static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 	
 	// startup commands
-/*	static String[] defaultCom = {   "port add 15000 111.212.323.44/16 1500", "connect add 15000 127.0.0.1:15000",
+	/*	static String[] defaultCom = {   "port add 15000 111.212.323.44/16 1500", "connect add 15000 127.0.0.1:15000",
 									 "port add 15001 111.212.323.44/16 1500", "connect add 15001 127.0.0.1:15001",
 									 "port add 15002 111.212.323.44/16 1500", "connect add 15002 127.0.0.1:15002",
 									 "port add 15003 111.212.323.44/16 1500", "connect add 15003 127.0.0.1:15003",
