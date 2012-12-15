@@ -215,6 +215,10 @@ public class Router {
 		try {
 			System.out.println("command: " + command[0] + " " + command[1] + " " +
 								command[2] + " " + command[3] + " " + command[4]);
+			portAdmin.sendTestPacket(	new IPv4(command[1]), 
+										new IPv4(command[2]),
+										Short.parseShort(command[3]), 
+										Integer.parseInt(command[4]));
 		}
 		catch (Exception e){
 			System.out.println("usage: send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");

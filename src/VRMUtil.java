@@ -49,7 +49,7 @@ public class VRMUtil {
 
 		testCRC.reset();
 		testCRC.update(data, 0, data.length);
-		System.out.println("long value: " + Long.toHexString(testCRC.getValue()));	
+		//System.out.println("long value: " + Long.toHexString(testCRC.getValue()));	
 		ret = (int)testCRC.getValue();
 		
 //		invertFirst32(data);
