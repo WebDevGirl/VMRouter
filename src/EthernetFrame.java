@@ -21,7 +21,7 @@ public class EthernetFrame {
 	// constructor. Create a frame from args and make new CRC
 	public EthernetFrame(MacAddress src, MacAddress dst, short typeLength, byte[] dataIn) {
 		
-		System.out.println("... Creating new Ethernet Frame");
+		// System.out.println("... Creating new Ethernet Frame");
 		this.srcAddr = src.clone();
 		this.dstAddr = dst.clone();
 		this.setTypeLength(typeLength);

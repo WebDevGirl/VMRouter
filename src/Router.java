@@ -53,7 +53,7 @@ public class Router {
 			doCommand(comm);
 		}
 			
-		//doCommand("include setup".split(" "));
+		doCommand("include setup".split(" "));
 		
 /*		// run the built in startup commands
 		for(int i = 0; i < defaultCom.length; i++) {
