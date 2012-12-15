@@ -12,15 +12,10 @@ public class PacketManager {
 		
 	}
 	/*----------------------------------------------------------------------------------------*/
-	//
-	public <syncronized> syncronized add(EthernetFrame f) {
-		
-		return null;
-		
-	}
 	/*----------------------------------------------------------------------------------------*/
 	//
-	public <syncronized> syncronized send(EthernetFrame f) {
+	public <syncronized> syncronized route(EthernetFrame f) {
+		
 		
 		return null;
 		

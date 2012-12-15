@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
@@ -162,6 +163,7 @@ public class PortAdmin {
 			try {
 				
 				VRPorts.get(portNo).send(data);
+				//System.out.println(data);
 				
 			} catch (IOException e) {
 				
@@ -212,17 +214,62 @@ public class PortAdmin {
 		// make an IPDatagram
 		byte[] sampleData = VRMUtil.getSampleData(sampleLength).getBytes();
 		IPDatagram samplePacket = new IPDatagram(sampleData, id, srcIP, dstIP);
+		ByteBuffer macBytes = ByteBuffer.allocate(6);
 		
 		// get routing and port info
 		IPv4 targetIP = Router.routeTable.nextRoute(dstIP);
 		int port = getPort(targetIP.IPArray);
+		
+		// make Ethernet frame
 		MacAddress srcMAC = VRPorts.get(port).getMac();
+		macBytes.put(dstIP.IPArray, 0, 4);						// M5:M4:M3:M2 = IP
+		macBytes.putShort((short) port);						// M1:M0 = localPort
+		MacAddress dstMAC = new MacAddress(macBytes.array());
+		EthernetFrame tFrame = new EthernetFrame(dstMAC,srcMAC,(short) 0,samplePacket.toByteArray());
 		
-		
+		// send frame
+		usend(port,tFrame.toByteArray());
 		
 	}
 	/*----------------------------------------------------------------------------------------*/
-	/*----------------------------------------------------------------------------------------*/
+	// route a received  Ethernet frame
+	// this is the entire routing process right here
+	public <syncronized> void route(byte[] frame) {
+		
+		
+		EthernetFrame eframe = new EthernetFrame(frame);
+		IPDatagram packet = new IPDatagram(eframe.getData());
+		
+		int ttl = packet.TTL.get(0);
+		System.out.println("TTL: " + ttl);
+		
+		//drop the packet if TTL=0
+		if(ttl > 0) {
+			packet.TTL.put(0, (byte) (ttl-1));
+		}
+		else {
+			System.out.println("TTL is 0, packet droped");
+			return;
+		}
+		
+		IPv4 dstIP = packet.getdstIP();
+		ByteBuffer macBytes = ByteBuffer.allocate(6);
+		
+		// get routing and port info
+		IPv4 targetIP = Router.routeTable.nextRoute(dstIP);
+		int port = getPort(targetIP.IPArray);
+		
+		// make Ethernet frame
+		MacAddress srcMAC = VRPorts.get(port).getMac();
+		macBytes.put(dstIP.IPArray, 0, 4);						// M5:M4:M3:M2 = IP
+		macBytes.putShort((short) port);						// M1:M0 = localPort
+		MacAddress dstMAC = new MacAddress(macBytes.array());
+		EthernetFrame tFrame = new EthernetFrame(dstMAC,srcMAC,(short) 0,packet.toByteArray());
+		
+		// send frame
+		usend(port,tFrame.toByteArray());
+		
+	}	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/

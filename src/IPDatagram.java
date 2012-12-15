@@ -14,7 +14,7 @@ public class IPDatagram {
 	private ByteBuffer totalLength =  ByteBuffer.allocate(2);	// total packet length
 	private ByteBuffer ID =  ByteBuffer.allocate(2);			// packed id
 	private ByteBuffer FlagsFOffset = ByteBuffer.allocate(2);	// flags and fragment offset
-	private ByteBuffer TTL  = ByteBuffer.allocate(1);			// max hops
+	public  ByteBuffer TTL  = ByteBuffer.allocate(1);			// max hops
 	private ByteBuffer protocol  = ByteBuffer.allocate(1);		// protocol = 4
 	private ByteBuffer headerChecksum = ByteBuffer.allocate(2);	// simple header checksum
 	private IPv4 srcIP = new IPv4("1.1.1.1");					// source IP
@@ -35,7 +35,7 @@ public class IPDatagram {
 		this.totalLength.putShort(0, (short) (20 + dataIn.length));	// total length of the packet
 		this.ID.putShort(0, id);									// packet ID
 		this.FlagsFOffset.putShort(0, (short) 0);					// flags and fragment offset
-		this.TTL.put((byte) 255);									// Time To Live
+		this.TTL.put((byte) 5);										// Time To Live
 		this.protocol.put((byte) 4);								// protocol = 4
 		this.headerChecksum.putShort(0, (short) 0);					// 0 for now
 		this.srcIP = srcIP;											// source IP
@@ -153,6 +153,11 @@ public class IPDatagram {
 			"data:                      " + t;                    
 		
 		return(s);
+	}
+	/*----------------------------------------------------------------------------------------*/
+	public IPv4 getdstIP() {
+		
+		return dstIP;
 	}
 	/*----------------------------------------------------------------------------------------*/
 

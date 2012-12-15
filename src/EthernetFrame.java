@@ -32,7 +32,7 @@ public class EthernetFrame {
 	// constructor. Create a frame from byte array (assumes CRC is valid)
 	public EthernetFrame(byte[] frameIn) {
 		
-		System.out.println("... Creating new Ethernet Frame from byte array");
+		// System.out.println("... Creating new Ethernet Frame from byte array");
 		
 		this.srcAddr = new MacAddress();
 		this.dstAddr = new MacAddress();
