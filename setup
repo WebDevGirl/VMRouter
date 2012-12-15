@@ -21,10 +21,8 @@ connect add 5004 127.0.0.1:5004
 // these are virtual routes, not physical
 // ones. 
 route add default 192.168.1.0
-route add 192.168.1.0/24 127.0.0.1
+route add 192.168.1.0/24 192.168.1.0
 route add 192.168.2.0/24 192.168.2.0
-route add 192.168.3.0/24 127.0.0.3
-route add 192.168.4.0/24 127.0.0.4
 route add 192.168.5.0/24 192.168.5.0
 
 // wait a little

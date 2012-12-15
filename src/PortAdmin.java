@@ -220,15 +220,23 @@ public class PortAdmin {
 		IPv4 targetIP = Router.routeTable.nextRoute(dstIP);
 		int port = getPort(targetIP.IPArray);
 		
-		// make Ethernet frame
-		MacAddress srcMAC = VRPorts.get(port).getMac();
-		macBytes.put(dstIP.IPArray, 0, 4);						// M5:M4:M3:M2 = IP
-		macBytes.putShort((short) port);						// M1:M0 = localPort
-		MacAddress dstMAC = new MacAddress(macBytes.array());
-		EthernetFrame tFrame = new EthernetFrame(dstMAC,srcMAC,(short) 0,samplePacket.toByteArray());
+		if(port < 0) {
+			
+			System.out.println("no port found for " + targetIP.toString());
+			return;
+		}
+		else {
 		
-		// send frame
-		usend(port,tFrame.toByteArray());
+			// make Ethernet frame
+			MacAddress srcMAC = VRPorts.get(port).getMac();
+			macBytes.put(dstIP.IPArray, 0, 4);						// M5:M4:M3:M2 = IP
+			macBytes.putShort((short) port);						// M1:M0 = localPort
+			MacAddress dstMAC = new MacAddress(macBytes.array());
+			EthernetFrame tFrame = new EthernetFrame(dstMAC,srcMAC,(short) 0,samplePacket.toByteArray());
+			
+			// send frame
+			usend(port,tFrame.toByteArray());
+		}
 		
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -259,17 +267,27 @@ public class PortAdmin {
 		IPv4 targetIP = Router.routeTable.nextRoute(dstIP);
 		int port = getPort(targetIP.IPArray);
 		
-		// make Ethernet frame
-		MacAddress srcMAC = VRPorts.get(port).getMac();
-		macBytes.put(dstIP.IPArray, 0, 4);						// M5:M4:M3:M2 = IP
-		macBytes.putShort((short) port);						// M1:M0 = localPort
-		MacAddress dstMAC = new MacAddress(macBytes.array());
-		EthernetFrame tFrame = new EthernetFrame(dstMAC,srcMAC,(short) 0,packet.toByteArray());
+		// if there is a port for the vitual IP, get it
+		// other wise drop the packet
+		if(port < 0) {
+			
+			System.out.println("no port found for " + targetIP.toString());
+			return;
+		}
+		else {
+			// make Ethernet frame
+			MacAddress srcMAC = VRPorts.get(port).getMac();
+			macBytes.put(dstIP.IPArray, 0, 4);						// M5:M4:M3:M2 = IP
+			macBytes.putShort((short) port);						// M1:M0 = localPort
+			MacAddress dstMAC = new MacAddress(macBytes.array());
+			EthernetFrame tFrame = new EthernetFrame(dstMAC,srcMAC,(short) 0,packet.toByteArray());
+			
+			// send frame
+			usend(port,tFrame.toByteArray());
+		}
 		
-		// send frame
-		usend(port,tFrame.toByteArray());
-		
-	}	/*----------------------------------------------------------------------------------------*/
+	}	
+	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------*/

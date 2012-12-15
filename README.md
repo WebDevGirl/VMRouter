@@ -3,9 +3,14 @@ VMRouter
 
 Comp 429 - Networking Virtual Router Class Project
 
+
+=============================================================================================
+12/15/12
+Fixed bug where routing table has entry for non existing port. Rechecked routing operations.
+=============================================================================================
+12/14/12
 Router works on the local machine. usend and asend are now disabled since they weren't
 using packets or frames.   
-
 =============================================================================================
 12/13/12
 PortAdmin method getPort now returns the right port number for a destination IP.  
