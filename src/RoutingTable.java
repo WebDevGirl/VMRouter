@@ -94,7 +94,10 @@ public class RoutingTable {
 		
 		IPv4 ipRoute = new IPv4(route);
 		if (!ipRoute.equals(badIP)) {
+			
 			defaultRoute = new IPv4(route);
+			System.out.println("new default route is: " + route);
+			
 		} else {System.out.println("Bad IP, default route not set");}
 		
 	}
@@ -102,7 +105,8 @@ public class RoutingTable {
 	// Delete Default Route
 	public void delDefaultRoute() {
 		
-		defaultRoute = null;			
+		defaultRoute = new IPv4("0.0.0.0");	
+		System.out.println("default route cleared");
 	}
 	/*----------------------------------------------------------------------------------------*/
 	public void addRoute(String network, String gateway) {
@@ -125,7 +129,8 @@ public class RoutingTable {
 			ipArr[1] = gatewayIP;
 			 
 			//-- Add record to table 
-			routeTable.add(ipArr);					
+			routeTable.add(ipArr);
+			System.out.println("route " + network + " to " + gateway + " added");
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -165,32 +170,42 @@ public class RoutingTable {
 		}		
 	}
 	/*----------------------------------------------------------------------------------------*/
+	// remove all routes
+	public void delAll() {
+		
+		this.defaultRoute = new IPv4("0.0.0.0");
+		routeTable.clear();
+		System.out.println("routing table cleared");
+	}
+	/*----------------------------------------------------------------------------------------*/
 	// Display table in our console. 
 	public void printTable() {
 		  	
 		int size = routeTable.size();
-		   
-		   System.out.println("Routing table");
-		   System.out.println("-------------------------------------------------------------------------------");
-		   System.out.println("NetworkID   \tSubnet Mask   \tGateway");
-		   System.out.println("-------------------------------------------------------------------------------");
-		   	 
-		   for (IPv4[] ipArr : routeTable) {
-			   System.out.println(
-					   String.format("%1$-" + 12 + "s", ipArr[0].toString()) +  // networkID (padded)
-					   "\t  /" + ipArr[0].IPSubBits + 							// subnet mask
-					   "      \t" + ipArr[1].toString());						// gateway 
-		   }
-		   
-		   if(!defaultRoute.equals(badIP)) {
-			   // Display default gateway if set
-			   System.out.println("default       \t   --     \t" + defaultRoute.toString());
-		   }	   
-		  
-		   System.out.println("_______________________________________________________________________________");
+		int def = 0;
+	   
+		System.out.println("Routing table");
+	    System.out.println("-------------------------------------------------------------------------------");
+	    System.out.println("NetworkID   \tSubnet Mask   \tGateway");
+	    System.out.println("-------------------------------------------------------------------------------");
+	   	 
+	    for (IPv4[] ipArr : routeTable) {
+		    System.out.println(
+		 		   String.format("%1$-" + 12 + "s", ipArr[0].toString()) + 	 // networkID (padded)
+		 		   				 "\t  /" + ipArr[0].IPSubBits + 			 // subnet mask
+		 		   				 "      \t" + ipArr[1].toString());			 // gateway 
+	   }
+	   
+	   if(!defaultRoute.equals(badIP)) {
+		   // Display default gateway if set
+		   System.out.println("default       \t   --     \t" + defaultRoute.toString());
+		   def++;
+	   }	   
+	   System.out.println("total routes: " + (size+def));
+	   System.out.println("_______________________________________________________________________________");
 		      
 			
-		}
-		/*----------------------------------------------------------------------------------------*/
+	}
+	/*----------------------------------------------------------------------------------------*/
 		
 }

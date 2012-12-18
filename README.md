@@ -3,7 +3,29 @@ VMRouter
 
 Comp 429 - Networking Virtual Router Class Project
 
+=============================================================================================
+12/17/12
+The router table can now delete all routes and the default route. The default route is set to
+badIP instead of null. Changed the route command reflect an more consistent syntax. Fixed 
+minor bugs.
 
+the route syntax:
+route add [<network ID/bits> | default] <virtual IP>
+route del [<network ID/bits> <virtual IP> | all | default]
+ =============================================================================================
+12/17/12
+Changed the routers port and connect commands to reflect a more consistent syntax.
+
+port syntax:
+port add <port number> <virtual IP/bits> <mtu>            ");
+port del [<port number> | all]
+
+connect syntax:
+connect add <local real port> <remote Real IP:port>       ");
+connect del [<port number> | all]
+ =============================================================================================
+12/17/12
+Removed most stack trace printouts from Router. 
 =============================================================================================
 12/15/12
 Fixed bug where routing table has entry for non existing port. Rechecked routing operations.

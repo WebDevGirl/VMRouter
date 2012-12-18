@@ -84,7 +84,7 @@ public class Router {
 		String[] ret = new String[] {""};
 	
 		try {Thread.sleep(50);} catch (InterruptedException e) {}
-		System.out.print(System.getProperty("user.dir") + ":) ");
+		System.out.print("\n" + System.getProperty("user.dir") + ":) ");
 		
 		try { 
 				inputString = console.readLine();              
@@ -101,7 +101,7 @@ public class Router {
 		} 
 		catch (Exception e) {
 			
-			System.out.println(e.toString());
+			System.out.println("router, getCommand: " + e.getMessage());
 		}
 		
 		return ret;
@@ -151,62 +151,64 @@ public class Router {
 	/*----------------------------------------------------------------------------------------*/
 	private static void showHelp(){
 		
-		 System.out.println("help                                                 ");
-		 System.out.println("config                                               ");
-		 System.out.println("include <file>                                       ");
-		 System.out.println("port add <port number> <virtual IP/bits> <mtu>       ");
-		 System.out.println("port del <port number>                               ");
-		 System.out.println("port dela (delete all ports)                         ");
-		 System.out.println("connect add <local real port> <remote Real IP:port>  ");
-		 System.out.println("connect del <port number>                            ");
-		 System.out.println("connect dela  (delete all connections)               ");
-		 System.out.println("route add [<network ID/bits> | default] <virtual IP> ");
-		 System.out.println("route del <network ID/bits> <virtual IP>             ");
+		 System.out.println("");
+		 System.out.println("config                                                    ");
+		 System.out.println("include <file>                                            ");
+		 System.out.println("port add <port number> <virtual IP/bits> <mtu>            ");
+		 System.out.println("port del [<port number> | all]                            ");
+		 System.out.println("connect add <local real port> <remote Real IP:port>       ");
+		 System.out.println("connect del [<port number> | all]                         ");
+		 System.out.println("route add [<network ID/bits> | default] <virtual IP>      ");
+		 System.out.println("route del [<network ID/bits> <virtual IP> | all | default]");
 		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
-//		 System.out.println("usend <local port> <str>                             ");
-//		 System.out.println("asend <str>                                          ");
-		 System.out.println("troute <ip>                                          ");
-		 System.out.println("<system command> [options]                           ");
-		 System.out.println("quit                                                 ");
+//		 System.out.println("usend <local port> <str>                                  ");
+//		 System.out.println("asend <str>                                               ");
+		 System.out.println("troute <ip>                                               ");
+		 System.out.println("quit                                                      ");
+		 System.out.println("<system command> [options]                                ");
 	}
 	/*----------------------------------------------------------------------------------------*/
+	// add/delete ports
 	private static void port(String[] command) {
 		
 		try {
 			switch(command[1]){
 			case "add" : portAdmin.addPort(Integer.parseInt(command[2]), command[3], Integer.parseInt(command[4]));
 						 break;
-			case "del" : portAdmin.removePort(Integer.parseInt(command[2]));
+			case "del" : 
+						 if(command[2].trim().equals("all"))
+							portAdmin.removeAll();
+						 else
+							portAdmin.removePort(Integer.parseInt(command[2]));
 						 break;
-			case "dela": portAdmin.removeAll();
-			 break;		 default: throw new Exception();
+			default: throw new Exception();
 			}
 		}
 		catch (Exception e){
 			System.out.println("usage: port add <port number> <virtual IP/bits> <mtu>");
-			System.out.println("usage: port del <port number>");
-			System.out.println("usage: port dela (delete all ports)");
-			System.out.println(e.toString());
+			System.out.println("usage: port del [<port number> | all]");
 			//e.printStackTrace();
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
+	// add/delete connections to ports
 	private static void connect(String[] command) {
 		
 		try {
 			switch(command[1]){
 			case "add" : portAdmin.connect(Integer.parseInt(command[2]), command[3]);
 						 break;
-			case "del" : portAdmin.disconnect(Integer.parseInt(command[2]));
+			case "del" : if(command[2].trim().equals("all"))
+							portAdmin.disconnectAll();
+						 else
+							portAdmin.disconnect(Integer.parseInt(command[2]));
 						 break;
-			case "dela": portAdmin.disconnectAll();
-			break;		 default: throw new Exception();
+			default: throw new Exception();
 			}
 		}
 		catch (Exception e){
 			System.out.println("usage: connect add <local port> <remote IP:port>");
-			System.out.println("usage: connect del <local port>");
-			System.out.println("usage: connect dela (delete all connections)");
+			System.out.println("usage: connect del [<local port> | all]");
 			// System.out.println(e.toString());
 		}
 	}
@@ -256,35 +258,37 @@ public class Router {
 	}
 	/*----------------------------------------------------------------------------------------*/
 	private static void route(String[] command) {
+		
 		try {
 			
 //			System.out.println("command: " + command[0] + " " + command[1] + " " +
 //					command[2] + " " + command[3]);
 
-			String networkID = command[2];
-			String gatewayIP = command[3];
+//			String networkID = command[2];
+//			String gatewayIP = command[3];
 			
-			if (command[2].trim().equals("default")) {
 				
-				// Add default route to routing table
-				routeTable.addDefaultRoute(gatewayIP);
-				
-			} else {
-				
-				// Add or delete new route to Routing Table
-				switch(command[1]){
-				case "add" : routeTable.addRoute(networkID, gatewayIP);
-							 break;
-				case "del" : routeTable.delRoute(networkID, gatewayIP); 
-							 break;
-				default    : throw new Exception();
-				}
+			// Add or delete new route to Routing Table
+			switch(command[1]){
+			case "add" : if(command[2].trim().equals("default"))
+							routeTable.addDefaultRoute(command[3]);
+						 else
+							routeTable.addRoute(command[2], command[3]);
+						 break;
+			case "del" : if(command[2].trim().equals("all"))
+							routeTable.delAll();
+						 else if(command[2].trim().equals("default"))
+							 routeTable.delDefaultRoute();
+						 else
+							routeTable.delRoute(command[2], command[3]); 
+						 break;
+			default    : throw new Exception();
 			}
 		}
 		catch (Exception e){
-			System.out.println("usage: route add <network ID/subnet bits> <virtual IP>");
-			System.out.println("usage: route del <network ID/subnet bits> <virtual IP>");
-			// System.out.println(e.toString());
+			System.out.println("usage: route add [<network ID/bits> | default] <virtual IP>");
+			System.out.println("usage: route del [<network ID/bits> <virtual IP> | all | default]");
+			System.out.println(e.toString());
 		}
 	}	
 	/*----------------------------------------------------------------------------------------*/
