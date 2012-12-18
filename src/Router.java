@@ -84,7 +84,7 @@ public class Router {
 		String[] ret = new String[] {""};
 	
 		try {Thread.sleep(50);} catch (InterruptedException e) {}
-		System.out.print("\n" + System.getProperty("user.dir") + ":) ");
+		System.out.print(System.getProperty("user.dir") + ":) ");
 		
 		try { 
 				inputString = console.readLine();              
@@ -100,8 +100,8 @@ public class Router {
 				}
 		} 
 		catch (Exception e) {
+			
 			System.out.println(e.toString());
-			ret = new String[] {"EOF"};
 		}
 		
 		return ret;
@@ -116,7 +116,6 @@ public class Router {
 		if(command[0].startsWith("//"))								// comment, do nothing
 			return;
 		
-		System.out.println("");
 		switch(command[0]){
 		
 		case "help" 	: showHelp();				break;
@@ -133,18 +132,20 @@ public class Router {
 		case "sleep"	: sleep(command);			break;
 		case "quit" 	: appQuit();				break;
 		case "q" 		: appQuit();				break;
-		default     	: sysCmd(command);					// shell commands
+		default     	: sysCmd(command);							// shell commands
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
 	private static void sleep(String[] command) {
-		// TODO Auto-generated method stub
+
 		try {
+			
 			Thread.sleep(Integer.parseInt(command[1]));
+			
 		} catch (NumberFormatException | InterruptedException e) {
-			// TODO Auto-generated catch block
+
 			System.out.println("usage: sleep <miliseconds>");
-			e.printStackTrace();
+			// e.printStackTrace();
 		}	
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -162,10 +163,10 @@ public class Router {
 		 System.out.println("route add [<network ID/bits> | default] <virtual IP> ");
 		 System.out.println("route del <network ID/bits> <virtual IP>             ");
 		 System.out.println("send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
-		 System.out.println("usend <local port> <str>                             ");
-		 System.out.println("asend <str>                                          ");
-		 System.out.println("troute ip                                            ");
-		 System.out.println("<system command> | <options>                         ");
+//		 System.out.println("usend <local port> <str>                             ");
+//		 System.out.println("asend <str>                                          ");
+		 System.out.println("troute <ip>                                          ");
+		 System.out.println("<system command> [options]                           ");
 		 System.out.println("quit                                                 ");
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -186,7 +187,7 @@ public class Router {
 			System.out.println("usage: port del <port number>");
 			System.out.println("usage: port dela (delete all ports)");
 			System.out.println(e.toString());
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -222,7 +223,7 @@ public class Router {
 		}
 		catch (Exception e){
 			System.out.println("usage: send <SRC Virtual IP> <DST Virtual IP> <ID> <N bytes>");
-			System.out.println(e.toString());
+			//System.out.println(e.toString());
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -233,7 +234,7 @@ public class Router {
 		}
 		catch (Exception e){
 			System.out.println("usage: usend <port> <str>");
-			System.out.println(e.toString());
+			//System.out.println(e.toString());
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -250,24 +251,27 @@ public class Router {
 		}
 		catch (Exception e){
 			System.out.println("usage: asend <str>");
-			System.out.println(e.toString());
+			//System.out.println(e.toString());
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
 	private static void route(String[] command) {
 		try {
 			
-			System.out.println("command: " + command[0] + " " + command[1] + " " +
-					command[2] + " " + command[3]);
+//			System.out.println("command: " + command[0] + " " + command[1] + " " +
+//					command[2] + " " + command[3]);
 
 			String networkID = command[2];
 			String gatewayIP = command[3];
 			
 			if (command[2].trim().equals("default")) {
+				
 				// Add default route to routing table
 				routeTable.addDefaultRoute(gatewayIP);
+				
 			} else {
-				// Add new route to Routing Table
+				
+				// Add or delete new route to Routing Table
 				switch(command[1]){
 				case "add" : routeTable.addRoute(networkID, gatewayIP);
 							 break;
@@ -301,11 +305,15 @@ public class Router {
 //		System.out.println("Architecture of THe OS: " + 
 //		System.getProperty(architectureOS));
 		
-		System.out.println("\nMAC                   port  virtual IP      MTU    remote IP     : port  conn");
-		System.out.println("_______________________________________________________________________________");
+		System.out.println();
+		System.out.println("Port info");
+		System.out.println("-------------------------------------------------------------------------------");
+		System.out.println("MAC                   Port  Virtual IP          MTU  Remote IP       Port  Conn");
+		System.out.println("-------------------------------------------------------------------------------");
 		System.out.println(portAdmin.getAllPortsConfig());
-		
+
 		routeTable.printTable();
+		System.out.println();
 		
 		// router settings
 
@@ -328,10 +336,12 @@ public class Router {
 		catch (ArrayIndexOutOfBoundsException e){
 			
 			System.out.println("usage: include <filename>");
+			// e.printStackTrace();
 		}
 		catch (FileNotFoundException e) {
 			
 			System.out.println("file not found: " + command[1]);
+			// e.printStackTrace();
 		}
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -350,19 +360,23 @@ public class Router {
 		System.out.println(sp + ": " + cmd);
 
 		try {
+			
 			p = Runtime.getRuntime().exec(cmd);
 			p.waitFor();
 			BufferedReader reader=new BufferedReader(new InputStreamReader(p.getInputStream())); 
 			String s = reader.readLine();
 			while ((s = reader.readLine()) != null) 
 		        System.out.println(s);
+			
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+
+			System.out.println("router: could not execute system command: " + cmd);
+			// e1.printStackTrace();
 		} 
 		 catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			 System.out.println("router: could not execute system command: " + cmd);
+			 // e.printStackTrace();
 		} 
 	}
 	/*----------------------------------------------------------------------------------------*/
@@ -373,10 +387,10 @@ public class Router {
 		print("\nreleasing resources\n");
 		print("good bye\n");
 
-		try {console.close();} 
+		try { console.close(); } 
 		catch (IOException e)
-			{print("IO error: " + e.getMessage() + "\n");}		// nothing we can do here
-		System.exit(0);											// exit application
+			{ print("IO error: " + e.getMessage() + "\n"); }		// nothing we can do here
+		System.exit(0);												// exit application
 	}
 	/*----------------------------------------------------------------------------------------*/
 	// use this method to test code 

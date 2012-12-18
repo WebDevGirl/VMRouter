@@ -170,7 +170,7 @@ public class RoutingTable {
 		  	
 		int size = routeTable.size();
 		   
-		   System.out.println("");
+		   System.out.println("Routing table");
 		   System.out.println("-------------------------------------------------------------------------------");
 		   System.out.println("NetworkID   \tSubnet Mask   \tGateway");
 		   System.out.println("-------------------------------------------------------------------------------");
@@ -185,9 +185,7 @@ public class RoutingTable {
 		   if(!defaultRoute.equals(badIP)) {
 			   // Display default gateway if set
 			   System.out.println("default       \t   --     \t" + defaultRoute.toString());
-		   }
-		   
-		   
+		   }	   
 		  
 		   System.out.println("_______________________________________________________________________________");
 		      
