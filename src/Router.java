@@ -31,7 +31,6 @@ public class Router {
 									 "route add 1.1.1.1/16 1.1.1.4", "route add 123.123.123.123/16 4.4.4.4",
 									 "route add 130.166.13.0/22 5.5.5.5", "route add 44.44.44.44/29 8.8.8.8",
 									 "route add default 13.13.13.13"
-
 	};
 	*/
 	
@@ -53,15 +52,15 @@ public class Router {
 			doCommand(comm);
 		}
 			
-		doCommand("include setup".split(" "));
+		// doCommand("include setup".split(" "));
 		
 /*		// run the built in startup commands
 		for(int i = 0; i < defaultCom.length; i++) {
 			doCommand(defaultCom[i].split(" "));
 			try {Thread.sleep(50);} catch (InterruptedException e) {}
-		}*/
-
-		// try {Thread.sleep(100);} catch (InterruptedException e) {}
+		}
+*/
+		
 	
 		// main loop
 		while(true){

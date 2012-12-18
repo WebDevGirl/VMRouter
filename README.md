@@ -2,7 +2,9 @@ VMRouter
 ========
 
 Comp 429 - Networking Virtual Router Class Project
-
+=============================================================================================
+12/17/12
+Removed auto loading of setup file
 =============================================================================================
 12/17/12
 The router table can now delete all routes and the default route. The default route is set to
